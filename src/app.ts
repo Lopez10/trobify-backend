@@ -1,10 +1,41 @@
-import express from 'express';
+import express, { Application } from 'express';
+import morgan from 'morgan';
 
-const app = express();
-const port = 3000;
+// Routes
+import IndexRoutes from "./routes/index.routes";
+import CatalogRoutes from "./routes/catalog.routes";
 
-app.use(require('./routes/users'))
+export class App {
 
-app.listen(port, () => {
-  console.log(`server is listening on ${port}`);
-});
+  private app: Application;
+  
+
+  constructor(private port?: number | string){
+    this.app=express();
+    this.settings();
+    this.middlewares();
+    this.routes();
+  }
+
+  settings(){
+    this.app.set('port', this.port || process.env.PORT || 3000)
+  }
+
+  middlewares(){
+    this.app.use(morgan('dev'));
+    this.app.use(express.json());
+  }
+
+  routes(){
+    this.app.use(IndexRoutes);
+    this.app.use('/catalog', CatalogRoutes);
+  }
+
+  async listen() {
+    await this.app.listen(this.app.get('port'));
+    console.log('Server on port', 3000);
+  }
+}
+// app.use(express.json());
+
+// app.use(require('./routes/users'))

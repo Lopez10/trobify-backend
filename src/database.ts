@@ -5,9 +5,10 @@ export async function connect() {
         host:'localhost',
         user:'root',
         password: 'rootroot',
-        database: 'alcajaju',
+        database: 'Trobify',
+        port: 3306,
         connectionLimit: 10
     });
-    return connection;
+     return connection;
 }
 

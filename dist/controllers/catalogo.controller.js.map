@@ -1,0 +1,1 @@
+{"version":3,"file":"catalogo.controller.js","sourceRoot":"","sources":["../../src/controllers/catalogo.controller.ts"],"names":[],"mappings":";;;;;;;;;;;;AACA,0CAAsC;AAGtC,SAAsB,UAAU,CAAC,GAAY,EAAE,GAAY;;QACtD,MAAM,IAAI,GAAG,MAAM,kBAAO,EAAE,CAAC;QAC7B,MAAM,QAAQ,GAAG,IAAI,CAAC,KAAK,CAAC,wBAAwB,CAAC,CAAC;QAEtD,OAAO,GAAG,CAAC,IAAI,CAAC,QAAQ,CAAC,CAAC;IAC/B,CAAC;CAAA;AALD,gCAKC"}

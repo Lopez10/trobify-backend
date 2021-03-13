@@ -1,17 +1,16 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express';
 import { connect } from '../database';
 import { Inmueble } from '../interface/inmueble.interface';
 
-export async function createInmueble(req: Request, res:Response){
-     const newInmueble: Inmueble = req.body;
-     const conn = await connect();
-     conn.query('INSERT INTO Catalogo SET ?', [newInmueble])
-     return res.json({
-          message: 'Inmueble creado'
-     });
+export async function createInmueble(req: Request, res: Response) {
+	const newInmueble: Inmueble = req.body;
+	const conn = await connect();
+	conn.query('INSERT INTO Catalogo SET ?', [newInmueble]);
+	return res.json({
+		message: 'Inmueble creado',
+	});
 }
 
-// Mal ejemplo el de catalog -> Aplicable para usuarios
 // export async function getCatalog(req: Request, res:Response): Promise<Response> {
 //      const id = req.params.postId;
 //      const conn = await connect();

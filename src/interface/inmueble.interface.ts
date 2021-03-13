@@ -1,3 +1,1 @@
-export interface Inmueble{
-     
-}
+export interface Inmueble {}

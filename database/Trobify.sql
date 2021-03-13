@@ -1,0 +1,123 @@
+CREATE DATABASE IF NOT EXISTS Trobify;
+
+USE Trobify;
+
+CREATE TABLE Ubicacion (
+	ubicacion_id INT AUTO_INCREMENT,
+	direccion VARCHAR(250),
+	longitud DOUBLE NOT NULL,
+	latitud DOUBLE NOT NULL,
+    PRIMARY KEY(ubicacion_id)
+);
+CREATE TABLE Usuario (
+	id INT AUTO_INCREMENT,
+	nombre VARCHAR(25) NOT NULL,
+	apellidos VARCHAR(50) NOT NULL,
+	mail VARCHAR(50) NOT NULL,
+	f_nac DATE NOT NULL,
+	contraseña VARCHAR(25) NOT NULL,
+	telefono INT NOT NULL,
+	rol VARCHAR(10) NOT NULL,
+	PRIMARY KEY(id),
+	KEY idx_id (nombre,apellidos,mail,f_nac,contraseña,telefono,rol)
+);
+CREATE TABLE Catalogo (
+	id_inmueble INT AUTO_INCREMENT,
+	precio DOUBLE NOT NULL,
+	PRIMARY KEY (id_inmueble)
+);
+CREATE TABLE TipoDeVivienda (
+	id TINYINT AUTO_INCREMENT,
+	tipo VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE Estado (
+	id TINYINT AUTO_INCREMENT,	
+	tipo VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE CertificacionEnergetica (
+	id_certifEner TINYINT AUTO_INCREMENT,	
+	nombre VARCHAR(3),
+    PRIMARY KEY (id_certifEner)
+);
+CREATE TABLE Caracteristicas (
+	id TINYINT AUTO_INCREMENT,	
+	tipo VARCHAR(20),
+    PRIMARY KEY (id)
+);
+CREATE TABLE Inmueble (
+	catastro_id CHAR(20),
+	cant_habitaciones TINYINT NOT NULL,
+	banos TINYINT NOT NULL,
+	cocina TINYINT NOT NULL,
+	superficie SMALLINT NOT NULL,
+	id_certifEner TINYINT NOT NULL,
+	breveDescripcion TEXT NOT NULL,
+	disponible BOOL NOT NULL,
+	consultas INT NOT NULL,
+    id_inmueble INT NOT NULL,
+    ubicacion_id INT NOT NULL,
+	id_vivienda TINYINT NOT NULL,
+    id_estado TINYINT NOT NULL,
+    PRIMARY KEY (catastro_id),
+    FOREIGN KEY (ubicacion_id) REFERENCES Ubicacion (ubicacion_id),
+    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble),
+    FOREIGN KEY (id_vivienda) REFERENCES TipoDeVivienda (id),
+    FOREIGN KEY (id_certifEner) REFERENCES CertificacionEnergetica (id_certifEner),
+    FOREIGN KEY (id_estado) REFERENCES Estado (id)
+);
+CREATE TABLE Contiene (
+	id TINYINT NOT NULL,
+	catastro_id CHAR(20) NOT NULL,
+	PRIMARY KEY (id, catastro_id),
+    FOREIGN KEY (id) REFERENCES Caracteristicas (id),
+    FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
+);
+CREATE TABLE Imagen (
+	id_imagen INT AUTO_INCREMENT,
+    catastro_id CHAR(20),
+	valor TINYTEXT NOT NULL,
+    PRIMARY KEY (id_imagen),
+    FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
+);
+CREATE TABLE Extra (
+	id_extra INT AUTO_INCREMENT,
+    catastro_id CHAR(20),
+	valor TEXT NOT NULL,
+	PRIMARY KEY (id_extra),
+    FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
+);
+CREATE TABLE Habitacion (
+	id_operacion INT AUTO_INCREMENT,
+	id_habitacion CHAR(3),
+    f_entrada DATE,
+    f_salida DATE,
+    precio FLOAT,
+    descuento FLOAT,
+    id_inmueble INT,
+    catastro_id CHAR(20) NOT NULL,
+	PRIMARY KEY(id_operacion),
+    FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
+);
+CREATE TABLE Cliente (
+	id INT AUTO_INCREMENT,
+	nombre VARCHAR(25) NOT NULL,
+	apellidos VARCHAR(50) NOT NULL,
+	mail VARCHAR(50) NOT NULL,
+	f_nac DATE NOT NULL,
+	contraseña VARCHAR(25) NOT NULL,
+	telefono INT NOT NULL,
+	rol VARCHAR(10) NOT NULL,
+    id_inmueble INT NOT NULL,
+    PRIMARY KEY (id),
+	FOREIGN KEY (nombre,apellidos,mail,f_nac,contraseña,telefono,rol) REFERENCES Usuario (nombre,apellidos,mail,f_nac,contraseña,telefono,rol),
+    FOREIGN KEY (id) REFERENCES usuario (id),
+    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble)
+);
+CREATE TABLE Favoritos (
+	id INT NOT NULL,
+    id_inmueble INT NOT NULL,
+    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble),
+    FOREIGN KEY (id) REFERENCES Cliente (id)
+);

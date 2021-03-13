@@ -1,0 +1,6 @@
+LOG CON LOS CAMBIOS EN LAS TABLAS DE LAS BASES DE DATOS, PARA QUE TODOS LOS TENGAMOS A MANO:
+
+
+13/03/2021
+Tabla Catalogo                  --> He quitado la columna tipo, ya que los tipos se almacenan en la tabla "TipoDeVivienda", así evitamos campos duplicados
+Tabla CertificacionEnergetica   --> Almacena los tipos de certificación Energética que hay, así los quitamos de Inmuebles

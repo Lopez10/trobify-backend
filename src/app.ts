@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import IndexRoutes from './routes/index.routes';
 import CatalogRoutes from './routes/catalog.routes';
 import InmuebleRoutes from './routes/inmueble.routes';
+import UbicacionRoutes from './routes/ubicacion.routes';
 import path from 'path';
 
 export class App {
@@ -32,6 +33,7 @@ export class App {
 		this.app.use(IndexRoutes);
 		this.app.use('/catalogo', CatalogRoutes);
 		this.app.use('/inmueble', InmuebleRoutes);
+		this.app.use('/ubicacion', UbicacionRoutes);
 	}
 
 	static() {

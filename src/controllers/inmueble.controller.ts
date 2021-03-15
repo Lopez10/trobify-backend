@@ -11,6 +11,29 @@ export async function createInmueble(req: Request, res: Response) {
 	});
 }
 
+export async function getUbicacion(req: Request, res: Response): Promise<Response> {
+	const conn = await connect();
+	const ubicacion = await conn.query('SELECT i.catastro_id, u.longitud, u.latitud FROM Inmueble i, Ubicacion u WHERE u.ubicacion_id = i.ubicacion_id');
+	
+	return res.json(ubicacion[0]);
+}
+
+export async function getFiltrados(req: Request, res: Response): Promise<Response> {
+	let select:string = 'i.catastro_id as "catastro", i.cant_habitaciones as "nHabitaciones", i.banos as "nBanos", i.cocina as "nCocinas", tp.tipo as "tipoVivienda" , e.tipo as "estado", ca.tipo as "caracteristicas"'
+	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca';
+	let where:String = '(tp.id = i.id_vivienda and e.id = i.id_estado and c.id = ca.id and c.catastro_id = i.catastro_id';
+	//if (nHab>0) where += 'and nHabitaciones = ' + nHab;
+
+	where += ');';
+
+	const conn = await connect();
+	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
+
+	
+	return res.json(paraFilrar[0]);
+}
+
+
 // export async function getCatalog(req: Request, res:Response): Promise<Response> {
 //      const id = req.params.postId;
 //      const conn = await connect();

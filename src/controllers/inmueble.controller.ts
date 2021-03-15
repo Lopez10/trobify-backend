@@ -19,13 +19,36 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 }
 
 export async function getFiltrados(req: Request, res: Response): Promise<Response> {
+	/*
+	nHab	= número de habitaciones
+	nBan	= número de baños
+	nCoc	= número de cocinas
+	tip		= tipo de vivienda (dúplex, funca rústica,...)
+	est		= estado (reformado, buen estado,...)
+	cla		= clasificación energética
+	*/
 
-	let SubConsulta:string[] = ['Amueblado', 'Aire Acondicionado']
-
+	// Encabezado de la consulta
 	let select:string = 'DISTINCT i.catastro_id as "catastro", u.longitud, u.latitud'
 	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca, certificacionEnergetica ce, ubicacion u';
 	let where:String = '(tp.id = i.id_vivienda and c.id = ca.id and i.id_certifEner = ce.id_certifEner and i.ubicacion_id = u.ubicacion_id and c.catastro_id = i.catastro_id';
 
+	// Extraer datos de la query
+	let ruta:string=req.url;
+	let j:number=0;
+	let x:number=0;
+	let cadena:string;
+
+	if (ruta.includes("nHab=")){
+		console.log(ruta);
+		console.log(ruta.substring(ruta.indexOf("nHab="),3));
+
+	}
+
+
+	// Configuración de la subconsulta para lostipos de caracteristicas que pueden tener varias fílas
+	/*
+	let SubConsulta:string[] = ['Amueblado', 'Aire Acondicionado']
 	let j:number=SubConsulta.length;
 
 	if (true) {
@@ -38,6 +61,9 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 		}
 		where += ') tipos GROUP BY catastro_id HAVING COUNT(catastro_id) = ' + j + ')';
 	}
+	*/
+
+	// Final de la consulta chupiguay
 	where += ');';
 	const conn = await connect();
 	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);

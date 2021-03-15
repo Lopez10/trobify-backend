@@ -33,17 +33,17 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca, certificacionEnergetica ce, ubicacion u';
 	let where:String = '(tp.id = i.id_vivienda and c.id = ca.id and i.id_certifEner = ce.id_certifEner and i.ubicacion_id = u.ubicacion_id and c.catastro_id = i.catastro_id';
 
-	// Extraer datos de la query
-	let ruta:string=req.url;
-	let j:number=0;
-	let x:number=0;
-	let cadena:string;
+	// Parámetros de la consulta
+	if ( !isNaN( Number( req.query.nHab ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nHab); }
+	if ( !isNaN( Number( req.query.nBan ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nBan); }
+	if ( !isNaN( Number( req.query.nCoc ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nCoc); }
 
-	if (ruta.includes("nHab=")){
-		console.log(ruta);
-		console.log(ruta.substring(ruta.indexOf("nHab="),3));
 
-	}
+
+
+
+
+
 
 
 	// Configuración de la subconsulta para lostipos de caracteristicas que pueden tener varias fílas
@@ -66,6 +66,8 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 	// Final de la consulta chupiguay
 	where += ');';
 	const conn = await connect();
+
+	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 
 	

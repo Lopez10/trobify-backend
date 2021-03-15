@@ -19,13 +19,26 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 }
 
 export async function getFiltrados(req: Request, res: Response): Promise<Response> {
-	let select:string = 'i.catastro_id as "catastro", i.cant_habitaciones as "nHabitaciones", i.banos as "nBanos", i.cocina as "nCocinas", tp.tipo as "tipoVivienda" , e.tipo as "estado", ca.tipo as "caracteristicas"'
-	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca';
-	let where:String = '(tp.id = i.id_vivienda and e.id = i.id_estado and c.id = ca.id and c.catastro_id = i.catastro_id';
-	//if (nHab>0) where += 'and nHabitaciones = ' + nHab;
 
+	let SubConsulta:string[] = ['Amueblado', 'Aire Acondicionado']
+
+	let select:string = 'DISTINCT i.catastro_id as "catastro", u.longitud, u.latitud'
+	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca, certificacionEnergetica ce, ubicacion u';
+	let where:String = '(tp.id = i.id_vivienda and c.id = ca.id and i.id_certifEner = ce.id_certifEner and i.ubicacion_id = u.ubicacion_id and c.catastro_id = i.catastro_id';
+
+	let j:number=SubConsulta.length;
+
+	if (true) {
+		where += ' and i.catastro_id IN (SELECT catastro_id FROM (';
+		for (let i = 0; i<j; i++) {
+			where += 'SELECT co'+ i +'.catastro_id, ca' + i + '.tipo ';
+			where += 'FROM caracteristicas ca' + i + ', contiene co' + i + ' ';
+			where += 'WHERE ca'+ i +'.id = co'+ i +'.id and ca'+ i +'.tipo = "' + SubConsulta[i] + '"';
+			if (i + 1 < j) where += ' UNION ALL ';
+		}
+		where += ') tipos GROUP BY catastro_id HAVING COUNT(catastro_id) = ' + j + ')';
+	}
 	where += ');';
-
 	const conn = await connect();
 	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 

@@ -23,9 +23,9 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 	nHab	= número de habitaciones
 	nBan	= número de baños
 	nCoc	= número de cocinas
-	tip		= tipo de vivienda (dúplex, funca rústica,...)
-	est		= estado (reformado, buen estado,...)
-	cla		= clasificación energética
+	tipC	= tipo de vivienda (dúplex, funca rústica,...)
+	estd	= estado (reformado, buen estado,...)
+	fltr	= clasificación energética
 	*/
 
 	// Encabezado de la consulta
@@ -35,8 +35,8 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 
 	// Parámetros de la consulta
 	if ( !isNaN( Number( req.query.nHab ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nHab); }
-	if ( !isNaN( Number( req.query.nBan ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nBan); }
-	if ( !isNaN( Number( req.query.nCoc ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nCoc); }
+	if ( !isNaN( Number( req.query.nBan ) ) ) { where += ' and i.banos = ' + Number(req.query.nBan); }
+	if ( !isNaN( Number( req.query.nCoc ) ) ) { where += ' and i.cocina = ' + Number(req.query.nCoc); }
 
 
 
@@ -67,7 +67,7 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 	where += ');';
 	const conn = await connect();
 
-	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
+	//console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 
 	

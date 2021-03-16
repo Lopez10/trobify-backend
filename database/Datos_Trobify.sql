@@ -69,11 +69,6 @@ INSERT INTO Usuario values
 	(1, "Venta"),
 	(2, "Alquiler"),
 	(3, "Alquiler de Habitaciones");
-INSERT INTO Catalogo values 
-    (1, 1, 20000.99, "2020-08-12"),
-    (2, 1, 30000.99, "2019-08-12"),
-    (3, 1, 40000.99, "2018-08-12"),
-    (4, 1, 50000.99, "2017-08-12");
  INSERT TipoDeVivienda values
 	(1, "Ático"),
 	(2, "Plantas intermedias"),
@@ -109,10 +104,10 @@ INSERT Caracteristicas values
 	(8, "Piscina"),
 	(9, "Trastero");
 INSERT INTO Inmueble values 
-	("7138804YJ2773G0001ZM", 1, 1, 0, 106, 1, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 3, 1, 1, 1, 1),
-	("7138804YJ2773G0006ET", 6, 2, 1, 200, 3, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 100, 2, 2, 3, 2),
-	("6715712YJ2761F0001IX", 3, 2, 1, 250, 5, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 300, 3, 3, 5, 3),
-	("2524205YJ2722S0001GA", 8, 3, 2, 352, 7, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 1500, 4, 4, 9, 1);
+	("7138804YJ2773G0001ZM", 1, 1, 0, 106, 1, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 3, 1, 1, 1),
+	("7138804YJ2773G0006ET", 6, 2, 1, 200, 3, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 100, 2, 3, 2),
+	("6715712YJ2761F0001IX", 3, 2, 1, 250, 5, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 300, 3, 5, 3),
+	("2524205YJ2722S0001GA", 8, 3, 2, 352, 7, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 0, 1500, 4, 9, 1);
 INSERT INTO Imagen values 
     (1, "7138804YJ2773G0001ZM", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F861735709923243470%2F&psig=AOvVaw1E2oX_ce6IWbrz0im1g8g9&ust=1615935556231000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPC1rKGzs-8CFQAAAAAdAAAAABAf"),
     (2, "7138804YJ2773G0006ET", "https://www.google.com/url?sa=i&url=https%3A%2F%2Ftwitter.com%2Fhector4x%2Fstatus%2F1127134042112057346%3Flang%3Dko&psig=AOvVaw1E2oX_ce6IWbrz0im1g8g9&ust=1615935556231000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPC1rKGzs-8CFQAAAAAdAAAAABAT"),
@@ -123,24 +118,25 @@ INSERT INTO Extra values
     (1, "2524205YJ2722S0001GA", "Urna gravida porttitor phasellus sagittis habitasse quam interdum ultricies arcu quis elementum enim sapien risus litora eleifend, rhoncus curabitur vitae leo malesuada eget luctus rutrum tincidunt proin nec cum laoreet aliquet." ),
     (2, "2524205YJ2722S0001GA", "Inceptos tempus rutrum netus rhoncus elementum morbi integer eget dictumst venenatis torquent tellus sociis mollis, nec cras justo ornare velit pretium gravida sodales aenean vulputate curae purus ultrices. Pharetra purus sodales nisl semper maecenas fames neque, facilisi luctus torquent ad faucibus vivamus conubia, donec mauris interdum primis dictumst phasellus."),
     (3, "7138804YJ2773G0006ET", "Se cree ampliamente que la historia de Lorem Ipsum se origina con Cicerón en el siglo I aC y su texto De Finibus bonorum et malorum. Esta obra filosófica, también conocida como En los extremos del bien y del mal, se dividió en cinco libros."); 
-INSERT INTO Habitacion values 
-    (1, 'A01', "2021-07-26", "2021-08-12", 375, 0, 2, "7138804YJ2773G0006ET"),
-    (2, 'A01', "2021-08-12", "2021-12-12", 700, 0, 2, "7138804YJ2773G0006ET"),
-    (3, 'C01', "2021-02-14", "2021-02-15", 200, 75, 3, "6715712YJ2761F0001IX"),
-    (4, 'D01', "2021-07-15", "2021-07-20", 500, 250, 4, "2524205YJ2722S0001GA");
+INSERT INTO Catalogo values 
+    ("7138804YJ2773G0001ZM", 1, 20000.99, "2020-08-12"),
+    ("7138804YJ2773G0001ZM", 2, 253, "2020-08-12"),
+    ("7138804YJ2773G0006ET", 1, 30000.99, "2019-08-12"),
+    ("6715712YJ2761F0001IX", 1, 40000.99, "2018-08-12"),
+    ("2524205YJ2722S0001GA", 1, 50000.99, "2017-08-12");
 INSERT INTO Cliente values 
-    (1, 'Alfredo', 'Sauce Marinada', 'ChickenWings26@gmail.com', "1990-07-23", 'NoKetchup', 987654321, 'Chef', 2),
-    (2, 'Diego', 'Caramelo Caricia', 'SweetFlavour@hotmail.com', "1997-02-14", 'LaMarSalá', 987654322, 'Pastelero', 3),
-    (3, 'Carlos', 'Molinillo Loco', 'DonQX@hotmail.com', "2003-12-01", 'NOpuedojugarsinAIM', 987654323, 'Gamer', 4),
-	(4, 'Juan Carlos', 'Rey Fugado', 'LoSientoNoLoVolvereAHacerMas@gmail.com', "1887-08-22", 'Megustaeldinero', 987655424, 'Ninguno', 1);
+    (1, 'Alfredo', 'Sauce Marinada', 'ChickenWings26@gmail.com', "1990-07-23", 'NoKetchup', 987654321, 'Chef', "7138804YJ2773G0006ET", 1),
+    (2, 'Diego', 'Caramelo Caricia', 'SweetFlavour@hotmail.com', "1997-02-14", 'LaMarSalá', 987654322, 'Pastelero', "6715712YJ2761F0001IX", 1),
+    (3, 'Carlos', 'Molinillo Loco', 'DonQX@hotmail.com', "2003-12-01", 'NOpuedojugarsinAIM', 987654323, 'Gamer', "2524205YJ2722S0001GA", 1),
+	(4, 'Juan Carlos', 'Rey Fugado', 'LoSientoNoLoVolvereAHacerMas@gmail.com', "1887-08-22", 'Megustaeldinero', 987655424, 'Ninguno', "7138804YJ2773G0001ZM", 1);
 INSERT INTO Favoritos values 
-    (1, 3),
-    (1, 2),
-    (1, 1),
-    (2, 2),
-    (3, 4),
-    (3, 1),
-    (4, 1);
+    (1, "7138804YJ2773G0006ET", 1),
+    (1, "2524205YJ2722S0001GA", 1),
+    (1, "6715712YJ2761F0001IX", 1),
+    (2, "6715712YJ2761F0001IX", 1),
+    (3, "2524205YJ2722S0001GA", 1),
+    (3, "7138804YJ2773G0006ET", 1),
+    (4, "7138804YJ2773G0006ET", 1);
 INSERT Contiene values
 	(1, "7138804YJ2773G0001ZM"),
 	(2, "7138804YJ2773G0001ZM"),
@@ -160,3 +156,8 @@ INSERT Contiene values
 	(2, "2524205YJ2722S0001GA"),
 	(6, "2524205YJ2722S0001GA"),
 	(4, "2524205YJ2722S0001GA");
+INSERT INTO Habitacion values 
+    (1, 'A01', "2021-07-26", "2021-08-12", 375, 0, "7138804YJ2773G0006ET", 1),
+    (2, 'A01', "2021-08-12", "2021-12-12", 700, 0, "2524205YJ2722S0001GA", 1),
+    (3, 'C01', "2021-02-14", "2021-02-15", 200, 75, "6715712YJ2761F0001IX", 1),
+    (4, 'D01', "2021-07-15", "2021-07-20", 500, 250, "7138804YJ2773G0001ZM", 1);

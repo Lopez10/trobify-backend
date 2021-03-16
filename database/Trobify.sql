@@ -33,14 +33,6 @@ CREATE TABLE Modalidad (
 	modalidad VARCHAR(25) NOT NULL,
 	PRIMARY KEY (id_modalidad)
 );
-CREATE TABLE Catalogo (
-	id_inmueble INT AUTO_INCREMENT,
-    id_modalidad INT NOT NULL,
-	precio DOUBLE NOT NULL,
-    f_insercion DATE NOT NULL,
-	PRIMARY KEY (id_inmueble),
-    FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad)
-);
 CREATE TABLE TipoDeVivienda (
 	id TINYINT AUTO_INCREMENT,
 	tipo VARCHAR(20) NOT NULL,
@@ -71,16 +63,23 @@ CREATE TABLE Inmueble (
 	breveDescripcion TEXT NOT NULL,
 	disponible BOOL NOT NULL,
 	consultas INT NOT NULL,
-    id_inmueble INT NOT NULL,
     ubicacion_id INT NOT NULL,
 	id_vivienda TINYINT NOT NULL,
     id_estado TINYINT NOT NULL,
     PRIMARY KEY (catastro_id),
     FOREIGN KEY (ubicacion_id) REFERENCES Ubicacion (ubicacion_id),
-    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble),
     FOREIGN KEY (id_vivienda) REFERENCES TipoDeVivienda (id),
     FOREIGN KEY (id_certifEner) REFERENCES CertificacionEnergetica (id_certifEner),
     FOREIGN KEY (id_estado) REFERENCES Estado (id)
+);
+CREATE TABLE Catalogo (
+	catastro_id CHAR(20) NOT NULL,
+    id_modalidad INT NOT NULL,
+	precio DOUBLE NOT NULL,
+    f_insercion DATE NOT NULL,
+    PRIMARY KEY (id_modalidad, catastro_id),
+    FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad),
+    FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
 );
 CREATE TABLE Contiene (
 	id TINYINT NOT NULL,
@@ -105,13 +104,14 @@ CREATE TABLE Extra (
 );
 CREATE TABLE Habitacion (
 	id_operacion INT AUTO_INCREMENT,
-	id_habitacion CHAR(3),
-    f_entrada DATE,
-    f_salida DATE,
-    precio FLOAT,
-    descuento FLOAT,
-    id_inmueble INT,
+	id_habitacion CHAR(3) NOT NULL,
+    f_entrada DATE NOT NULL,
+    f_salida DATE NOT NULL,
+    precio FLOAT NOT NULL,
+    descuento FLOAT NOT NULL,
     catastro_id CHAR(20) NOT NULL,
+    id_modalidad INT NOT NULL,
+    FOREIGN KEY (id_modalidad, catastro_id) REFERENCES Catalogo (id_modalidad, catastro_id),
 	PRIMARY KEY(id_operacion),
     FOREIGN KEY (catastro_id) REFERENCES Inmueble (catastro_id)
 );
@@ -124,15 +124,17 @@ CREATE TABLE Cliente (
 	contraseña VARCHAR(25) NOT NULL,
 	telefono INT NOT NULL,
 	rol VARCHAR(10) NOT NULL,
-    id_inmueble INT NOT NULL,
+	catastro_id CHAR(20) NOT NULL,
+    id_modalidad INT NOT NULL,
     PRIMARY KEY (id),
+	FOREIGN KEY (id_modalidad, catastro_id) REFERENCES Catalogo (id_modalidad, catastro_id),
 	FOREIGN KEY (nombre,apellidos,mail,f_nac,contraseña,telefono,rol) REFERENCES Usuario (nombre,apellidos,mail,f_nac,contraseña,telefono,rol),
-    FOREIGN KEY (id) REFERENCES usuario (id),
-    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble)
+    FOREIGN KEY (id) REFERENCES usuario (id)
 );
 CREATE TABLE Favoritos (
 	id INT NOT NULL,
-    id_inmueble INT NOT NULL,
-    FOREIGN KEY (id_inmueble) REFERENCES Catalogo (id_inmueble),
+	catastro_id CHAR(20) NOT NULL,
+    id_modalidad INT NOT NULL,
+    FOREIGN KEY (id_modalidad, catastro_id) REFERENCES Catalogo (id_modalidad, catastro_id),
     FOREIGN KEY (id) REFERENCES Cliente (id)
 );

@@ -20,6 +20,7 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 
 export async function getFiltrados(req: Request, res: Response): Promise<Response> {
 	/*
+	nSup	= superficie
 	nHab	= número de habitaciones
 	nBan	= número de baños
 	nCoc	= número de cocinas
@@ -37,7 +38,12 @@ export async function getFiltrados(req: Request, res: Response): Promise<Respons
 	if ( !isNaN( Number( req.query.nHab ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nHab); }
 	if ( !isNaN( Number( req.query.nBan ) ) ) { where += ' and i.banos = ' + Number(req.query.nBan); }
 	if ( !isNaN( Number( req.query.nCoc ) ) ) { where += ' and i.cocina = ' + Number(req.query.nCoc); }
-
+	if ( !isNaN( Number( req.query.nSup ) ) ) { 
+		let redondeo:number = 5;
+		let area:number = Number(req.query.nSup);
+		area = (area - (area % redondeo))+redondeo;
+		where += ' and i.superficie <= ' + area; 
+	}
 
 
 

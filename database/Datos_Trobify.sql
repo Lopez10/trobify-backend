@@ -1,23 +1,79 @@
 
 
-------- Datos para poblar la base de datos y que podamos trabajar
+-- ----- Datos para poblar la base de datos y que podamos trabajar
 USE Trobify;
-
+INSERT INTO Provincias values
+	(1, "Álava"),
+	(2, "Albacete"),
+	(3, "Alicante"),
+	(4, "Almería"),
+	(5, "Ávila"),
+	(6, "Badajoz"),
+	(7, "Islas Baleares"),
+	(8, "Barcelona"),
+	(9, "Burgos"),
+	(10, "Cáceres"),
+	(11, "Cádiz"),
+	(12, "Castellón"),
+	(13, "Ciudad Real"),
+	(14, "Córdoba"),
+	(15, "La Coruña"),
+	(16, "Cuenca"),
+	(17, "Girona"),
+	(18, "Granada"),
+	(19, "Guadalajara"),
+	(20, "Gipuzkoa"),
+	(21, "Huelva"),
+	(22, "Huesca"),
+	(23, "Jaén"),
+	(24, "León"),
+	(25, "Lleida"),
+	(26, "La Rioja"),
+	(27, "Lugo"),
+	(28, "Madrid"),
+	(29, "Málaga"),
+	(30, "Murcia"),
+	(31, "Navarra"),
+	(32, "Ourense"),
+	(33, "Asturias"),
+	(34, "Palencia"),
+	(35, "Las Palmas"),
+	(36, "Pontevedra"),
+	(37, "Salamanca"),
+	(38, "Santa Cruz de Tenerife"),
+	(39, "Cantabria"),
+	(40, "Segovia"),
+	(41, "Sevilla"),
+	(42, "Soria"),
+	(43, "Tarragona"),
+	(44, "Teruel"),
+	(45, "Toledo"),
+	(46, "Valencia"),
+	(47, "Valladolid"),
+	(48, "Vizcaya"),
+	(49, "Zamora"),
+	(50, "Zaragoza"),
+	(51, "Ceuta"),
+	(52, "Melilla");
 INSERT INTO Ubicacion values 
-	(1, "Av. Primado Reig, 151 Es:1 Pl:B0 Pt:Dr, 46020, Valencia, Valencia", 39.4824580556214, -0.3605097019263287),
-	(2, "Av. Primado Reig, 151 Es:1 Pl:02 Pt:04, 46020, Valencia, Valencia", 39.4824580556214, -0.3605097019263287),
-	(3, "CL LUIS SANTANGEL 27 Es:1 Pl:B0 Pt:01, 46005, Valencia, Valencia", 39.461720317273375, -0.36648071565416274),
-	(4, "CL ANTONIO APARISI 2 Es:1 Pl:01 Pt:01, 46920, Valencia, Valencia", 39.47196011110214, -0.4141619307622086);
+	(1, "Av. Primado Reig, 151 Es:1 Pl:B0 Pt:Dr, 46020, Valencia", 46, 39.4824580556214, -0.3605097019263287),
+	(2, "Av. Primado Reig, 151 Es:1 Pl:02 Pt:04, 46020, Valencia", 46, 39.4824580556214, -0.3605097019263287),
+	(3, "CL LUIS SANTANGEL 27 Es:1 Pl:B0 Pt:01, 46005, Valencia", 46, 39.461720317273375, -0.36648071565416274),
+	(4, "CL ANTONIO APARISI 2 Es:1 Pl:01 Pt:01, 46920, Valencia", 46, 39.47196011110214, -0.4141619307622086);
 INSERT INTO Usuario values 
     (1, 'Alfredo', 'Sauce Marinada', 'ChickenWings26@gmail.com', "1990-07-23", 'NoKetchup', 987654321, 'Chef'),
     (2, 'Diego', 'Caramelo Caricia', 'SweetFlavour@hotmail.com', "1997-02-14", 'LaMarSalá', 987654322, 'Pastelero'),
     (3, 'Carlos', 'Molinillo Loco', 'DonQX@hotmail.com', "2003-12-01", 'NOpuedojugarsinAIM', 987654323, 'Gamer'),
-    (4, 'Juan Carlos', 'Rey Fugado', 'LoSientoNoLoVolvereAHacerMas@gmail.com', "1887-08-22", 'Megustaeldinero', 987655424, 'Ninguno'); 		
+    (4, 'Juan Carlos', 'Rey Fugado', 'LoSientoNoLoVolvereAHacerMas@gmail.com', "1887-08-22", 'Megustaeldinero', 987655424, 'Ninguno');
+ INSERT INTO Modalidad values
+	(1, "Venta"),
+	(2, "Alquiler"),
+	(3, "Alquiler de Habitaciones");
 INSERT INTO Catalogo values 
-    (1, 20000.99),
-    (2, 30000.99),
-    (3, 40000.99),
-    (4, 50000.99);
+    (1, 1, 20000.99, "2020-08-12"),
+    (2, 1, 30000.99, "2019-08-12"),
+    (3, 1, 40000.99, "2018-08-12"),
+    (4, 1, 50000.99, "2017-08-12");
  INSERT TipoDeVivienda values
 	(1, "Ático"),
 	(2, "Plantas intermedias"),

@@ -2,12 +2,19 @@ CREATE DATABASE IF NOT EXISTS Trobify;
 
 USE Trobify;
 
+CREATE TABLE Provincias (
+	provincia_id TINYINT AUTO_INCREMENT,
+	provincia VARCHAR(25) NOT NULL,
+    PRIMARY KEY(provincia_id)
+);
 CREATE TABLE Ubicacion (
 	ubicacion_id INT AUTO_INCREMENT,
-	direccion VARCHAR(250),
+	direccion VARCHAR(250) NOT NULL,
+    prov TINYINT NOT NULL,
 	longitud DOUBLE NOT NULL,
 	latitud DOUBLE NOT NULL,
-    PRIMARY KEY(ubicacion_id)
+    PRIMARY KEY(ubicacion_id),
+    FOREIGN KEY (prov) REFERENCES Provincias (provincia_id)
 );
 CREATE TABLE Usuario (
 	id INT AUTO_INCREMENT,
@@ -21,10 +28,18 @@ CREATE TABLE Usuario (
 	PRIMARY KEY(id),
 	KEY idx_id (nombre,apellidos,mail,f_nac,contraseña,telefono,rol)
 );
+CREATE TABLE Modalidad (
+	id_modalidad INT AUTO_INCREMENT,
+	modalidad VARCHAR(25) NOT NULL,
+	PRIMARY KEY (id_modalidad)
+);
 CREATE TABLE Catalogo (
 	id_inmueble INT AUTO_INCREMENT,
+    id_modalidad INT NOT NULL,
 	precio DOUBLE NOT NULL,
-	PRIMARY KEY (id_inmueble)
+    f_insercion DATE NOT NULL,
+	PRIMARY KEY (id_inmueble),
+    FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad)
 );
 CREATE TABLE TipoDeVivienda (
 	id TINYINT AUTO_INCREMENT,

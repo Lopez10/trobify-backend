@@ -18,7 +18,40 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 	if ( !( req.query.nHab === undefined ) ) { where += ' and inm.cant_Habitaciones = ' + req.query.nHab; }
 	if ( !( req.query.nBan === undefined ) ) { where += ' and inm.banos = ' + req.query.nBan; }
 	if ( !( req.query.supMin === undefined ) && !( req.query.supMax === undefined ) ) { 
-		where += ' and inm.superficie BETWEEN ' + req.query.supMin + ' AND ' +  req.query.supMax
+		where += ' and inm.superficie BETWEEN ' + req.query.supMin + ' AND ' +  req.query.supMax;
+	}
+	if ( !( req.query.preMin === undefined ) && !( req.query.preMax === undefined ) ) { 
+		let min:number = Number( req.query.preMin );
+		let max:number = Number( req.query.preMax );
+		if ( min > max ) {
+			let aux:number = min;
+			min = max;
+			max = aux;
+		}
+		if ( !( req.query.aMrgn === undefined ) && Number( req.query.aMrgn) == 1 && !( req.query.mrgn === undefined ) ) {
+			let margen:number = Number( req.query.mrgn );
+			min = min - (min * margen);
+			max = max + (max * margen);
+		}
+		if ( min < 0 ) min = 0;
+		where += ' and cat.precio BETWEEN ' + min + ' AND ' +  max;
+	}
+	if ( !( req.query.tpoViv === undefined ) ) { where += ' and id_vivienda in ' + req.query.tpoViv + ''; }
+	if ( !( req.query.stdo === undefined ) ) { where += ' and id_estado in ' + req.query.stdo + ''; }
+	// Subconsulta en el where para extraer todas las características que debe reunir un mismo inmueble
+	if ( !( req.query.caract === undefined ) ) {
+		let SubConsulta:string[] = String( req.query.caract ).split(',');
+		let j:number=SubConsulta.length;
+		if (true) {
+			where += ' and inm.catastro_id IN (SELECT catastro_id FROM (';
+			for (let i = 0; i<j; i++) {
+				where += 'SELECT co'+ i +'.catastro_id, ca' + i + '.tipo ';
+				where += 'FROM caracteristicas ca' + i + ', contiene co' + i + ' ';
+				where += 'WHERE ca'+ i +'.id = co'+ i +'.id and ca'+ i +'.id = "' + SubConsulta[i] + '"';
+				if (i + 1 < j) where += ' UNION ALL ';
+			}
+			where += ') tipos GROUP BY catastro_id HAVING COUNT(catastro_id) = ' + j + ')';
+		}
 	}
 	// Cerrar el where
 	where += ')';

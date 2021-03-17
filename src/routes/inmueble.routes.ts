@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createInmueble, getUbicacion, getFiltrados } from '../controllers/inmueble.controller';
+import { createInmueble, getUbicacion } from '../controllers/inmueble.controller';
 
 const router = Router();
 
@@ -8,10 +8,6 @@ router.route('/')
 
  router.route('/')
      .get(getUbicacion);
-
-router.route('/filtros')
-     .get(getFiltrados);
-
 
 
 // router.route('/:catalogId')

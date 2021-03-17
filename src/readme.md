@@ -4,7 +4,7 @@ Códigos en la URL para aplicar filtros
         1 - Comprar
         2 - Alquilar
         3 - Alquilar Habitación
-    - "vis="
+    - "vis=" --> no tiene ningún uso por ahora
         1 - Lista
         2 - Mapa
     - "prov="
@@ -18,12 +18,23 @@ Códigos en la URL para aplicar filtros
         6 - Menor a mayor superficie
     - "preMin=" Precio Minimo
     - "preMax=" Precio Maximo
-    - "mrgn="   porcentaje de Holgura de precio
+	- "aMrgn=" 	Aplicar Margen
+		0 - No
+		1 - Si
+    - "mrgn="   porcentaje de Holgura de precio, como separador decimal usar punto
+		0 --> 0 %
+		1 --> 100 %
     - "supMin=" Superficie Minima
     - "supMax=" Superficie Maxima
     - "nHab="   Cantidad de Habitaciones mínima
     - "nBan="   Cantidad de baños minima
     - "clfEn="  Clasificación Energética va desde 1 -> A++ hasta 9 --> G
-    - "stdo="   [ , , ,....] array de string de Estados de vivienda
-    - "tpoViv=" [ , , ,....] array de string de Tipos de vivienda
-    - "caract=" [ , , ,....] array de string de características
+    - "stdo="   ( , , , ...) string con los Estados a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y siempre se pasa entre paréntesis
+		1 - Reformado
+		...
+		x - Usar el id según la tabla tipoDeVivienda
+    - "tpoViv=" ( , , , ...) string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y siempre se pasa entre paréntesis
+		1 - Ático
+		...
+		x - Usar el id según la tabla tipoDeVivienda
+    - "caract="  , , , ... string de Características que debe reunir un mismo inmueble. El SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes

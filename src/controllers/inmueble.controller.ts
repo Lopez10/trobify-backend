@@ -18,69 +18,6 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 	return res.json(ubicacion[0]);
 }
 
-export async function getFiltrados(req: Request, res: Response): Promise<Response> {
-	/*
-	nSup	= superficie
-	nHab	= número de habitaciones
-	nBan	= número de baños
-	nCoc	= número de cocinas
-	tipC	= tipo de vivienda (dúplex, funca rústica,...)
-	estd	= estado (reformado, buen estado,...)
-	fltr	= clasificación energética
-	*/
-
-	// Encabezado de la consulta
-	let select:string = 'DISTINCT i.catastro_id as "catastro", u.longitud, u.latitud'
-	let from:String = 'Inmueble i, TipoDeVivienda tp, Estado e, contiene c, caracteristicas ca, certificacionEnergetica ce, ubicacion u';
-	let where:String = '(tp.id = i.id_vivienda and c.id = ca.id and i.id_certifEner = ce.id_certifEner and i.ubicacion_id = u.ubicacion_id and c.catastro_id = i.catastro_id';
-
-	// Parámetros de la consulta
-	if ( !isNaN( Number( req.query.nHab ) ) ) { where += ' and i.cant_Habitaciones = ' + Number(req.query.nHab); }
-	if ( !isNaN( Number( req.query.nBan ) ) ) { where += ' and i.banos = ' + Number(req.query.nBan); }
-	if ( !isNaN( Number( req.query.nCoc ) ) ) { where += ' and i.cocina = ' + Number(req.query.nCoc); }
-	if ( !isNaN( Number( req.query.nSup ) ) ) { 
-		let redondeo:number = 5;
-		let area:number = Number(req.query.nSup);
-		area = (area - (area % redondeo))+redondeo;
-		where += ' and i.superficie <= ' + area; 
-	}
-
-
-
-
-
-
-
-
-	// Configuración de la subconsulta para lostipos de caracteristicas que pueden tener varias fílas
-	/*
-	let SubConsulta:string[] = ['Amueblado', 'Aire Acondicionado']
-	let j:number=SubConsulta.length;
-
-	if (true) {
-		where += ' and i.catastro_id IN (SELECT catastro_id FROM (';
-		for (let i = 0; i<j; i++) {
-			where += 'SELECT co'+ i +'.catastro_id, ca' + i + '.tipo ';
-			where += 'FROM caracteristicas ca' + i + ', contiene co' + i + ' ';
-			where += 'WHERE ca'+ i +'.id = co'+ i +'.id and ca'+ i +'.tipo = "' + SubConsulta[i] + '"';
-			if (i + 1 < j) where += ' UNION ALL ';
-		}
-		where += ') tipos GROUP BY catastro_id HAVING COUNT(catastro_id) = ' + j + ')';
-	}
-	*/
-
-	// Final de la consulta chupiguay
-	where += ');';
-	const conn = await connect();
-
-	//console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-	const paraFilrar = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-
-	
-	return res.json(paraFilrar[0]);
-}
-
-
 // export async function getCatalog(req: Request, res:Response): Promise<Response> {
 //      const id = req.params.postId;
 //      const conn = await connect();

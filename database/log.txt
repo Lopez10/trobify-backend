@@ -1,7 +1,13 @@
 LOG CON LOS CAMBIOS EN LAS TABLAS DE LAS BASES DE DATOS, PARA QUE TODOS LOS TENGAMOS A MANO:
 
-16/03/2021
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Para insertar datos en la BD hay que tener en cuenta:
+    1. Crear la tabla en "Trobify.sql"
+    2. Insertar los datos para poblarla en "Poblar_BBDD.sql" con el orden correcto.
+    3. Insertar la tabla en "Elimiar.sql" en el orden correcto en el que tiene que ser borrado.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+16/03/2021 --> Carmelo
 Tabla Catalogo:
     Se ha quitado:
         id_inmueble
@@ -16,7 +22,6 @@ Tabla Catalogo:
 Se ha modificado el resto de tablas que tenía "id_inmueble" para compatibilizar esta opción.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-13/03/2021
-
+13/03/2021 --> Carmelo
 Tabla Catalogo                  --> He quitado la columna tipo, ya que los tipos se almacenan en la tabla "TipoDeVivienda", así evitamos campos duplicados
 Tabla CertificacionEnergetica   --> Almacena los tipos de certificación Energética que hay, así los quitamos de Inmuebles

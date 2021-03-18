@@ -5,6 +5,9 @@ USE Trobify;
 CREATE TABLE Provincias (
 	provincia_id TINYINT AUTO_INCREMENT,
 	provincia VARCHAR(25) NOT NULL,
+    capital VARCHAR(30) NOT NULL,
+	longitud DOUBLE NOT NULL,
+	latitud DOUBLE NOT NULL,
     PRIMARY KEY(provincia_id)
 );
 CREATE TABLE Ubicacion (

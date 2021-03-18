@@ -56,10 +56,10 @@ INSERT INTO Provincias values
 	(51, "Ceuta", "Ceuta", 35.88829, -5.316195),
 	(52, "Melilla", "Melilla", 35.29234, -2.938794);
 INSERT INTO Ubicacion values 
-	(1, "Av. Primado Reig, 151 Es:1 Pl:B0 Pt:Dr, 46020, Valencia", 46, 39.4824580556214, -0.3605097019263287),
-	(2, "Av. Primado Reig, 151 Es:1 Pl:02 Pt:04, 46020, Valencia", 46, 39.4824580556214, -0.3605097019263287),
-	(3, "CL LUIS SANTANGEL 27 Es:1 Pl:B0 Pt:01, 46005, Valencia", 46, 39.461720317273375, -0.36648071565416274),
-	(4, "CL ANTONIO APARISI 2 Es:1 Pl:01 Pt:01, 46920, Valencia", 46, 39.47196011110214, -0.4141619307622086);
+	(1, "Av. Primado Reig, 151 Es:1 Pl:B0 Pt:Dr, 46020, Valencia", 46, -0.3605097019263287, 39.4824580556214),
+	(2, "Av. Primado Reig, 151 Es:1 Pl:02 Pt:04, 46020, Valencia", 46, -0.3605097019263287, 39.4824580556214),
+	(3, "CL LUIS SANTANGEL 27 Es:1 Pl:B0 Pt:01, 46005, Valencia", 46, -0.36648071565416274, 39.461720317273375),
+	(4, "CL ANTONIO APARISI 2 Es:1 Pl:01 Pt:01, 46920, Valencia", 46, -0.4141619307622086, 39.47196011110214);
 INSERT INTO Usuario values 
     (1, 'Alfredo', 'Sauce Marinada', 'ChickenWings26@gmail.com', "1990-07-23", 'NoKetchup', 987654321, 'Chef'),
     (2, 'Diego', 'Caramelo Caricia', 'SweetFlavour@hotmail.com', "1997-02-14", 'LaMarSalá', 987654322, 'Pastelero'),

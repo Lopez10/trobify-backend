@@ -90,9 +90,10 @@ INSERT INTO Usuario values
 	(8, "F"),
 	(9, "G");
 INSERT Estado values
-	(1, "Reformado"),
+	(1, "Obra nueva")
 	(2, "Buen estado"),
-	(3, "A reformar");
+	(3, "Reformado"),
+	(4, "A reformar");
 INSERT Caracteristicas values
 	(1, "Ascensor"),
 	(2, "Amueblado"),

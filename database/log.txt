@@ -6,12 +6,13 @@ Para insertar datos en la BD hay que tener en cuenta:
     2. Insertar los datos para poblarla en "Poblar_BBDD.sql" con el orden correcto.
     3. Insertar la tabla en "Elimiar.sql" en el orden correcto en el que tiene que ser borrado.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-18/03/2021 --> Javi
 
+
+18/03/2021 --> Javi
 *Nueva Tabla*
 Tabla Filtros:
     Relacionada con la Tabla Cliente
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 16/03/2021 --> Carmelo
 Tabla Catalogo:
     Se ha quitado:
@@ -23,9 +24,7 @@ Tabla Catalogo:
     Justificación:
         La nueva PRIMARY KEY (id_modalidad, catastro_id), de esta manera se soporta que un mismo inmueble esté a la venta, alquiler o alquiler de habitaciones.
         Con f_insercion se puede ordenar por antigüedad.
-
 Se ha modificado el resto de tablas que tenía "id_inmueble" para compatibilizar esta opción.
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 13/03/2021 --> Carmelo
 Tabla Catalogo                  --> He quitado la columna tipo, ya que los tipos se almacenan en la tabla "TipoDeVivienda", así evitamos campos duplicados

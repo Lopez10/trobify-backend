@@ -19,8 +19,8 @@ Códigos en la URL para aplicar filtros
     - "preMin=" Precio Minimo
     - "preMax=" Precio Maximo
 	  - "aMrgn=" 	Aplicar Margen
-        0 - No
-        1 - Si
+        off - No
+        on - Si
     - "mrgn="   porcentaje de Holgura de precio, como separador decimal usar punto
         0 --> 0 %
         1 --> 100 %
@@ -33,7 +33,7 @@ Códigos en la URL para aplicar filtros
         1 - Reformado
         ...
         x - Usar el id según la tabla tipoDeVivienda
-    - "tpoViv=" ( , , , ...) string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y siempre se pasa entre paréntesis
+    - "tpoViv="  , , , ... string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados.El SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
         1 - Ático
         ...
         x - Usar el id según la tabla tipoDeVivienda

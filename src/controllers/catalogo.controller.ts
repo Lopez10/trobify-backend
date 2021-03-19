@@ -16,8 +16,8 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 	if ( req.query.opc === undefined ) { where += ' and cat.id_modalidad = ' + 1; } else { where += ' and cat.id_modalidad = ' + req.query.opc; }
 	if ( req.query.prov === undefined ) { where += ' and pro.provincia_id = ' + 46; } else { where += ' and pro.provincia_id = ' + req.query.prov; }
 	// Filtros de grano fino
-	if ( !( req.query.nHab === undefined ) ) { where += ' and inm.cant_Habitaciones = ' + req.query.nHab; }
-	if ( !( req.query.nBan === undefined ) ) { where += ' and inm.banos = ' + req.query.nBan; }
+	if ( !( req.query.nHab === undefined ) ) { where += ' and inm.cant_Habitaciones >= ' + req.query.nHab; }
+	if ( !( req.query.nBan === undefined ) ) { where += ' and inm.banos >= ' + req.query.nBan; }
 	if ( !( req.query.supMin === undefined ) && !( req.query.supMax === undefined ) ) { 
 		where += ' and inm.superficie BETWEEN ' + req.query.supMin + ' AND ' +  req.query.supMax;
 	}
@@ -29,7 +29,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 			min = max;
 			max = aux;
 		}
-		if ( !( req.query.aMrgn === undefined ) && Number( req.query.aMrgn) == 1 && !( req.query.mrgn === undefined ) ) {
+		if ( !( req.query.aMrgn === undefined ) && String( req.query.aMrgn ) === 'on' && !( req.query.mrgn === undefined ) ) {
 			let margen:number = Number( req.query.mrgn );
 			min = min - (min * margen);
 			max = max + (max * margen);

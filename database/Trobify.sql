@@ -134,6 +134,27 @@ CREATE TABLE Cliente (
 	FOREIGN KEY (nombre,apellidos,mail,f_nac,contraseña,telefono,rol) REFERENCES Usuario (nombre,apellidos,mail,f_nac,contraseña,telefono,rol),
     FOREIGN KEY (id) REFERENCES usuario (id)
 );
+CREATE TABLE Filtros (
+	id_cliente INT,
+	opt INT,
+    vis TINYINT,
+	prov TINYINT,
+	ord TINYINT,
+	preMin DOUBLE,
+	preMax DOUBLE,
+	aMrgn TINYINT,
+	mrgn DOUBLE,
+	supMin SMALLINT,
+	supMax SMALLINT,	
+	nHab TINYINT,
+	nBan TINYINT,
+	clfEn TINYINT,
+	stdo VARCHAR(25),
+    tipoViv VARCHAR(50),
+    caract VARCHAR(50),
+    PRIMARY KEY (id_cliente),
+	FOREIGN KEY (id_cliente) REFERENCES Cliente (id)
+);
 CREATE TABLE Favoritos (
 	id INT NOT NULL,
 	catastro_id CHAR(20) NOT NULL,

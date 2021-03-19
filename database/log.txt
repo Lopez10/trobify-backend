@@ -6,6 +6,11 @@ Para insertar datos en la BD hay que tener en cuenta:
     2. Insertar los datos para poblarla en "Poblar_BBDD.sql" con el orden correcto.
     3. Insertar la tabla en "Elimiar.sql" en el orden correcto en el que tiene que ser borrado.
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+18/03/2021 --> Javi
+
+*Nueva Tabla*
+Tabla Filtros:
+    Relacionada con la Tabla Cliente
 
 16/03/2021 --> Carmelo
 Tabla Catalogo:

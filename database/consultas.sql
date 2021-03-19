@@ -12,6 +12,7 @@ select * from contiene;
 select * from ubicacion;
 select * from favoritos;
 select * from cliente;
+select * from filtros;
 select * from catalogo;
 select * from modalidad;
 select * from usuario;

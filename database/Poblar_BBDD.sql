@@ -129,6 +129,9 @@ INSERT INTO Cliente values
     (2, 'Diego', 'Caramelo Caricia', 'SweetFlavour@hotmail.com', "1997-02-14", 'LaMarSalá', 987654322, 'Pastelero', "6715712YJ2761F0001IX", 1),
     (3, 'Carlos', 'Molinillo Loco', 'DonQX@hotmail.com', "2003-12-01", 'NOpuedojugarsinAIM', 987654323, 'Gamer', "2524205YJ2722S0001GA", 1),
 	(4, 'Juan Carlos', 'Rey Fugado', 'LoSientoNoLoVolvereAHacerMas@gmail.com', "1887-08-22", 'Megustaeldinero', 987655424, 'Ninguno', "7138804YJ2773G0001ZM", 1);
+INSERT INTO Filtros values
+	(1, 1, 1, 32, 5, 1000, 500000, 0, 0, 10, 70, 1, 1, 7, '1', '1,9', '1,2,3'),
+    (2, 1, 1, 12, 3, 1000, 400000, 0, 0, 20, 50, 2, 2, 5, '2', '3,6', '4,5,6'); 
 INSERT INTO Favoritos values 
     (1, "7138804YJ2773G0006ET", 1),
     (1, "2524205YJ2722S0001GA", 1),

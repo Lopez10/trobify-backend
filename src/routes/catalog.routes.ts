@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getCatalog, getProvincias } from '../controllers/catalogo.controller';
+import { getCatalog, getProvincias, getFiltros } from '../controllers/catalogo.controller';
 const router = Router();
 
 router.route('/')
@@ -8,5 +8,8 @@ router.route('/')
 router.route('/Provincias')
      .get(getProvincias)
 
+     
+router.route('/:id_cliente')
+     .get(getFiltros) 
 
 export default router;

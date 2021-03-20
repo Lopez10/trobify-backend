@@ -104,3 +104,16 @@ export async function getProvincias(req: Request, res: Response): Promise<Respon
 	const provincias = await conn.query(select + from + where);
 	return res.json(provincias[0]);
 }
+
+export async function getFiltros(req: Request, res: Response): Promise<Response> {
+	const id:number = + req.params.id_cliente;
+	
+	let select:string = '*';
+	let from:string = ' Filtros F ';
+	let where:string = ' F.id_cliente = ' + id + '';
+
+	const conn = await connect();
+	const filter = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ;');
+
+	return res.json(filter[0]);
+}

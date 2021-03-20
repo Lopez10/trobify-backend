@@ -36,3 +36,5 @@ WHERE (cat.catastro_id = inm.catastro_id
     and cat.id_modalidad = 1 
     and pro.provincia_id = 46) 
 ORDER BY  cat.f_insercion DESC;
+
+

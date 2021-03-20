@@ -14,8 +14,8 @@ CREATE TABLE Ubicacion (
 	ubicacion_id INT AUTO_INCREMENT,
 	direccion VARCHAR(250) NOT NULL,
     prov TINYINT NOT NULL,
+    latitud DOUBLE NOT NULL,
 	longitud DOUBLE NOT NULL,
-	latitud DOUBLE NOT NULL,
     PRIMARY KEY(ubicacion_id),
     FOREIGN KEY (prov) REFERENCES Provincias (provincia_id)
 );

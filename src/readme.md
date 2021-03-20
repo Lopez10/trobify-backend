@@ -29,11 +29,11 @@ Códigos en la URL para aplicar filtros
     - "nHab="   Cantidad de Habitaciones mínima
     - "nBan="   Cantidad de baños minima
     - "clfEn="  Clasificación Energética va desde 1 -> A++ hasta 9 --> G
-    - "stdo="   ( , , , ...) string con los Estados a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y siempre se pasa entre paréntesis
+    - "stdo="    , , , ... string con los Estados a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
         1 - Reformado
         ...
         x - Usar el id según la tabla tipoDeVivienda
-    - "tpoViv="  , , , ... string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados.El SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
+    - "tpoViv="  , , , ... string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
         1 - Ático
         ...
         x - Usar el id según la tabla tipoDeVivienda

@@ -91,3 +91,16 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 	const catalogo = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';');
 	return res.json(catalogo[0]);
 }
+
+
+export async function getProvincias(req: Request, res: Response): Promise<Response> {
+	let select:string = 'SELECT * '
+	let from:String = 'FROM Provincias ';
+	let where:String = '';
+	if ( !( req.query.prov === undefined ) && Number( req.query.prov ) <53 ) { where += 'WHERE provincia_id = ' + req.query.prov + ';'; }
+
+
+	const conn = await connect();	
+	const provincias = await conn.query(select + from + where);
+	return res.json(provincias[0]);
+}

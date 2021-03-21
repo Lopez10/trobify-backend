@@ -86,7 +86,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 			break;
 		}
 	}
-	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';')
+	//console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';')
 	const conn = await connect();	
 	const catalogo = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';');
 	return res.json(catalogo[0]);

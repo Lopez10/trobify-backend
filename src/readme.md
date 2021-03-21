@@ -18,7 +18,7 @@ Códigos en la URL para aplicar filtros
         6 - Menor a mayor superficie
     - "preMin=" Precio Minimo
     - "preMax=" Precio Maximo
-	  - "aMrgn=" 	Aplicar Margen
+	- "aMrgn=" 	Aplicar Margen
         off - No
         on - Si
     - "mrgn="   porcentaje de Holgura de precio, como separador decimal usar punto

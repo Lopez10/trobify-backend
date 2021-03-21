@@ -37,10 +37,10 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 		if ( min < 0 ) min = 0;
 		where += ' and cat.precio BETWEEN ' + min + ' AND ' +  max;
 	}
-	if ( !( req.query.tpoViv === undefined ) ) { where += ' and id_vivienda in (' + req.query.tpoViv + ')'; }
-	if ( !( req.query.stdo === undefined ) ) { where += ' and id_estado in (' + req.query.stdo + ')'; }
+	if ( !( req.query.tpoViv === undefined ) && req.query.tpoViv != ""  ) { where += ' and id_vivienda in (' + req.query.tpoViv + ')'; }
+	if ( !( req.query.stdo === undefined ) && req.query.stdo != "" ) { where += ' and id_estado in (' + req.query.stdo + ')'; }
 	// Subconsulta en el where para extraer todas las características que debe reunir un mismo inmueble
-	if ( !( req.query.caract === undefined ) ) {
+	if ( !( req.query.caract === undefined ) && req.query.caract != "" ) {
 		let SubConsulta:string[] = String( req.query.caract ).split(',');
 		let j:number=SubConsulta.length;
 		if (true) {

@@ -14,7 +14,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 				where += ' and est.id = inm.id_estado';
 	// Filtros de grano grueso
 	if ( req.query.opc === undefined ) { where += ' and cat.id_modalidad = ' + 1; } else { where += ' and cat.id_modalidad = ' + req.query.opc; }
-	if ( req.query.prov === undefined ) { where += ' and pro.provincia_id = ' + 46; } else { where += ' and pro.provincia_id = ' + req.query.prov; }
+	if ( !( req.query.prov === undefined ) && Number( req.query.prov ) != 0 ) { where += ' and pro.provincia_id = ' + req.query.prov; }
 	// Filtros de grano fino
 	if ( !( req.query.nHab === undefined ) ) { where += ' and inm.cant_Habitaciones >= ' + req.query.nHab; }
 	if ( !( req.query.nBan === undefined ) ) { where += ' and inm.banos >= ' + req.query.nBan; }
@@ -86,7 +86,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 			break;
 		}
 	}
-	//console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';')
+	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';')
 	const conn = await connect();	
 	const catalogo = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';');
 	return res.json(catalogo[0]);

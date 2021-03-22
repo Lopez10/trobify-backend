@@ -1,6 +1,6 @@
 Códigos en la URL para aplicar filtros
 
-    - "opt=" 
+    - "opt="
         1 - Comprar
         2 - Alquilar
         3 - Alquilar Habitación
@@ -10,15 +10,15 @@ Códigos en la URL para aplicar filtros
     - "prov="
         desde el 1 hasta el 52, son los códigos de provincias según correos, están en la tabla 'provincia'
     - "ord="
-        1 - Mas nuevo a mas viejo
-        2 - Mas viejo a mas nuevo
-        3 - Precio mas alto a precio más bajo
-        4 - Precio mas bajo a precio mas alto
+        1 - Menor a mayor antigüedad
+        2 - Mayor a menor antigüedad
+        3 - Mayor a menor precio
+        4 - Menor a mayor precio
         5 - Mayor a menor superficie
         6 - Menor a mayor superficie
     - "preMin=" Precio Minimo
     - "preMax=" Precio Maximo
-	- "aMrgn=" 	Aplicar Margen
+    - "aMrgn=" 	Aplicar Margen
         off - No
         on - Si
     - "mrgn="   porcentaje de Holgura de precio, como separador decimal usar punto

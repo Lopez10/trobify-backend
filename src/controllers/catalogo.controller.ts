@@ -3,7 +3,7 @@ import { connect } from '../database';
 import { Catalog } from '../interface/catalog.interface';
 
 export async function getCatalog(req: Request, res: Response): Promise<Response> {
-	let select:string = 'inm.catastro_id as "catastro", cat.precio, inm.cant_Habitaciones as "nHab", inm.banos as "nBan", inm.cocina as "nCoc", inm.superficie as "area", ce.nombre as "certif", inm.breveDescripcion as "descrip", est.tipo as "estado", img.valor as "urlImg", pro.provincia, ubi.longitud, ubi.latitud, tpv.tipo as tpoViv, tpv.id as tpoId'
+	let select:string = 'inm.catastro_id as "catastro", cat.precio, inm.cant_Habitaciones as "nHab", inm.banos as "nBan", inm.cocina as "nCoc", inm.superficie as "area", ce.nombre as "certif", inm.breveDescripcion as "descrip", est.tipo as "estado", img.valor as "urlImg", pro.provincia, ubi.longitud, ubi.latitud, ubi.direccion, tpv.tipo as tpoViv, tpv.id as tpoId'
 	let from:String = 'catalogo cat, inmueble inm, ubicacion ubi, provincias pro, imagen img, CertificacionEnergetica ce, estado est, tipodevivienda tpv';
 	let where:String = '(cat.catastro_id = inm.catastro_id';
 				where += ' and tpv.id = inm.id_vivienda';

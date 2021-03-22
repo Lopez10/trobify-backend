@@ -13,7 +13,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 				where += ' and ce.id_certifEner = inm.id_certifEner';
 				where += ' and est.id = inm.id_estado';
 	// Filtros de grano grueso
-	if ( req.query.opc === undefined ) { where += ' and cat.id_modalidad = ' + 1; } else { where += ' and cat.id_modalidad = ' + req.query.opc; }
+	if ( req.query.opt === undefined ) { where += ' and cat.id_modalidad = ' + 1; } else { where += ' and cat.id_modalidad = ' + req.query.opt; }
 	if ( !( req.query.prov === undefined ) && Number( req.query.prov ) != 0 ) { where += ' and pro.provincia_id = ' + req.query.prov; }
 	// Filtros de grano fino
 	if ( !( req.query.nHab === undefined ) ) { where += ' and inm.cant_Habitaciones >= ' + req.query.nHab; }

@@ -140,13 +140,13 @@ INSERT INTO Imagen values
 	(5, "F0000000000000000005", "https://www.nippon.com/es/ncommon/contents/japan-data/136154/136154.jpg"),
 	(6, "G0000000000000000006", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
 	(7, "H0000000000000000007", "https://www.laregion.es/asset/zoomcrop,1366,800,center,center//media/laregion/images/2014/11/17/2014111707491155503.jpg"),
-	(8, "J0000000000000000008", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(9, "K0000000000000000009", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(10, "L0000000000000000010", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(11, "M0000000000000000011", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(12, "N0000000000000000012", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(13, "P0000000000000000013", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(14, "Q0000000000000000014", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
+	(8, "J0000000000000000008", "https://www.lagacetadesalamanca.es/binrepository/769x432/1c0/768d432/none/25207907/BKAP/176791_1_GS176791_MG27866719.jpg"),
+	(9, "K0000000000000000009", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-destruidas-por-el-bombardeo-111183228.jpg"),
+	(10, "L0000000000000000010", "https://imagenes.forociudad.com/fotos/183197-casa-en-ruina.jpg"),
+	(11, "M0000000000000000011", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-viejas-abandonadas-una-cueva-con-escaleras-en-avanos-turqu%C3%ADa-cappadocia-los-arcos-140796442.jpg"),
+	(12, "N0000000000000000012", "https://previews.123rf.com/images/mathess/mathess1710/mathess171000427/88028874-casas-en-ruinas-en-la-ciudad-hist%C3%B3rica-de-panam-panam-nagor-bangladesh.jpg"),
+	(13, "P0000000000000000013", "https://previews.123rf.com/images/karsol/karsol1205/karsol120500052/13759590-las-casas-y-la-iglesia-en-ruinas-de-un-pueblo-abandonado-en-la-provincia-de-burgos-espa%C3%B1a-.jpg"),
+	(14, "Q0000000000000000014", "https://st3.idealista.com/news/archivos/styles/imagen_full/public/2017-05/la_ruina_habitada_00.jpg?sv=bnFHLRyi&itok=4yQBmHzz"),
 	(15, "R0000000000000000015", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg");
 
 INSERT INTO Extra values 

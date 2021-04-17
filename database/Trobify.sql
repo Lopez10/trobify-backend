@@ -121,7 +121,7 @@ CREATE TABLE Habitacion (
 CREATE TABLE Cliente (
 	id INT AUTO_INCREMENT,
 	nombre VARCHAR(25) NOT NULL,
-	apellidos VARCHAR(50) NOT NULL,
+	apellidos VARCHAR(50),
 	mail VARCHAR(50) NOT NULL,
 	f_nac DATE NOT NULL,
 	contraseña VARCHAR(25) NOT NULL,

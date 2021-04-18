@@ -6,7 +6,6 @@ const router = Router();
  router.route('/')
     .get(getUsuarios);
 
- router.route('/login')
-     .get(getUsuariosLog);
+ router.route('/login').post();
 
 export default router;

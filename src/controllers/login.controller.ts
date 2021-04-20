@@ -21,13 +21,15 @@ export async function getUsuariosLog(req: Request, res: Response){
 	const mail: string = req.body.mail;
 	const contraseña = req.body.password;
 
+	console.log(req.body);
 	let select: string = 'U.mail, U.contraseña';
 	let from: string = ' Usuario U ';
 
 	const conn = await connect();
-	const logerMail = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE U.mail = "' + mail + '" AND U.contraseña = "' + contraseña + '";');
-	
-	if(logerMail[0].toString.length == 0){
+	const consultaLog = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE U.mail = "' + mail + '" AND U.contraseña = "' + contraseña + '";');
+	let loger = consultaLog[0].toString();
+
+	if(loger == ""){
 		return res.json(false);
 	}
 	else {return res.json(true);}

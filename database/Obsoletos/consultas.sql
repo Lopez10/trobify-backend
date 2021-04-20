@@ -7,8 +7,9 @@ select * from imagen;
 select * from tipodevivienda;
 select * from estado;
 select * from caracteristicas;
-select * from inmueble;
 select * from contiene;
+select * from inmueble;
+
 select * from ubicacion;
 select * from favoritos;
 select * from cliente;
@@ -63,3 +64,9 @@ WHERE (cat.catastro_id = inm.catastro_id
     and est.id = inm.id_estado 
     and cat.id_modalidad = 2) 
 ORDER BY  cat.f_insercion;
+
+
+select * 
+from caracteristicas ca, contiene co
+where ca.id = co.id
+order by catastro_id;

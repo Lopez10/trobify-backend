@@ -8,6 +8,17 @@ Para insertar datos en la BD hay que tener en cuenta:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+20/04/2021 --> Carmelo
+Quitar tabla USUARIO
+Crear tabla RolUsuario donde se describen los roles que pueden tener los usuarios/las usuarias/les usuaries.
+Renombrar tabla CLIENTE a USUARIO y cambiar sus atributos.
+Quitar tabla HABITACIÓN, se gestiona a partir de catálogo.
+Modificar tabla INMUEBLE
+
+
+
+
 18/03/2021 --> Javi
 *Nueva Tabla*
 Tabla Filtros:

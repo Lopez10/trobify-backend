@@ -13,16 +13,19 @@ export async function getUsuarios(req: Request, res: Response): Promise<Response
 }
 
 export async function getUsuariosLog(req: Request, res: Response): Promise<Response> {
-	const mail: number = +req.params.mail;
-	const telefono: number = +req.params.telefono;
-	const contraseña: number = +req.params.contraseña;
+	const mail = req.body;
+	//const contraseña: usuarios = req.body.password;
 
+	console.log(mail);
+	/*
+	console.log(contraseña);
+	
 	let select: string = '*';
 	let from: string = ' Usuario U ';
-	let where: string = ' U.mail = ' + mail + ' AND U.contraseña ' + contraseña;
+	let where: string = ' U.mail = ' + mail; //+ ' AND U.contraseña = ' + contraseña;
 
 	const conn = await connect();
 	const filter = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
-
-	return res.json(filter[0]);
+	*/
+	return res.json({message: 'usuario no logeado'});
 }

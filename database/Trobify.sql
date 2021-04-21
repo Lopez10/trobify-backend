@@ -62,15 +62,10 @@ CREATE TABLE CertificacionEnergetica (
 	certifEner VARCHAR(3),
 	PRIMARY KEY (id_certifEner)
 );
-CREATE TABLE Caracteristicas (
-	id TINYINT AUTO_INCREMENT,	
-	tipo VARCHAR(20),
-	PRIMARY KEY (id)
-);
 CREATE TABLE Inmueble (
 	id_catastro CHAR(20),
-    superficie SMALLINT NOT NULL,
-    breveDescripcion TEXT NOT NULL,
+	superficie SMALLINT NOT NULL,
+	breveDescripcion TEXT NOT NULL,
 	id_ubicacion INT NOT NULL,
 	id_tipoInmueble TINYINT NOT NULL,
 	id_estadoInmueble TINYINT NOT NULL,
@@ -91,12 +86,34 @@ CREATE TABLE Catalogo (
 	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
 	FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario)
 );
+CREATE TABLE DiferentesTiposInmuebles (
+	id_tipoInmueble TINYINT,
+	id_tipoVivienda TINYINT,
+	PRIMARY KEY (id_tipoVivienda, id_tipoInmueble),
+	FOREIGN KEY (id_tipoVivienda) REFERENCES TipoDeVivienda (id_tipoVivienda),
+	FOREIGN KEY (id_tipoInmueble) REFERENCES TipoDeInmueble (id_tipoInmueble)
+);
+CREATE TABLE CaractIntrinsecas (
+	id_catastro CHAR(20),
+	nBano TINYINT,
+	nCocina TINYINT,
+	id_certifEner TINYINT,
+	nHab TINYINT,
+	PRIMARY KEY (id_catastro),
+	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
+	FOREIGN KEY (id_certifEner) REFERENCES CertificacionEnergetica (id_certifEner)
+);
+CREATE TABLE CaractSecundarias (
+	id_caractSecundaria TINYINT AUTO_INCREMENT,	
+	caracteristica VARCHAR(20),
+	PRIMARY KEY (id_caractSecundaria)
+);
 CREATE TABLE Contiene (
-	id TINYINT NOT NULL,
-	id_catastro CHAR(20) NOT NULL,
-	PRIMARY KEY (id, id_catastro),
-	FOREIGN KEY (id) REFERENCES Caracteristicas (id),
-	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro)
+	id_caractSecundaria TINYINT,
+	id_catastro CHAR(20),
+	PRIMARY KEY (id_caractSecundaria, id_catastro),
+	FOREIGN KEY (id_caractSecundaria) REFERENCES CaractSecundarias (id_caractSecundaria),
+	FOREIGN KEY (id_catastro) REFERENCES CaractIntrinsecas (id_catastro)
 );
 CREATE TABLE Imagen (
 	id_imagen INT AUTO_INCREMENT,

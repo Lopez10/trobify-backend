@@ -16,8 +16,7 @@ Renombrar tabla CLIENTE a USUARIO y cambiar sus atributos.
 Quitar tabla HABITACIÓN, se gestiona a partir de catálogo.
 Modificar tabla INMUEBLE
 
-
-
+Practicamente se ha rediseñado la base de datos.... para que nos vamos a engañar
 
 18/03/2021 --> Javi
 *Nueva Tabla*

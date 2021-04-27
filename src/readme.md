@@ -32,9 +32,15 @@ Códigos en la URL para aplicar filtros
     - "stdo="    , , , ... string con los Estados a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
         1 - Reformado
         ...
-        x - Usar el id según la tabla tipoDeVivienda
+        x - Usar el id según la tabla EstadoInmueble
+    - "tpoInm="  , , , ... string con los TiposDeInmuebles a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
+        1 - Garaje
+        2 - Local comercial
+        ...
+        x - Usar el id según la tabla tipoDeInmueble
     - "tpoViv="  , , , ... string con los TiposDeVivienda a filtrar. Como puede haber varios seleccionados, el SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
-        1 - Ático
+        1 - No es vivienda --> para los inmuebles como garajes, solares, locales comerciales...
+        2 - Ático
         ...
         x - Usar el id según la tabla tipoDeVivienda
     - "caract="  , , , ... string de Características que debe reunir un mismo inmueble. El SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes

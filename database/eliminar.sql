@@ -8,7 +8,6 @@ DROP TABLE Imagen;
 DROP TABLE Contiene; 
 DROP TABLE CaractSecundarias;
 DROP TABLE CaractIntrinsecas;
-DROP TABLE DiferentesTiposInmuebles; 
 DROP TABLE Catalogo; 
 DROP TABLE Inmueble; 
 DROP TABLE CertificacionEnergetica; 

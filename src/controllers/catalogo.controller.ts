@@ -1,36 +1,52 @@
 import { Request, Response } from 'express';
 import { connect } from '../database';
-import { Catalog } from '../interface/catalog.interface';
 
-export async function getCatalog(req: Request, res: Response) {
-	//: Promise<Response> {
+export async function getCatalog(req: Request, res: Response): Promise<Response> {
 	let select: string =
-		'inm.id_catastro as "catastro", cat.precio, inm.cant_Habitaciones as "nHab", inm.banos as "nBan", inm.cocina as "nCoc", inm.superficie as "area", ce.nombre as "certif", inm.breveDescripcion as "descrip", est.tipo as "estado", img.valor as "urlImg", pro.provincia, ubi.longitud, ubi.latitud, ubi.direccion, tpv.tipo as tpoViv, tpv.id as tpoId';
+		'inm.id_catastro as "catastro", inm.superficie as area, inm.breveDescripcion as "descrip", est.estadoInmueble as "estado", tpoInm.tipoInmueble as "tipoInm", tpoViv.tipoVivienda as "tipoViv", cat.precio, cat.descuento, ub.direccion, pro.provincia, ub.latitud, ub.longitud, img.valor as "urlImg", intr.nBano, intr.nHab, intr.nCocina, cert.certifEner as "certif"';
 	let from: String =
-		'catalogo cat, inmueble inm, ubicacion ubi, provincias pro, imagen img, CertificacionEnergetica ce, EstadoInmueble est, tipodevivienda tpv, Filtros fi';
-	let where: String = '(cat.id_catastro = inm.id_catastro';
-	where += ' and tpv.id = inm.id_vivienda';
-	where += ' and ubi.ubicacion_id = inm.ubicacion_id';
-	where += ' and ubi.prov = pro.provincia_id';
-	where += ' and img.id_catastro = inm.id_catastro';
-	where += ' and ce.id_certifEner = inm.id_certifEner';
-	where += ' and est.id = inm.id_estado';
-	// Filtros de grano grueso
+		'inmueble inm, estadoinmueble est, tipodeinmueble tpoInm, tipodevivienda tpoViv, catalogo cat, ubicacion ub, provincias pro, imagen img, caractintrinsecas intr, certificacionenergetica cert';
+	let where: String = '(inm.id_estadoInmueble = est.id_estadoInmueble';
+	where += ' AND tpoInm.id_tipoInmueble = inm.id_tipoInmueble';
+	where += ' AND tpoViv.id_tipoVivienda = inm.id_tipoVivienda';
+	where += ' AND cat.id_catastro = inm.id_catastro';
+	where += ' AND inm.id_ubicacion = ub.id_ubicacion';
+	where += ' AND ub.prov = pro.id_provincia';
+	where += ' AND img.id_catastro = inm.id_catastro';
+	where += ' AND intr.id_catastro = inm.id_catastro';
+	where += ' AND intr.id_certifEner = cert.id_certifEner';
+
+	// Filtro de provincia
+	if (!(req.query.prov === undefined) && Number(req.query.prov) != 0) {
+		where += ' and pro.id_provincia = ' + req.query.prov;
+	}
+	// Filtro de modalidad (Alquiler, venta,...)
 	if (req.query.opt === undefined) {
 		where += ' and cat.id_modalidad = ' + 1;
 	} else {
 		where += ' and cat.id_modalidad = ' + req.query.opt;
 	}
-	if (!(req.query.prov === undefined) && Number(req.query.prov) != 0) {
-		where += ' and pro.provincia_id = ' + req.query.prov;
+	// Filtro de TipoDeInmueble, se pueden pasar varios
+	if (!(req.query.tpoInm === undefined)) {
+		where += ' and inm.id_tipoInmueble in (' + req.query.tpoInm + ')';
 	}
-	// Filtros de grano fino
+	// Filtro de TipoDeVivienda, se pueden pasar varios
+	if (!(req.query.tpoViv === undefined) && req.query.tpoViv != '' && Number(req.query.prov) != 1) {
+		where += ' and  inm.id_tipoVivienda in (' + req.query.tpoViv + ')';
+	}
+	// Filtro de EstadoDeVivienda, se pueden pasar varios
+	if (!(req.query.stdo === undefined) && req.query.stdo != '') {
+		where += ' and inm.id_estadoInmueble in (' + req.query.stdo + ')';
+	}
+	// Filtro de la cantidad mínima de habitaciones
 	if (!(req.query.nHab === undefined)) {
-		where += ' and inm.cant_Habitaciones >= ' + req.query.nHab;
+		where += ' and intr.nHab >= ' + req.query.nHab;
 	}
+	// Filtro de la cantidad mínima de baños
 	if (!(req.query.nBan === undefined)) {
-		where += ' and fi.banos >= ' + req.query.nBan;
+		where += ' and intr.nBano >= ' + req.query.nBan;
 	}
+	// Filtro del precio
 	if (!(req.query.supMin === undefined) && !(req.query.supMax === undefined)) {
 		where += ' and inm.superficie BETWEEN ' + req.query.supMin + ' AND ' + req.query.supMax;
 	}
@@ -54,12 +70,7 @@ export async function getCatalog(req: Request, res: Response) {
 		if (min < 0) min = 0;
 		where += ' and cat.precio BETWEEN ' + min + ' AND ' + max;
 	}
-	if (!(req.query.tpoViv === undefined) && req.query.tpoViv != '') {
-		where += ' and id_vivienda in (' + req.query.tpoViv + ')';
-	}
-	if (!(req.query.stdo === undefined) && req.query.stdo != '') {
-		where += ' and id_estado in (' + req.query.stdo + ')';
-	}
+
 	// Subconsulta en el where para extraer todas las características que debe reunir un mismo inmueble
 	if (!(req.query.caract === undefined) && req.query.caract != '') {
 		let SubConsulta: string[] = String(req.query.caract).split(',');
@@ -67,10 +78,18 @@ export async function getCatalog(req: Request, res: Response) {
 		if (true) {
 			where += ' and inm.id_catastro IN (SELECT id_catastro FROM (';
 			for (let i = 0; i < j; i++) {
-				where += 'SELECT co' + i + '.id_catastro, ca' + i + '.tipo ';
-				where += 'FROM caracteristicas ca' + i + ', contiene co' + i + ' ';
+				where += 'SELECT co' + i + '.id_catastro, ca' + i + '.caracteristica ';
+				where += 'FROM caractsecundarias ca' + i + ', contiene co' + i + ' ';
 				where +=
-					'WHERE ca' + i + '.id = co' + i + '.id and ca' + i + '.id = "' + SubConsulta[i] + '"';
+					'WHERE ca' +
+					i +
+					'.id_caractSecundaria = co' +
+					i +
+					'.id_caractSecundaria and ca' +
+					i +
+					'.id_caractSecundaria = "' +
+					SubConsulta[i] +
+					'"';
 				if (i + 1 < j) where += ' UNION ALL ';
 			}
 			where += ') tipos GROUP BY id_catastro HAVING COUNT(id_catastro) = ' + j + ')';
@@ -87,9 +106,6 @@ export async function getCatalog(req: Request, res: Response) {
 			case 1:
 				orderBy += ' cat.f_insercion DESC';
 				break;
-			case 2:
-				orderBy += ' cat.f_insercion';
-				break;
 			case 3:
 				orderBy += ' cat.precio DESC';
 				break;
@@ -102,21 +118,16 @@ export async function getCatalog(req: Request, res: Response) {
 			case 6:
 				orderBy += ' inm.superficie';
 				break;
-			case 2:
 			default:
 				orderBy += ' cat.f_insercion';
 				break;
 		}
 	}
-	//console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';')
 	const conn = await connect();
-	// const catalogo = await conn.query(
-	// 	'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';'
-	// );
-	console.log(
+	const catalogo = await conn.query(
 		'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';'
 	);
-	//return res.json(catalogo[0]);
+	return res.json(catalogo[0]);
 }
 
 export async function getProvincias(req: Request, res: Response): Promise<Response> {

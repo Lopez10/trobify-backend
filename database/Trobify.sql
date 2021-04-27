@@ -69,10 +69,12 @@ CREATE TABLE Inmueble (
 	id_ubicacion INT NOT NULL,
 	id_tipoInmueble TINYINT NOT NULL,
 	id_estadoInmueble TINYINT NOT NULL,
+    id_tipoVivienda TINYINT NOT NULL,
 	PRIMARY KEY (id_catastro),
 	FOREIGN KEY (id_ubicacion) REFERENCES Ubicacion (id_ubicacion),
 	FOREIGN KEY (id_tipoInmueble) REFERENCES TipoDeInmueble (id_tipoInmueble),
-	FOREIGN KEY (id_estadoInmueble) REFERENCES EstadoInmueble (id_estadoInmueble)
+	FOREIGN KEY (id_tipoVivienda) REFERENCES TipoDeVivienda (id_tipoVivienda),
+    FOREIGN KEY (id_estadoInmueble) REFERENCES EstadoInmueble (id_estadoInmueble)
 );
 CREATE TABLE Catalogo (
 	id_catastro CHAR(20) NOT NULL,
@@ -85,13 +87,6 @@ CREATE TABLE Catalogo (
 	FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad),
 	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
 	FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario)
-);
-CREATE TABLE DiferentesTiposInmuebles (
-	id_tipoInmueble TINYINT,
-	id_tipoVivienda TINYINT,
-	PRIMARY KEY (id_tipoVivienda, id_tipoInmueble),
-	FOREIGN KEY (id_tipoVivienda) REFERENCES TipoDeVivienda (id_tipoVivienda),
-	FOREIGN KEY (id_tipoInmueble) REFERENCES TipoDeInmueble (id_tipoInmueble)
 );
 CREATE TABLE CaractIntrinsecas (
 	id_catastro CHAR(20),

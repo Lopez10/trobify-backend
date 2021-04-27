@@ -4,11 +4,11 @@ import { connect } from '../database';
 export async function getUsuariosLog(req: Request, res: Response): Promise<Response> {
 	const mail: number = +req.params.mail;
 	const telefono: number = +req.params.telefono;
-	const contraseña: number = +req.params.contraseña;
+	const contrasena: number = +req.params.contrasena;
 
 	let select: string = '*';
-	let from: string = ' Usuario U ';
-	let where: string = ' U.mail = ' + mail + ' AND U.contraseña ' + contraseña;
+	let from: string = ' Usuario u ';
+	let where: string = ' u.mail = ' + mail + ' AND u.contrasena ' + contrasena;
 
 	const conn = await connect();
 	const filter = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
@@ -21,8 +21,8 @@ export async function getUsuariosLog(req: Request, res: Response) {
 	const mail: string = req.body.mail;
 	const contrasena = req.body.password;
 
-	let select: string = 'U.mail, U.contrasena';
-	let from: string = ' Usuario U ';
+	let select: string = 'u.mail, u.contrasena';
+	let from: string = ' Usuario u ';
 
 	const conn = await connect();
 	const consultaLog = await conn.query(
@@ -30,9 +30,9 @@ export async function getUsuariosLog(req: Request, res: Response) {
 			select +
 			' FROM ' +
 			from +
-			' WHERE U.mail = "' +
+			' WHERE u.mail = "' +
 			mail +
-			'" AND U.contrasena = "' +
+			'" AND u.contrasena = "' +
 			contrasena +
 			'";'
 	);

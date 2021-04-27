@@ -23,10 +23,8 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 export async function getInmueble(req: Request, res: Response): Promise<Response> {
 	const id = req.params.inmuebleId;
 	const conn = await connect();
-	const inmueble = conn.query('SELECT * FROM Inmueble WHERE id_catastro = ?', [id]);
-	inmueble.then((content) => {
-		console.log(content[0]);
-	});
+	const inmueble = await conn.query('SELECT * FROM Inmueble WHERE id_catastro = ?', [id]);
+
 	return res.json(inmueble[0]);
 }
 

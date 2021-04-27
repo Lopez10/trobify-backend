@@ -17,21 +17,30 @@ export async function getUsuariosLog(req: Request, res: Response): Promise<Respo
 }
 
 */
-export async function getUsuariosLog(req: Request, res: Response){
+export async function getUsuariosLog(req: Request, res: Response) {
 	const mail: string = req.body.mail;
-	const contraseña = req.body.password;
+	const contrasena = req.body.password;
 
-	console.log(req.body);
 	let select: string = 'U.mail, U.contraseña';
 	let from: string = ' Usuario U ';
 
 	const conn = await connect();
-	const consultaLog = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE U.mail = "' + mail + '" AND U.contraseña = "' + contraseña + '";');
+	const consultaLog = await conn.query(
+		' SELECT ' +
+			select +
+			' FROM ' +
+			from +
+			' WHERE U.mail = "' +
+			mail +
+			'" AND U.contraseña = "' +
+			contrasena +
+			'";'
+	);
 	let loger = consultaLog[0].toString();
-
-	if(loger == ""){
+	console.log(loger);
+	if (loger == '') {
 		return res.json(false);
+	} else {
+		return res.json(true);
 	}
-	else {return res.json(true);}
 }
-

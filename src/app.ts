@@ -6,6 +6,7 @@ import IndexRoutes from './routes/index.routes';
 import CatalogRoutes from './routes/catalog.routes';
 import InmuebleRoutes from './routes/inmueble.routes';
 import UsuariosRoutes from './routes/usuarios.routes';
+import LoginRoutes from './routes/login.routes';
 import path from 'path';
 
 export class App {
@@ -34,12 +35,13 @@ export class App {
 		this.app.use('/catalogo', CatalogRoutes);
 		this.app.use('/inmueble', InmuebleRoutes);
 		this.app.use('/usuarios', UsuariosRoutes);
+		this.app.use('/login', LoginRoutes);
 	}
 
 	static() {
 		this.app.use(express.static(path.join(__dirname, 'views')));
 	}
-	
+
 	headers() {
 		this.app.use((req, res, next) => {
 			res.append('Access-Control-Allow-Origin', ['*']);

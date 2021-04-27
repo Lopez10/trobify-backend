@@ -21,7 +21,7 @@ export async function getUsuariosLog(req: Request, res: Response) {
 	const mail: string = req.body.mail;
 	const contrasena = req.body.password;
 
-	let select: string = 'U.mail, U.contraseña';
+	let select: string = 'U.mail, U.contrasena';
 	let from: string = ' Usuario U ';
 
 	const conn = await connect();
@@ -32,7 +32,7 @@ export async function getUsuariosLog(req: Request, res: Response) {
 			from +
 			' WHERE U.mail = "' +
 			mail +
-			'" AND U.contraseña = "' +
+			'" AND U.contrasena = "' +
 			contrasena +
 			'";'
 	);

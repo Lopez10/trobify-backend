@@ -13,17 +13,22 @@ export async function createInmueble(req: Request, res: Response) {
 
 export async function getUbicacion(req: Request, res: Response): Promise<Response> {
 	const conn = await connect();
-	const ubicacion = await conn.query('SELECT i.catastro_id, u.longitud, u.latitud FROM Inmueble i, Ubicacion u WHERE u.ubicacion_id = i.ubicacion_id');
-	
+	const ubicacion = await conn.query(
+		'SELECT i.catastro_id, u.longitud, u.latitud FROM Inmueble i, Ubicacion u WHERE u.ubicacion_id = i.ubicacion_id'
+	);
+
 	return res.json(ubicacion[0]);
 }
 
-// export async function getCatalog(req: Request, res:Response): Promise<Response> {
-//      const id = req.params.postId;
-//      const conn = await connect();
-//      const catalog = conn.query('SELECT * FROM Catalogo WHERE id = ?', [id]);
-//      return res.json(catalog);
-// }
+export async function getInmueble(req: Request, res: Response): Promise<Response> {
+	const id = req.params.inmuebleId;
+	const conn = await connect();
+	const inmueble = conn.query('SELECT * FROM Inmueble WHERE id_catastro = ?', [id]);
+	inmueble.then((content) => {
+		console.log(content[0]);
+	});
+	return res.json(inmueble[0]);
+}
 
 // Delete
 // export async function deleteCatalog(req: Request, res:Response): Promise<Response> {

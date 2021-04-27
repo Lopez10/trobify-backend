@@ -1,17 +1,13 @@
 import { Router } from 'express';
-import { createInmueble, getUbicacion } from '../controllers/inmueble.controller';
+import { createInmueble, getInmueble, getUbicacion } from '../controllers/inmueble.controller';
 
 const router = Router();
 
-router.route('/')
-     .post(createInmueble);
+router.route('/').post(createInmueble);
 
- router.route('/')
-     .get(getUbicacion);
+router.route('/').get(getUbicacion);
 
-
-// router.route('/:catalogId')
-//     .get(getCatalog)
+router.route('/:inmuebleId').get(getInmueble);
 //     .delete(deleteCatalog)
 //     .put(updateCatalog);
 

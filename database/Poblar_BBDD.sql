@@ -117,22 +117,39 @@ INSERT INTO Ubicacion values
 	(13, "CL El Reno Renaldo, 7, 46001, Valencia", 46, 39.4755023667324, -0.362137490959139),
 	(14, "CL El Reno Renaldo, 8, 46001, Valencia", 46, 39.4831209760484, -0.39071910790043),
 	(15, "CL El Reno Renaldo, 9, 12006, Castellón", 12, 39.9817230131668, -0.049057649110209);
+INSERT INTO Imagen values 
+	(1, "CASA0000000000000001", "https://www.cosasdearquitectos.com/wp-content/uploads/lars1.jpg"),
+	(16, "CASA0000000000000001", "https://www.cosasdearquitectos.com/wp-content/uploads/lars1.jpg"),
+	(2, "CASA0000000000000002", "https://estaticos-cdn.prensaiberica.es/clip/50b56a45-db17-4d01-b69f-489a716bc668_16-9-aspect-ratio_default_0.jpg"),
+	(3, "CASA0000000000000003", "https://www.lovevalencia.com/wp-content/uploads/2010/10/ciudad.jpg"),
+	(4, "CASA0000000000000004", "http://es.spongepedia.org/images/9/99/Casadearenita.jpg"),
+	(5, "CASA0000000000000005", "https://www.nippon.com/es/ncommon/contents/japan-data/136154/136154.jpg"),
+	(6, "LOCAL000000000000006", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
+	(7, "LOCAL000000000000007", "https://www.laregion.es/asset/zoomcrop,1366,800,center,center//media/laregion/images/2014/11/17/2014111707491155503.jpg"),
+	(8, "LOCAL000000000000008", "https://www.lagacetadesalamanca.es/binrepository/769x432/1c0/768d432/none/25207907/BKAP/176791_1_GS176791_MG27866719.jpg"),
+	(9, "GARAJE00000000000009", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-destruidas-por-el-bombardeo-111183228.jpg"),
+	(10, "GARAJE00000000000010", "https://imagenes.forociudad.com/fotos/183197-casa-en-ruina.jpg"),
+	(11, "CASA0000000000000011", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-viejas-abandonadas-una-cueva-con-escaleras-en-avanos-turqu%C3%ADa-cappadocia-los-arcos-140796442.jpg"),
+	(12, "CASA0000000000000012", "https://previews.123rf.com/images/mathess/mathess1710/mathess171000427/88028874-casas-en-ruinas-en-la-ciudad-hist%C3%B3rica-de-panam-panam-nagor-bangladesh.jpg"),
+	(13, "CASA0000000000000013", "https://previews.123rf.com/images/karsol/karsol1205/karsol120500052/13759590-las-casas-y-la-iglesia-en-ruinas-de-un-pueblo-abandonado-en-la-provincia-de-burgos-espa%C3%B1a-.jpg"),
+	(14, "CASA0000000000000014", "https://st3.idealista.com/news/archivos/styles/imagen_full/public/2017-05/la_ruina_habitada_00.jpg?sv=bnFHLRyi&itok=4yQBmHzz"),
+	(15, "CASA0000000000000015", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg");
 INSERT INTO Inmueble values 
-	("CASA0000000000000001", 100, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 01, 3, 1, 2),
-	("CASA0000000000000002", 150, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 02, 3, 2, 3),
-	("CASA0000000000000003", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 03, 3, 3, 4),
-	("CASA0000000000000004", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 04, 3, 4, 5),
-	("CASA0000000000000005", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 05, 3, 1, 6),
-	("LOCAL000000000000006", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 06, 2, 2, 1),
-	("LOCAL000000000000007", 300, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 07, 2, 3, 1),
-	("LOCAL000000000000008", 350, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 08, 2, 4, 1),
-	("GARAJE00000000000009", 400, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 09, 1, 1, 1),
-	("GARAJE00000000000010", 450, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 10, 1, 2, 1),
-	("CASA0000000000000011", 500, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 11, 3, 3, 7),
-	("CASA0000000000000012", 750, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 12, 3, 4, 8),
-	("CASA0000000000000013", 075, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 13, 3, 1, 9),
-	("CASA0000000000000014", 125, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 14, 3, 2, 10),
-	("CASA0000000000000015", 225, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 15, 3, 3, 2);
+	("CASA0000000000000001", 100, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 01, 3, 1, 2, 1),
+	("CASA0000000000000002", 150, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 02, 3, 2, 3, 2),
+	("CASA0000000000000003", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 03, 3, 3, 4, 3),
+	("CASA0000000000000004", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 04, 3, 4, 5, 4),
+	("CASA0000000000000005", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 05, 3, 1, 6, 5),
+	("LOCAL000000000000006", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 06, 2, 2, 1, 6),
+	("LOCAL000000000000007", 300, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 07, 2, 3, 1, 7),
+	("LOCAL000000000000008", 350, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 08, 2, 4, 1, 8),
+	("GARAJE00000000000009", 400, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 09, 1, 1, 1, 9),
+	("GARAJE00000000000010", 450, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 10, 1, 2, 1, 10),
+	("CASA0000000000000011", 500, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 11, 3, 3, 7, 11),
+	("CASA0000000000000012", 750, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 12, 3, 4, 8, 12),
+	("CASA0000000000000013", 075, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 13, 3, 1, 9, 13),
+	("CASA0000000000000014", 125, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 14, 3, 2, 10, 14),
+	("CASA0000000000000015", 225, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 15, 3, 3, 2, 15);
 INSERT INTO CaractIntrinsecas values 
 	("CASA0000000000000001", 1, 1, 1, 3),
 	("CASA0000000000000002", 2, 1, 2, 4),
@@ -187,22 +204,6 @@ INSERT INTO Contiene values
 	(3, "CASA0000000000000015"),
 	(8, "CASA0000000000000015"),
 	(9, "CASA0000000000000015");
-INSERT INTO Imagen values 
-	(1, "CASA0000000000000001", "https://www.cosasdearquitectos.com/wp-content/uploads/lars1.jpg"),
-	(2, "CASA0000000000000002", "https://estaticos-cdn.prensaiberica.es/clip/50b56a45-db17-4d01-b69f-489a716bc668_16-9-aspect-ratio_default_0.jpg"),
-	(3, "CASA0000000000000003", "https://www.lovevalencia.com/wp-content/uploads/2010/10/ciudad.jpg"),
-	(4, "CASA0000000000000004", "http://es.spongepedia.org/images/9/99/Casadearenita.jpg"),
-	(5, "CASA0000000000000005", "https://www.nippon.com/es/ncommon/contents/japan-data/136154/136154.jpg"),
-	(6, "LOCAL000000000000006", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg"),
-	(7, "LOCAL000000000000007", "https://www.laregion.es/asset/zoomcrop,1366,800,center,center//media/laregion/images/2014/11/17/2014111707491155503.jpg"),
-	(8, "LOCAL000000000000008", "https://www.lagacetadesalamanca.es/binrepository/769x432/1c0/768d432/none/25207907/BKAP/176791_1_GS176791_MG27866719.jpg"),
-	(9, "GARAJE00000000000009", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-destruidas-por-el-bombardeo-111183228.jpg"),
-	(10, "GARAJE00000000000010", "https://imagenes.forociudad.com/fotos/183197-casa-en-ruina.jpg"),
-	(11, "CASA0000000000000011", "https://thumbs.dreamstime.com/z/ruinas-de-las-casas-viejas-abandonadas-una-cueva-con-escaleras-en-avanos-turqu%C3%ADa-cappadocia-los-arcos-140796442.jpg"),
-	(12, "CASA0000000000000012", "https://previews.123rf.com/images/mathess/mathess1710/mathess171000427/88028874-casas-en-ruinas-en-la-ciudad-hist%C3%B3rica-de-panam-panam-nagor-bangladesh.jpg"),
-	(13, "CASA0000000000000013", "https://previews.123rf.com/images/karsol/karsol1205/karsol120500052/13759590-las-casas-y-la-iglesia-en-ruinas-de-un-pueblo-abandonado-en-la-provincia-de-burgos-espa%C3%B1a-.jpg"),
-	(14, "CASA0000000000000014", "https://st3.idealista.com/news/archivos/styles/imagen_full/public/2017-05/la_ruina_habitada_00.jpg?sv=bnFHLRyi&itok=4yQBmHzz"),
-	(15, "CASA0000000000000015", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg");
 INSERT INTO Extra values 
 	(1, "CASA0000000000000001", "Urna gravida porttitor phasellus sagittis habitasse quam interdum ultricies arcu quis elementum enim sapien risus litora eleifend, rhoncus curabitur vitae leo malesuada eget luctus rutrum tincidunt proin nec cum laoreet aliquet." ),
 	(2, "CASA0000000000000002", "Inceptos tempus rutrum netus rhoncus elementum morbi integer eget dictumst venenatis torquent tellus sociis mollis, nec cras justo ornare velit pretium gravida sodales aenean vulputate curae purus ultrices. Pharetra purus sodales nisl semper maecenas fames neque, facilisi luctus torquent ad faucibus vivamus conubia, donec mauris interdum primis dictumst phasellus."),
@@ -250,13 +251,3 @@ INSERT INTO Favoritos values
 	(3, "CASA0000000000000015", 1),
 	(3, "LOCAL000000000000008", 2),
 	(4, "GARAJE00000000000009", 2);
-
-
-
-
-
-
-
-
-
-

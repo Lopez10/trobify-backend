@@ -44,3 +44,8 @@ Códigos en la URL para aplicar filtros
         ...
         x - Usar el id según la tabla tipoDeVivienda
     - "caract="  , , , ... string de Características que debe reunir un mismo inmueble. El SEPARADOR DEBE SER COMAS ',' y NUNCA usar paréntesis ni corchetes
+
+Códigos en la URL para pasar el catastro del inmueble buscado - idImn : corresponde al catastro, solo se pasa uno cada vez - "opt="
+1 - Comprar
+2 - Alquilar
+3 - Alquilar Habitación

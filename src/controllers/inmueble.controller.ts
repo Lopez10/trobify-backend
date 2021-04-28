@@ -21,11 +21,34 @@ export async function getUbicacion(req: Request, res: Response): Promise<Respons
 }
 
 export async function getInmueble(req: Request, res: Response): Promise<Response> {
-	const id = req.params.inmuebleId;
-	const conn = await connect();
-	const inmueble = await conn.query('SELECT * FROM Inmueble WHERE id_catastro = ?', [id]);
+	const modalidad = req.query.opt;
+	const catastro = req.query.idImn;
 
-	return res.json(inmueble[0]);
+	let select: string =
+		'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion';
+	let from: String =
+		'inmueble inm, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, ubicacion ubi, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI';
+	let where: String =
+		'inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND cer.id_certifEner = car.id_certifEner AND ubi.id_ubicacion = inm.id_ubicacion  AND inm.id_estadoInmueble = est.id_estadoInmueble  AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
+	where += ' AND cat.id_modalidad = ' + modalidad;
+	where += ' AND	inm.id_catastro LIKE ("' + catastro + '")';
+
+	const conn = await connect();
+	const inmueble = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
+
+	const imagenes = await conn.query(
+		'SELECT valor FROM imagen WHERE id_catastro LIKE ("' + catastro + '")'
+	);
+
+	const caracteristicas = await conn.query(
+		'SELECT ca.caracteristica FROM contiene co, caractsecundarias ca WHERE co.id_caractSecundaria = ca.id_caractSecundaria AND co.id_catastro LIKE ("' +
+			catastro +
+			'")'
+	);
+
+	let json = { datos: inmueble[0], imagenes: imagenes[0], caracteristicas: caracteristicas[0] };
+
+	return res.json(json);
 }
 
 // Delete

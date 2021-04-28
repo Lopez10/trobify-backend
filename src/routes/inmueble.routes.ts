@@ -5,7 +5,9 @@ const router = Router();
 
 router.route('/').post(createInmueble);
 
-router.route('/').get(getUbicacion);
+//router.route('/').get(getUbicacion);
+
+router.route('/').get(getInmueble);
 
 router.route('/:inmuebleId').get(getInmueble);
 //     .delete(deleteCatalog)

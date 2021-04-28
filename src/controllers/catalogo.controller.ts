@@ -12,7 +12,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 	where += ' AND cat.id_catastro = inm.id_catastro';
 	where += ' AND inm.id_ubicacion = ub.id_ubicacion';
 	where += ' AND ub.prov = pro.id_provincia';
-	where += ' AND img.id_catastro = inm.id_catastro';
+	where += ' AND img.id_imagen = inm.id_imagen';
 	where += ' AND intr.id_catastro = inm.id_catastro';
 	where += ' AND intr.id_certifEner = cert.id_certifEner';
 

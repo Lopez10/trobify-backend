@@ -62,6 +62,12 @@ CREATE TABLE CertificacionEnergetica (
 	certifEner VARCHAR(3),
 	PRIMARY KEY (id_certifEner)
 );
+CREATE TABLE Imagen (
+	id_imagen INT AUTO_INCREMENT,
+	id_catastro CHAR(20),
+	valor TINYTEXT NOT NULL,
+	PRIMARY KEY (id_imagen)
+);
 CREATE TABLE Inmueble (
 	id_catastro CHAR(20),
 	superficie SMALLINT NOT NULL,
@@ -70,10 +76,12 @@ CREATE TABLE Inmueble (
 	id_tipoInmueble TINYINT NOT NULL,
 	id_estadoInmueble TINYINT NOT NULL,
     id_tipoVivienda TINYINT NOT NULL,
+    id_imagen INT NOT NULL,
 	PRIMARY KEY (id_catastro),
 	FOREIGN KEY (id_ubicacion) REFERENCES Ubicacion (id_ubicacion),
 	FOREIGN KEY (id_tipoInmueble) REFERENCES TipoDeInmueble (id_tipoInmueble),
 	FOREIGN KEY (id_tipoVivienda) REFERENCES TipoDeVivienda (id_tipoVivienda),
+    FOREIGN KEY (id_imagen) REFERENCES Imagen (id_imagen),
     FOREIGN KEY (id_estadoInmueble) REFERENCES EstadoInmueble (id_estadoInmueble)
 );
 CREATE TABLE Catalogo (
@@ -109,13 +117,6 @@ CREATE TABLE Contiene (
 	PRIMARY KEY (id_caractSecundaria, id_catastro),
 	FOREIGN KEY (id_caractSecundaria) REFERENCES CaractSecundarias (id_caractSecundaria),
 	FOREIGN KEY (id_catastro) REFERENCES CaractIntrinsecas (id_catastro)
-);
-CREATE TABLE Imagen (
-	id_imagen INT AUTO_INCREMENT,
-	id_catastro CHAR(20),
-	valor TINYTEXT NOT NULL,
-	PRIMARY KEY (id_imagen),
-	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro)
 );
 CREATE TABLE Extra (
 	id_extra INT AUTO_INCREMENT,

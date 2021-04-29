@@ -3,7 +3,7 @@ import { connect } from '../database';
 
 export async function getCatalog(req: Request, res: Response): Promise<Response> {
 	let select: string =
-		'inm.id_catastro as "catastro", inm.superficie as area, inm.breveDescripcion as "descrip", est.estadoInmueble as "estado", tpoInm.tipoInmueble as "tipoInm", tpoViv.tipoVivienda as "tipoViv", cat.precio, cat.descuento, ub.direccion, pro.provincia, ub.latitud, ub.longitud, img.valor as "urlImg", intr.nBano, intr.nHab, intr.nCocina, cert.certifEner as "certif"';
+		'inm.id_catastro as "catastro", cat.id_modalidad, inm.superficie as area, inm.breveDescripcion as "descrip", est.estadoInmueble as "estado", tpoInm.tipoInmueble as "tipoInm", tpoViv.tipoVivienda as "tipoViv", cat.precio, cat.descuento, ub.direccion, pro.provincia, ub.latitud, ub.longitud, img.valor as "urlImg", intr.nBano, intr.nHab, intr.nCocina, cert.certifEner as "certif"';
 	let from: String =
 		'inmueble inm, estadoinmueble est, tipodeinmueble tpoInm, tipodevivienda tpoViv, catalogo cat, ubicacion ub, provincias pro, imagen img, caractintrinsecas intr, certificacionenergetica cert';
 	let where: String = '(inm.id_estadoInmueble = est.id_estadoInmueble';

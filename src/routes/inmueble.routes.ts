@@ -5,11 +5,7 @@ const router = Router();
 
 router.route('/').post(createInmueble);
 
-//router.route('/').get(getUbicacion);
-
-router.route('/').get(getInmueble);
-
-router.route('/:inmuebleId').get(getInmueble);
+router.route('/:inmuebleId/:modalidadId').get(getInmueble);
 //     .delete(deleteCatalog)
 //     .put(updateCatalog);
 

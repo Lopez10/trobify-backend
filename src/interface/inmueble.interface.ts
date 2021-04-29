@@ -7,17 +7,17 @@ export interface Inmueble {
 	superficie: number;
 	descripcion: string;
 	direccion: string;
+	provincia: number;
 	longitud: number;
 	latitud: number;
 
-	tipoVivienda?: string;
-	cantHab?: number;
-	cantBanos?: number;
-	caracteristicas?: string[];
+	tipoVivienda: string;
+	cantHab: number;
+	cantBanos: number;
+	caracteristicas: string[];
 	extras?: string[];
 
-	modalidad?: string;
-	submodalidad?: string;
-	precio?: number;
-	descuento?: number;
+	modalidad: number;
+	precio: number;
+	descuento: number;
 }

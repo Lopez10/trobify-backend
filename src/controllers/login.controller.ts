@@ -37,7 +37,6 @@ export async function getUsuariosLog(req: Request, res: Response) {
 			'";'
 	);
 	let loger = consultaLog[0].toString();
-	console.log(loger);
 	if (loger == '') {
 		return res.json(false);
 	} else {

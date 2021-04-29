@@ -99,6 +99,83 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	return res.json(newInmueble);
 }
 
+export async function editInmueble (req: Request, res: Response): Promise<Response> {
+	const catast = req.body.id_catastro;
+
+	let select: string = 'I.id_catastro';
+	let from: string = 'Inmueble I';
+	let where: string = '"' + catast + '" = I.id_catastro;'
+
+	const conn = await connect();
+	const consultaEdit = await conn.query(
+		'SELECT ' +
+		select +
+		' FROM ' +
+		from +
+		' WHERE ' +
+		where
+	);
+	const eddy = consultaEdit[0].toString();
+	if (eddy == ' '){
+		return res.json('Este inmueble no existe.');
+	} else {
+		const superficie = req.body.superficie;
+		const breveDescripcion = req.body.breveDescripcion;
+		const id_ubicacion = req.body.id_ubicacion;
+		const id_tipoInmueble = req.body.id_tipoInmueble;
+		const id_estadoInmueble = req.body.id_estadoInmueble;
+		const id_tipoVivienda = req.body.id_tipoVivienda;
+		const id_imagen = req.body.id_imagen;
+		const id_modalidad = req.body.id_modalidad;
+		const precio = req.body.precio;
+		const nHab = req.body.nHab;
+		const nBano = req.body.nBano;
+		const id_certifEner = req.body.id_certifEner;
+		const caracteristica = req.body.caracteristica;
+
+		let update: string = ' Inmueble I, Catalogo C, CaractIntrinsecas CI, CaractSecundarias CS';
+		let set: string = ' I.id_tipoInmueble = "' +
+			id_tipoInmueble +
+			'" AND C.id_modalidad = "' +
+			id_modalidad +
+			'" AND I.id_ubicacion = "' +
+			id_ubicacion +
+			'" AND I.superficie = "' +
+			superficie +
+			'" AND C.precio = "'+
+			precio +
+			'" AND I.id_tipoVivienda = "' +
+			id_tipoVivienda +
+			'" AND CI.nHab = "' +
+			nHab +
+			'" AND CI.nBano = "' +
+			nBano +
+			'" AND CI.id_certifEner = "' +
+			id_certifEner +
+			'" AND I.id_estadoInmueble = "' +
+			id_estadoInmueble +
+			'" AND CS.caracteristica = "' +
+			caracteristica +
+			'" AND id_imagen = "' +
+			id_imagen +
+			'" AND breveDescripcion = "' +
+			breveDescripcion;
+		let were: string = ' I.id_catastro = C.id_catastro AND I.id_catastro = CI.id_catastro AND I.id_catastro = CS.id_catastro'
+		
+		const conn2 = await connect();
+		const updateEdit = await conn2.query(
+			'UPDATE ' +
+			update +
+			' SET ' +
+			set +
+			' WHERE ' +
+			were
+		);
+		
+		return res.json('El inmueble ha sido modificado correctamente.');
+	}
+}
+
 // Delete
 // export async function deleteCatalog(req: Request, res:Response): Promise<Response> {
 //      const id = req.params.postId;

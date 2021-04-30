@@ -26,7 +26,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	const catastro: string = String(req.params.inmuebleId);
 
 	let select: string =
-		'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov';
+		'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov, cat.id_usuario as propietario';
 	let from: String =
 		'inmueble inm, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, ubicacion ubi, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI';
 	let where: String =
@@ -91,6 +91,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			modalidad: modalidad,
 			precio: inmueble[0][0].precio,
 			descuento: inmueble[0][0].descuento,
+			propietario: 1,
 		};
 	} catch (error) {
 		newInmueble = null;
@@ -99,24 +100,17 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	return res.json(newInmueble);
 }
 
-export async function editInmueble (req: Request, res: Response): Promise<Response> {
+export async function editInmueble(req: Request, res: Response): Promise<Response> {
 	const catast = req.body.id_catastro;
 
 	let select: string = 'I.id_catastro';
 	let from: string = 'Inmueble I';
-	let where: string = '"' + catast + '" = I.id_catastro;'
+	let where: string = '"' + catast + '" = I.id_catastro;';
 
 	const conn = await connect();
-	const consultaEdit = await conn.query(
-		'SELECT ' +
-		select +
-		' FROM ' +
-		from +
-		' WHERE ' +
-		where
-	);
+	const consultaEdit = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 	const eddy = consultaEdit[0].toString();
-	if (eddy == ' '){
+	if (eddy == ' ') {
 		return res.json('Este inmueble no existe.');
 	} else {
 		const superficie = req.body.superficie;
@@ -134,7 +128,8 @@ export async function editInmueble (req: Request, res: Response): Promise<Respon
 		const caracteristica = req.body.caracteristica;
 
 		let update: string = ' Inmueble I, Catalogo C, CaractIntrinsecas CI, CaractSecundarias CS';
-		let set: string = ' I.id_tipoInmueble = "' +
+		let set: string =
+			' I.id_tipoInmueble = "' +
 			id_tipoInmueble +
 			'" AND C.id_modalidad = "' +
 			id_modalidad +
@@ -142,7 +137,7 @@ export async function editInmueble (req: Request, res: Response): Promise<Respon
 			id_ubicacion +
 			'" AND I.superficie = "' +
 			superficie +
-			'" AND C.precio = "'+
+			'" AND C.precio = "' +
 			precio +
 			'" AND I.id_tipoVivienda = "' +
 			id_tipoVivienda +
@@ -160,18 +155,12 @@ export async function editInmueble (req: Request, res: Response): Promise<Respon
 			id_imagen +
 			'" AND breveDescripcion = "' +
 			breveDescripcion;
-		let were: string = ' I.id_catastro = C.id_catastro AND I.id_catastro = CI.id_catastro AND I.id_catastro = CS.id_catastro'
-		
+		let were: string =
+			' I.id_catastro = C.id_catastro AND I.id_catastro = CI.id_catastro AND I.id_catastro = CS.id_catastro';
+
 		const conn2 = await connect();
-		const updateEdit = await conn2.query(
-			'UPDATE ' +
-			update +
-			' SET ' +
-			set +
-			' WHERE ' +
-			were
-		);
-		
+		const updateEdit = await conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
+
 		return res.json('El inmueble ha sido modificado correctamente.');
 	}
 }

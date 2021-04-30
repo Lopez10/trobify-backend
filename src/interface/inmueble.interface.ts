@@ -20,4 +20,5 @@ export interface Inmueble {
 	modalidad: number;
 	precio: number;
 	descuento: number;
+	propietario: number;
 }

@@ -19,7 +19,7 @@ export async function getUsuariosLog(req: Request, res: Response): Promise<Respo
 */
 export async function getUsuariosLog(req: Request, res: Response) {
 	const mail: string = req.body.mail;
-	const contrasena = req.body.password;
+	const contrasena: string = req.body.password;
 
 	let select: string = 'u.mail, u.contrasena';
 	let from: string = ' Usuario u ';

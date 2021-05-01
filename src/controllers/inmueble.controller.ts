@@ -127,6 +127,9 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 		const id_certifEner = req.body.id_certifEner;
 		const caracteristica = req.body.caracteristica;
 
+		const conn2 = await connect();
+		const usuario = conn2.query('SELECT id_usuario FROM Catalogo WHERE id_catastro = "' + catast + '";');
+
 		let insertinto: string = 'INSERT INTO Inmueble ';
 		let values: string =
 			'VALUES (' +
@@ -147,10 +150,41 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 			id_imagen +
 			');';
 
-		const conn2 = await connect();
-		const insertintoReg = await conn2.query(insertinto + values);
+		let insertinto2: string = ' INSERT INTO Catalogo ';
+		let val2: string = 'VALUES (' +
+							catast +
+							', ' +
+							id_modalidad +
+							', ' +
+							precio +
+							', 0, 0, ' +
+							usuario +
+							');';
 
-		return res.json(insertintoReg);
+		let insertinto3: string = ' INSERT INTO Contiene ';					
+		let val3: string = 'VALUES ('+
+						   caracteristica + 
+						   ', ' +
+						   catast + 
+						   ');';
+
+		let insertinto4: string = ' INSERT INTO CaractIntrinsencas';
+		let val4: string = 'VALUES (' +
+							catast +
+							', ' +
+							nBano +
+							', 1, ' +
+							id_certifEner +
+							', ' +
+							nHab +
+							');';
+
+		conn2.query(insertinto + values);
+		conn2.query(insertinto2 + val2);
+		conn2.query(insertinto3 + val3);
+		conn2.query(insertinto4 + val4);
+
+		return res.json(true);
 	}
 }
 
@@ -181,18 +215,25 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		const id_certifEner = req.body.id_certifEner;
 		const caracteristica = req.body.caracteristica;
 
-		let update: string = ' Inmueble I, Catalogo C, CaractIntrinsecas CI, CaractSecundarias CS';
+		let selDescu: string = ' SELECT descuento';
+		let selF_insercion: string = ' SELECT f_insercion';
+		let selId_usuario: string = ' SELECT id_usuario'; 
+		let ff: string = ' FROM Catalogo ';
+		let ww: string = ' WHERE id_catastro = "' + catast + '" AND id_modalidad = "' + id_modalidad +'";'
+
+		const conn2 = await connect();
+		const descuento = conn2.query(selDescu + ff + ww);
+		const f_insercion = conn2.query(selF_insercion + ff + ww);
+		const id_usuario = conn2.query(selId_usuario + ff + ww);
+
+		let update: string = ' Inmueble I, CaractIntrinsecas CI';
 		let set: string =
 			' I.id_tipoInmueble = "' +
 			id_tipoInmueble +
-			'" AND C.id_modalidad = "' +
-			id_modalidad +
 			'" AND I.id_ubicacion = "' +
 			id_ubicacion +
 			'" AND I.superficie = "' +
 			superficie +
-			'" AND C.precio = "' +
-			precio +
 			'" AND I.id_tipoVivienda = "' +
 			id_tipoVivienda +
 			'" AND CI.nHab = "' +
@@ -203,19 +244,44 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 			id_certifEner +
 			'" AND I.id_estadoInmueble = "' +
 			id_estadoInmueble +
-			'" AND CS.caracteristica = "' +
-			caracteristica +
-			'" AND id_imagen = "' +
+			'" AND I.id_imagen = "' +
 			id_imagen +
-			'" AND breveDescripcion = "' +
+			'" AND I.breveDescripcion = "' +
 			breveDescripcion;
 		let were: string =
-			' I.id_catastro = C.id_catastro AND I.id_catastro = CI.id_catastro AND I.id_catastro = CS.id_catastro';
+			' I.id_catastro = "'+ catast + '" AND I.id_catastro = CI.id_catastro;';
 
-		const conn2 = await connect();
-		const updateEdit = await conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
+		let delet: string = ' DELETE FROM Catalogo C, Contiene CO ';
+		let were2: string = ' WHERE C.id_catastro = CO.id_catastro = "'+ catast + '" AND C.id_modalidad = "'+ id_modalidad + ';';
 
-		return res.json(updateEdit);
+		let inse: string = ' INSERT INTO Catalogo C';
+		let values: string = ' VALUES ('+
+							 catast +
+							 ', ' +
+							 id_modalidad +
+							 ', ' +
+							 precio +
+							 ', ' +
+							 descuento +
+							 ', ' +
+							 f_insercion +
+							 ', ' +
+							 id_usuario +
+							 ');';
+		
+		let inse2: string = ' INSERT INTO Contiene CO';
+		let values2: string = ' VALUES (' +
+							  caracteristica +
+							  ', ' +
+							  catast +
+							  ');';
+
+		conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
+		conn2.query(delet + were2);
+		conn2.query(inse + values);
+		conn2.query(inse2 + values2);
+
+		return res.json(true);
 	}
 }
 

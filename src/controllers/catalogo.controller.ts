@@ -123,6 +123,7 @@ export async function getCatalog(req: Request, res: Response): Promise<Response>
 				break;
 		}
 	}
+
 	const conn = await connect();
 	const catalogo = await conn.query(
 		'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ORDER BY ' + orderBy + ';'
@@ -154,4 +155,35 @@ export async function getFiltros(req: Request, res: Response): Promise<Response>
 	const filter = await conn.query(' SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ;');
 
 	return res.json(filter[0]);
+}
+
+async function getCatastroFiltroPrincipal(
+	idModalidad: number,
+	idTipoInmueble: number,
+	idProvincia: number
+): Promise<String> {
+	let select: string = 'inm.id_catastro';
+	let from: String =
+		'inmueble inm, ubicacion ubi, provincias pro, tipodeinmueble tpoI, catalogo cat, modalidad mo';
+	let where: String = 'inm.id_tipoInmueble = tpoI.id_tipoInmueble';
+	where += ' AND inm.id_ubicacion = ubi.id_ubicacion';
+	where += ' AND ubi.prov = pro.id_provincia';
+	where += ' AND inm.id_catastro = cat.id_catastro';
+	where += ' AND cat.id_modalidad = mo.id_modalidad';
+	where += ' AND mo.id_modalidad = ' + idModalidad;
+	where += ' AND pro.id_provincia = ' + idProvincia;
+	where += ' AND tpoI.id_tipoInmueble = ' + idTipoInmueble;
+
+	const conn = await connect();
+	const catastro = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
+
+	var catastroArray: string[] = [''];
+	JSON.parse(JSON.stringify(catastro[0])).forEach((item) => {
+		catastroArray.push(item.id_catastro);
+	});
+	catastroArray.splice(0, 1);
+
+	console.log('("' + catastroArray.toString().replace(/,/g, '","') + '")');
+
+	return '("' + catastroArray.toString().replace(/,/g, '","') + '")';
 }

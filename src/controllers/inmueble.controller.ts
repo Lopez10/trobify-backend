@@ -91,7 +91,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			modalidad: modalidad,
 			precio: inmueble[0][0].precio,
 			descuento: inmueble[0][0].descuento,
-			propietario: 1,
+			propietario: inmueble[0][0].propietario,
 		};
 	} catch (error) {
 		newInmueble = null;
@@ -125,37 +125,33 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 		const nHab = req.body.nHab;
 		const nBano = req.body.nBano;
 		const id_certifEner = req.body.id_certifEner;
-		const caracteristica = req.body.caracteristica;		
+		const caracteristica = req.body.caracteristica;
 
-		let insertinto: string = 'INSERT INTO Inmueble '
-		let values: string = 'VALUES (' + 
-							 catast +
-							 ', ' +
-							 superficie +
-							 ', ' +
-							 breveDescripcion +
-							 ', ' +
-							 id_ubicacion +
-							 ', ' +
-							 id_tipoInmueble +
-							 ', ' +
-							 id_estadoInmueble +
-							 ', ' + 
-							 id_tipoVivienda +
-							 ', ' +
-							 id_imagen +
-							 ');';
-	
-	const conn2 = await connect();
-	const insertintoReg = await conn2.query(insertinto + values);
-					 
-	return res.json(insertintoReg);
+		let insertinto: string = 'INSERT INTO Inmueble ';
+		let values: string =
+			'VALUES (' +
+			catast +
+			', ' +
+			superficie +
+			', ' +
+			breveDescripcion +
+			', ' +
+			id_ubicacion +
+			', ' +
+			id_tipoInmueble +
+			', ' +
+			id_estadoInmueble +
+			', ' +
+			id_tipoVivienda +
+			', ' +
+			id_imagen +
+			');';
 
+		const conn2 = await connect();
+		const insertintoReg = await conn2.query(insertinto + values);
+
+		return res.json(insertintoReg);
 	}
-
-
-
-
 }
 
 export async function editInmueble(req: Request, res: Response): Promise<Response> {

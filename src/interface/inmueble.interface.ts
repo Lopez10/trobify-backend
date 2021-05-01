@@ -12,8 +12,9 @@ export interface Inmueble {
 	latitud: number;
 
 	tipoVivienda: string;
-	cantHab: number;
-	cantBanos: number;
+	nHab: number;
+	nBanos: number;
+	nCocinas: number;
 	caracteristicas: string[];
 	extras?: string[];
 

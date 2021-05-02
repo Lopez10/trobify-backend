@@ -146,7 +146,7 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 									  '", "' +
 									  extras +
 									  '");';
-			conn2.query(insertintoextra + valuesextra);
+			await conn2.query(insertintoextra + valuesextra);
 		}
 
 		let insertintoubi: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) '
@@ -161,33 +161,42 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 								');';
 		
 		console.log(insertintoubi + valuesubi);
-		conn2.query(insertintoubi + valuesubi);
+		await conn2.query(insertintoubi + valuesubi);
 
-		//tipoInmueble: inmueble[0][0].tipoInmueble
-		const consultaubicacion = conn2.query('Select MAX(id_ubicacion) from ubicacion;');
-/*
-		consultaubicacion.then(val => {
-			let x = val[0];
-			console.log(x[0][0]);
-		});
-*/
-		const id_ubicacion = consultaubicacion[0];
+		const consultaubicacion = await conn2.query('Select MAX(id_ubicacion) as maximo from ubicacion;');
+
+		console.log(consultaubicacion[0]);
+        var maximo: number;
+        JSON.parse(JSON.stringify(consultaubicacion[0])).forEach((item) => {
+            maximo = item.maximo;
+        });
+
+        const id_ubicacion = maximo;
+        console.log(maximo);
 		//console.log(id_ubicacion);
 
 		const imagenes =imagen.toString().split(" ");
 
 		for (var i = 0; i < imagenes.length; i++){
-			let insertImagen: string = ' INSERT INTO Imagen (id_catastro, valor)';
+			let insertImagen: string = 'INSERT INTO Imagen (id_catastro, valor) ';
 			let valImagen: string = 'VALUES ("' +
 									id_catastro +
 									'", "' +
 									imagenes[i] +
 									'");';
-			conn2.query(insertImagen + valImagen);
+			await conn2.query(insertImagen + valImagen);
 		}
 
-		//const consultaimagen = conn2.query('SELECT MIN(Im.id_imagen) FROM Im.Imagen, I.Inmueble WHERE I.id_catastro = Im.id_catastro AND I.id_catastro = "' + id_catastro + '";');
-		const id_imagen = 34;//consultaimagen[0];
+		const idmin = await conn2.query('SELECT MIN(Im.id_imagen) as minimo FROM Imagen Im WHERE Im.id_catastro = "' + id_catastro + '";');
+
+		console.log(idmin[0]);
+        var minimo: number;
+        JSON.parse(JSON.stringify(idmin[0])).forEach((item) => {
+            minimo = item.minimo;
+        });
+
+        const id_imagen = minimo;
+        console.log(minimo);
 
 		let insertinto: string = 'INSERT INTO Inmueble ';
 		let values: string =
@@ -229,7 +238,7 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 						   catast + 
 						   ');';
 */
-		let insertinto4: string = 'INSERT INTO CaractIntrinsencas ';
+		let insertinto4: string = 'INSERT INTO CaractIntrinsecas ';
 		let val4: string = 'VALUES ("' +
 							id_catastro +
 							'", ' +
@@ -243,19 +252,20 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 							');';
 
 		console.log(insertinto + values);
-		//conn2.query(insertinto + values);
-		conn2.query(insertinto2 + val2);
+		await conn2.query(insertinto + values);
+		await conn2.query(insertinto2 + val2);
+		await conn2.query(insertinto4 + val4);
 		const caracteristicas = id_caractSecundaria.toString().split(" ");
 		for (var i = 0; i < caracteristicas.length; i++){
-			let insertinto3: string = ' INSERT INTO Contiene ';					
-			let val3: string = 'VALUES ("'+
+			let insertinto3: string = 'INSERT INTO Contiene ';					
+			let val3: string = 'VALUES ('+
 								caracteristicas[i] + 
-							   '", "' +
+							   ', "' +
 							   id_catastro + 
 							   '");';
-			conn2.query(insertinto3 + val3);
+			console.log(insertinto3 + val3);
+			await conn2.query(insertinto3 + val3);
 		}
-		conn2.query(insertinto4 + val4);
 
 		return res.json('Inmueble creado');
 	}
@@ -295,38 +305,70 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		const id_usuario = req.body.id_usuario;
 
 		const conn2 = await connect();
-
+		const id_ubicacion = conn2.query('SELECT id_ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";');
+		
 		if(!(req.body.extras === undefined)){
 			const extras = req.body.extras;
-			let updateextra: string = 'UPDATE Extra ';
-			let setextra: string = 'SET valor = "' +
-									  extras +
-									  '";';
+			let updateextra: string = 'DELETE FROM Extra ';
 			let wherextra: string = 'WHERE id_catastro = "' + id_catastro + '";';
-			conn2.query(updateextra + setextra + wherextra);
+			await conn2.query(updateextra + wherextra);
 		}
 
-		let insertintoubi: string = 'UPDATE Ubicacion (direccion, prov, latitud, longitud) '
-		let valuesubi: string = 'SET direccion = "' +
-								direccion +
-								'" AND id_provincia = "' +
-								id_provincia +
-								'" AND latitud = "' + 
-								latitud +
-								'" AND longitud = "' +
-								longitud 
-								'";';
-		
-		conn2.query(insertintoubi + valuesubi);
+		let deleteContiene: string = 'DELETE FROM Contiene ';
+		let whereContiene: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		const id_ubicacion = conn2.query('SELECT MAX(id_ubicacion) from Ubicacion ');
+		let deleteCaracteristicas: string = 'DELETE FROM CaracteristicaIntrinseca ';
+		let whereCaracteristicas: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let update: string = ' Inmueble I, CaractIntrinsecas CI';
+		let deleteCatalogo: string = 'DELETE FROM Catalogo ';
+		let whereCatalogo: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteInmueble: string = 'DELETE FROM Inmueble ';
+		let whereInmueble: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteImagen: string = 'DELETE FROM Imagen ';
+		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";'
+
+		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
+		let whereUbicacion: string = 'WHERE id_ubicacion = "' + id_ubicacion + '";';
+
+		await conn2.query(deleteContiene + whereContiene);
+		await conn2.query(deleteCaracteristicas + whereCaracteristicas);
+		await conn2.query(deleteCatalogo + whereCatalogo);
+		await conn2.query(deleteInmueble + whereInmueble);
+		await conn2.query(deleteImagen + whereImagen);
+		await conn2.query(deleteUbicacion + whereUbicacion);
+
+		return res.json('Inmueble editado');
+	}
+}
+/* anterior editInmuebe
+
+		for (var i = 0; i < imagenes.length; i++){
+			let insertintoImagen: string = 'INSERT INTO Imagen (id_catastro, valor)';
+			let valuesImagen: string = 'Values ("'+
+										id_catastro + 
+										'", "' +
+										imagenes[i] +
+										'";';
+			await conn2.query(insertintoImagen + valuesImagen);
+		}
+
+		const consultaimagen = await conn2.query('SELECT MIN(Im.id_imagen) as minimo FROM Im.Imagen, I.Inmueble WHERE I.id_catastro = Im.id_catastro AND I.id_catastro = "' + id_catastro + '";');
+
+		console.log(consultaimagen[0]);
+        var minimo: number;
+        JSON.parse(JSON.stringify(consultaimagen[0])).forEach((item) => {
+            minimo = item.minimo;
+        });
+
+        const id_imagen = minimo;
+        console.log(minimo);
+
+		let update: string = 'Inmueble I, CaractIntrinsecas CI';
 		let set: string =
 			' I.id_tipoInmueble = "' +
 			id_tipoInmueble +
-			'" AND I.id_ubicacion = "' +
-			id_ubicacion +
 			'" AND I.superficie = "' +
 			superficie +
 			'" AND I.id_tipoVivienda = "' +
@@ -335,22 +377,24 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 			nHab +
 			'" AND CI.nBano = "' +
 			nBano +
+			'" AND CI.nCocina = "' +
+			nCocina +
 			'" AND CI.id_certifEner = "' +
 			id_certifEner +
 			'" AND I.id_estadoInmueble = "' +
 			id_estadoInmueble +
 			'" AND I.id_imagen = "' +
-			imagen +
+			id_imagen +
 			'" AND I.breveDescripcion = "' +
 			breveDescripcion;
 		let were: string =
-			' I.id_catastro = "'+ id_catastro + '" AND I.id_catastro = CI.id_catastro;';
+			'I.id_catastro = "'+ id_catastro + '" AND I.id_catastro = CI.id_catastro;';
 
-		let delet: string = ' DELETE FROM Catalogo C, Contiene CO ';
-		let were2: string = ' WHERE C.id_catastro = CO.id_catastro AND C.id_catastro = "'+ id_catastro + '" AND C.id_modalidad = "'+ id_modalidad + ';';
+		let delet: string = 'DELETE FROM Catalogo C, Contiene CO ';
+		let were2: string = 'WHERE C.id_catastro = CO.id_catastro AND C.id_catastro = "'+ id_catastro + '" AND C.id_modalidad = "'+ id_modalidad + ';';
 
-		let inse: string = ' INSERT INTO Catalogo C';
-		let values: string = ' VALUES ("'+
+		let inse: string = 'INSERT INTO Catalogo ';
+		let values: string = 'VALUES ("'+
 							 id_catastro +
 							 '", ' +
 							 id_modalidad +
@@ -361,31 +405,47 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 							 ', 0, ' +
 							 id_usuario +
 							 ');';
-/*
+
 		let inse2: string = ' INSERT INTO Contiene CO';
 		let values2: string = ' VALUES (' +
 							  caracteristica +
 							  ', ' +
 							  catast +
 							  ');';
-*/
-		conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
-		conn2.query(delet + were2);
-		conn2.query(inse + values);
-		for (var i = 0; i < id_caractSecundaria.toString().length; i++){
-			let inse2: string = ' INSERT INTO Contiene CO';
-			let values2: string = ' VALUES (' +
-								  id_caractSecundaria.toString().split(" ") +
-								  ', ' +
-								  id_catastro +
-								  ');';
-			conn2.query(inse2 + values2);
-		}
-		//conn2.query(inse2 + values2);
 
-		return res.json('Inmueble editado');
-	}
-}
+		let updateubi: string = 'UPDATE Ubicacion '
+		let setubi: string = 'SET direccion = "' +
+								direccion +
+								'" AND prov = "' +
+								id_provincia +
+								'" AND latitud = "' + 
+								latitud +
+								'" AND longitud = "' +
+								longitud +
+								'";';
+
+		console.log(updateubi + setubi);
+		await conn2.query(delet + were2);
+		await conn2.query(updateubi + setubi);
+
+
+		await conn2.query('UPDATE ' + update + ' SET' + set + ' WHERE ' + were);
+
+		await conn2.query(inse + values);
+		for (var i = 0; i < id_caractSecundaria.toString().length; i++){
+			let inse2: string = 'UPDATE Contiene ';
+			let values2: string = 'VALUES ("' +
+								  id_caractSecundaria.toString().split(" ") +
+								  '", "' +
+								  id_catastro +
+								  '");';
+			await conn2.query(inse2 + values2);
+		}
+		*/
+
+
+
+
 
 // Delete
 // export async function deleteCatalog(req: Request, res:Response): Promise<Response> {

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { createInmueble, getInmueble, getUbicacion, editInmueble } from '../controllers/inmueble.controller';
+import { createInmueble, getInmueble, getUbicacion, editInmueble, registerInmueble } from '../controllers/inmueble.controller';
 
 const router = Router();
 
-router.route('/').post(createInmueble);
+router.route('/').post(registerInmueble);
 
 router.route('/edit').post(editInmueble);
 

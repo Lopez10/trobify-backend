@@ -1,4 +1,4 @@
 export interface Catalog {
-     precio: number;
-     tipo: string;
+	precio: number;
+	tipo: string;
 }

@@ -68,8 +68,9 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 
 	let newInmueble: Inmueble;
 
-	try {
-		newInmueble = {
+	//try {
+	newInmueble =
+		{
 			id_catastro: catastro,
 			tipoInmueble: inmueble[0][0].tipoInmueble,
 			estadoInmueble: inmueble[0][0].estadoInmueble,
@@ -93,10 +94,10 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			precio: inmueble[0][0].precio,
 			descuento: inmueble[0][0].descuento,
 			propietario: inmueble[0][0].propietario,
-		};
-	} catch (error) {
+		} || null;
+	/*} catch (error) {
 		newInmueble = null;
-	}
+	}*/
 
 	return res.json(newInmueble);
 }

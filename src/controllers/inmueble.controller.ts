@@ -68,8 +68,9 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 
 	let newInmueble: Inmueble;
 
-	try {
-		newInmueble = {
+	//try {
+	newInmueble =
+		{
 			id_catastro: catastro,
 			tipoInmueble: inmueble[0][0].tipoInmueble,
 			estadoInmueble: inmueble[0][0].estadoInmueble,
@@ -93,10 +94,10 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			precio: inmueble[0][0].precio,
 			descuento: inmueble[0][0].descuento,
 			propietario: inmueble[0][0].propietario,
-		};
-	} catch (error) {
+		} || null;
+	/*} catch (error) {
 		newInmueble = null;
-	}
+	}*/
 
 	return res.json(newInmueble);
 }
@@ -129,7 +130,9 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 		const caracteristica = req.body.caracteristica;
 
 		const conn2 = await connect();
-		const usuario = conn2.query('SELECT id_usuario FROM Catalogo WHERE id_catastro = "' + catast + '";');
+		const usuario = conn2.query(
+			'SELECT id_usuario FROM Catalogo WHERE id_catastro = "' + catast + '";'
+		);
 
 		let insertinto: string = 'INSERT INTO Inmueble ';
 		let values: string =
@@ -152,33 +155,15 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 			');';
 
 		let insertinto2: string = ' INSERT INTO Catalogo ';
-		let val2: string = 'VALUES (' +
-							catast +
-							', ' +
-							id_modalidad +
-							', ' +
-							precio +
-							', 0, 0, ' +
-							usuario +
-							');';
+		let val2: string =
+			'VALUES (' + catast + ', ' + id_modalidad + ', ' + precio + ', 0, 0, ' + usuario + ');';
 
-		let insertinto3: string = ' INSERT INTO Contiene ';					
-		let val3: string = 'VALUES ('+
-						   caracteristica + 
-						   ', ' +
-						   catast + 
-						   ');';
+		let insertinto3: string = ' INSERT INTO Contiene ';
+		let val3: string = 'VALUES (' + caracteristica + ', ' + catast + ');';
 
 		let insertinto4: string = ' INSERT INTO CaractIntrinsencas';
-		let val4: string = 'VALUES (' +
-							catast +
-							', ' +
-							nBano +
-							', 1, ' +
-							id_certifEner +
-							', ' +
-							nHab +
-							');';
+		let val4: string =
+			'VALUES (' + catast + ', ' + nBano + ', 1, ' + id_certifEner + ', ' + nHab + ');';
 
 		conn2.query(insertinto + values);
 		conn2.query(insertinto2 + val2);
@@ -218,9 +203,10 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 
 		let selDescu: string = ' SELECT descuento';
 		let selF_insercion: string = ' SELECT f_insercion';
-		let selId_usuario: string = ' SELECT id_usuario'; 
+		let selId_usuario: string = ' SELECT id_usuario';
 		let ff: string = ' FROM Catalogo ';
-		let ww: string = ' WHERE id_catastro = "' + catast + '" AND id_modalidad = "' + id_modalidad +'";'
+		let ww: string =
+			' WHERE id_catastro = "' + catast + '" AND id_modalidad = "' + id_modalidad + '";';
 
 		const conn2 = await connect();
 		const descuento = conn2.query(selDescu + ff + ww);
@@ -249,33 +235,34 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 			id_imagen +
 			'" AND I.breveDescripcion = "' +
 			breveDescripcion;
-		let were: string =
-			' I.id_catastro = "'+ catast + '" AND I.id_catastro = CI.id_catastro;';
+		let were: string = ' I.id_catastro = "' + catast + '" AND I.id_catastro = CI.id_catastro;';
 
 		let delet: string = ' DELETE FROM Catalogo C, Contiene CO ';
-		let were2: string = ' WHERE C.id_catastro = CO.id_catastro = "'+ catast + '" AND C.id_modalidad = "'+ id_modalidad + ';';
+		let were2: string =
+			' WHERE C.id_catastro = CO.id_catastro = "' +
+			catast +
+			'" AND C.id_modalidad = "' +
+			id_modalidad +
+			';';
 
 		let inse: string = ' INSERT INTO Catalogo C';
-		let values: string = ' VALUES ('+
-							 catast +
-							 ', ' +
-							 id_modalidad +
-							 ', ' +
-							 precio +
-							 ', ' +
-							 descuento +
-							 ', ' +
-							 f_insercion +
-							 ', ' +
-							 id_usuario +
-							 ');';
-		
+		let values: string =
+			' VALUES (' +
+			catast +
+			', ' +
+			id_modalidad +
+			', ' +
+			precio +
+			', ' +
+			descuento +
+			', ' +
+			f_insercion +
+			', ' +
+			id_usuario +
+			');';
+
 		let inse2: string = ' INSERT INTO Contiene CO';
-		let values2: string = ' VALUES (' +
-							  caracteristica +
-							  ', ' +
-							  catast +
-							  ');';
+		let values2: string = ' VALUES (' + caracteristica + ', ' + catast + ');';
 
 		conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
 		conn2.query(delet + were2);

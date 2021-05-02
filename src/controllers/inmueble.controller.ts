@@ -26,7 +26,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	const catastro: string = String(req.params.inmuebleId);
 
 	let select: string =
-		'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov, cat.id_usuario as propietario';
+		'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, car.nCocina, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov, cat.id_usuario as propietario';
 	let from: String =
 		'inmueble inm, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, ubicacion ubi, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI';
 	let where: String =
@@ -83,8 +83,9 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			latitud: inmueble[0][0].latitud,
 
 			tipoVivienda: inmueble[0][0].tipoVivienda,
-			cantHab: inmueble[0][0].nHab,
-			cantBanos: inmueble[0][0].nBano,
+			nHab: inmueble[0][0].nHab,
+			nBanos: inmueble[0][0].nBano,
+			nCocinas: inmueble[0][0].nCocina,
 			caracteristicas: caract,
 			extras: ext,
 

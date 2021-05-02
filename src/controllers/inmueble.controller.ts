@@ -285,9 +285,16 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		return res.json('Este inmueble no existe.');
 	} else {
 
-
 		const conn2 = await connect();
-		const id_ubicacion = await conn2.query('SELECT id_ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";');
+		const id_ubicacio = await conn2.query('SELECT I.id_ubicacion as Uber FROM Inmueble I WHERE I.id_catastro = "' + id_catastro + '";');
+		
+        var Ubers: number;
+        JSON.parse(JSON.stringify(id_ubicacio[0])).forEach((item) => {
+            Ubers = item.Uber;
+        });
+
+        const id_ubicacion = Ubers;
+        console.log(Ubers);
 		console.log(id_ubicacion[0]);
 		
 		if(!(req.body.extras === undefined)){
@@ -312,7 +319,7 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";'
 
 		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
-		let whereUbicacion: string = 'WHERE id_ubicacion = "' + id_ubicacion[0] + '";';
+		let whereUbicacion: string = 'WHERE id_ubicacion = ' + id_ubicacion + ';';
 
 		await conn2.query(deleteContiene + whereContiene);
 		await conn2.query(deleteCaracteristicas + whereCaracteristicas);

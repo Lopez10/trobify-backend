@@ -101,11 +101,11 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 }
 
 export async function registerInmueble(req: Request, res: Response): Promise<Response> {
-	const catast = req.body.id_catastro;
+	const id_catastro = req.body.id_catastro;
 
 	let select: string = 'I.id_catastro';
 	let from: string = 'Inmueble I';
-	let where: string = '"' + catast + '" = I.id_catastro;';
+	let where: string = '"' + id_catastro + '" = I.id_catastro;';
 
 	const conn = await connect();
 	const consultaReg = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
@@ -119,7 +119,7 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 		const id_tipoInmueble = req.body.id_tipoInmueble;
 		const id_estadoInmueble = req.body.id_estadoInmueble;
 		const id_tipoVivienda = req.body.id_tipoVivienda;
-		const id_imagen = req.body.id_imagen;
+		const imagenes = req.body.imagenes;
 		const id_modalidad = req.body.id_modalidad;
 		const precio = req.body.precio;
 		const nHab = req.body.nHab;
@@ -127,13 +127,15 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 		const id_certifEner = req.body.id_certifEner;
 		const caracteristica = req.body.caracteristica;
 
+		console.log(imagenes[0]);
+
 		const conn2 = await connect();
-		const usuario = conn2.query('SELECT id_usuario FROM Catalogo WHERE id_catastro = "' + catast + '";');
+		const usuario = conn2.query('SELECT id_usuario FROM Catalogo WHERE id_catastro = "' + id_catastro + '";');
 
 		let insertinto: string = 'INSERT INTO Inmueble ';
 		let values: string =
 			'VALUES (' +
-			catast +
+			id_catastro +
 			', ' +
 			superficie +
 			', ' +
@@ -147,12 +149,21 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 			', ' +
 			id_tipoVivienda +
 			', ' +
-			id_imagen +
+			imagenes +
 			');';
+
+		for (var i = 0; i < imagenes.toString().length; i++){
+			let insertImagen: string = ' INSERT INTO Imagen (id_catastro, valor)';
+			let valImagen: string = 'VALUES (' +
+									id_catastro +
+									', ' +
+									imagenes.toString().splice +
+									');';
+		}
 
 		let insertinto2: string = ' INSERT INTO Catalogo ';
 		let val2: string = 'VALUES (' +
-							catast +
+							id_catastro +
 							', ' +
 							id_modalidad +
 							', ' +
@@ -160,17 +171,17 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 							', 0, 0, ' +
 							usuario +
 							');';
-
+/*
 		let insertinto3: string = ' INSERT INTO Contiene ';					
 		let val3: string = 'VALUES ('+
 						   caracteristica + 
 						   ', ' +
 						   catast + 
 						   ');';
-
+*/
 		let insertinto4: string = ' INSERT INTO CaractIntrinsencas';
 		let val4: string = 'VALUES (' +
-							catast +
+							id_catastro +
 							', ' +
 							nBano +
 							', 1, ' +
@@ -181,7 +192,16 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 
 		conn2.query(insertinto + values);
 		conn2.query(insertinto2 + val2);
-		conn2.query(insertinto3 + val3);
+		for (var i = 0; i < caracteristica.toString().length; i++){
+			let insertinto3: string = ' INSERT INTO Contiene ';					
+			let val3: string = 'VALUES ('+
+							   caracteristica.toString().split + 
+							   ', ' +
+							   id_catastro + 
+							   ');';
+			conn2.query(insertinto3 + val3);
+		}
+	//	conn2.query(insertinto3 + val3);
 		conn2.query(insertinto4 + val4);
 
 		return res.json(true);
@@ -268,20 +288,29 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 							 ', ' +
 							 id_usuario +
 							 ');';
-		
+/*
 		let inse2: string = ' INSERT INTO Contiene CO';
 		let values2: string = ' VALUES (' +
 							  caracteristica +
 							  ', ' +
 							  catast +
 							  ');';
-
+*/
 		conn2.query('UPDATE ' + update + ' SET ' + set + ' WHERE ' + were);
 		conn2.query(delet + were2);
 		conn2.query(inse + values);
-		conn2.query(inse2 + values2);
+		for (var i = 0; i < caracteristica.toString().length; i++){
+			let inse2: string = ' INSERT INTO Contiene CO';
+			let values2: string = ' VALUES (' +
+								  caracteristica.toString().split +
+								  ', ' +
+								  catast +
+								  ');';
+			conn2.query(inse2 + values2);
+		}
+		//conn2.query(inse2 + values2);
 
-		return res.json(true);
+		return res.json('Inmueble editado');
 	}
 }
 

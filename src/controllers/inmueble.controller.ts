@@ -112,7 +112,7 @@ export async function existeCatastro(from: string, id_catastro: string): Promise
 	let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
 	const conn = await connect();
 	const consulta = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-
+	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 	var contar: number = 0;
 	JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 		contar = item.cuenta;
@@ -122,6 +122,7 @@ export async function existeCatastro(from: string, id_catastro: string): Promise
 
 export async function registrarInmueble(req: Request, res: Response): Promise<Response> {
 	const id_catastro: string = String(req.body.id_catastro);
+	console.log(req.body);
 	if (await existeInmueble(id_catastro)) {
 		return res.json('Este inmueble ya se encuentra registrado en nuestra Base de Datos');
 	}
@@ -249,7 +250,9 @@ async function cargarUbicacion(
 		let insert: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) ';
 		let value: string =
 			'VALUES ("' + direccion + '", ' + id_provincia + ', ' + latitud + ', ' + longitud + ');';
+		console.log(insert + ' ' + value);
 		await conn.query(insert + ' ' + value);
+		console.log(insert + ' ' + value);
 	} catch {
 		return -1;
 	}

@@ -194,6 +194,8 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 	if (!catalogoCargado) {
 		return res.json('Error al cargar el catalogo');
 	}
+
+	return res.json('El inmueble se ha registrado satisfactoriamente');
 }
 
 async function cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
@@ -395,7 +397,7 @@ async function eliminarSegunId(
 	return true;
 }
 
-export async function eliminarInmueble(req: Request, res: Response): Promise<string> {
+export async function eliminarInmueble(req: Request, res: Response): Promise<Response> {
 	const id_catastro: string = String(req.body.id_catastro);
 
 	const conn = await connect();
@@ -408,7 +410,7 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<str
 		id_ubicacion = item.ubicacion;
 	});
 	if (!(await existeInmueble(id_catastro))) {
-		return 'Este inmueble NO se encuentra en nuestra Base de Datos';
+		return res.json('Este inmueble NO se encuentra en nuestra Base de Datos');
 	}
 
 	let mensajeFin: string = 'Los datos se han eliminado correctamente';
@@ -429,12 +431,11 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<str
 	fallo = await eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
 	if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
 
-	res.json(mensajeFin);
-	return mensajeFin;
+	return res.json(mensajeFin);
 }
 
 export async function modificarInmueble(req: Request, res: Response): Promise<Response> {
-	eliminarInmueble(req, res);
+	//eliminarInmueble(req, res);
 
 	//registrarInmueble(req, res);
 

@@ -112,7 +112,6 @@ export async function existeCatastro(from: string, id_catastro: string): Promise
 	let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
 	const conn = await connect();
 	const consulta = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 	var contar: number = 0;
 	JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 		contar = item.cuenta;
@@ -122,7 +121,6 @@ export async function existeCatastro(from: string, id_catastro: string): Promise
 
 export async function registrarInmueble(req: Request, res: Response): Promise<Response> {
 	const id_catastro: string = String(req.body.id_catastro);
-	console.log(req.body);
 	if (await existeInmueble(id_catastro)) {
 		return res.json('Este inmueble ya se encuentra registrado en nuestra Base de Datos');
 	}
@@ -196,8 +194,6 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 	if (!catalogoCargado) {
 		return res.json('Error al cargar el catalogo');
 	}
-
-	return res.json('El inmueble se ha registrado satisfactoriamente');
 }
 
 async function cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
@@ -250,9 +246,7 @@ async function cargarUbicacion(
 		let insert: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) ';
 		let value: string =
 			'VALUES ("' + direccion + '", ' + id_provincia + ', ' + latitud + ', ' + longitud + ');';
-		console.log(insert + ' ' + value);
 		await conn.query(insert + ' ' + value);
-		console.log(insert + ' ' + value);
 	} catch {
 		return -1;
 	}
@@ -333,8 +327,6 @@ async function cargarCatalogo(
 				'", ' +
 				id_usuario +
 				');';
-
-			console.log(insert + ' ' + value);
 			await conn.query(insert + ' ' + value);
 		}
 	} catch {
@@ -403,7 +395,7 @@ async function eliminarSegunId(
 	return true;
 }
 
-export async function eliminarInmueble(req: Request, res: Response): Promise<Response> {
+export async function eliminarInmueble(req: Request, res: Response): Promise<string> {
 	const id_catastro: string = String(req.body.id_catastro);
 
 	const conn = await connect();
@@ -416,7 +408,7 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<Res
 		id_ubicacion = item.ubicacion;
 	});
 	if (!(await existeInmueble(id_catastro))) {
-		return res.json('Este inmueble NO se encuentra en nuestra Base de Datos');
+		return 'Este inmueble NO se encuentra en nuestra Base de Datos';
 	}
 
 	let mensajeFin: string = 'Los datos se han eliminado correctamente';
@@ -437,21 +429,14 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<Res
 	fallo = await eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
 	if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
 
-	return res.json(mensajeFin);
+	res.json(mensajeFin);
+	return mensajeFin;
 }
 
 export async function modificarInmueble(req: Request, res: Response): Promise<Response> {
-	let mensaje: string = 'Se ha quedado bien el día';
+	eliminarInmueble(req, res);
 
-	const res1: Response = res;
+	//registrarInmueble(req, res);
 
-	setTimeout(() => {
-		eliminarInmueble(req, res1);
-	}, 1000);
-
-	setTimeout(() => {
-		registrarInmueble(req, res1);
-	}, 1000);
-
-	return res.json(mensaje);
+	return res.json('Tus muertos, so desgraciado');
 }

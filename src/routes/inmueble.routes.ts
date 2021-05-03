@@ -1,8 +1,6 @@
-import { Router } from 'express';
+import { request, response, Router } from 'express';
 import {
-	createInmueble,
 	getInmueble,
-	getUbicacion,
 	modificarInmueble,
 	registrarInmueble,
 	eliminarInmueble,

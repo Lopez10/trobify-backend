@@ -317,6 +317,7 @@ async function cargarCatalogo(
 	try {
 		let insert: string = 'INSERT INTO Catalogo ';
 		console.log(id_modalidad.length);
+		let prueba = new Date('2021-5-3');
 		for (var i = 0; i < id_modalidad.length; i++) {
 			let value: string =
 				'VALUES ("' +
@@ -327,7 +328,7 @@ async function cargarCatalogo(
 				parseInt(precio[i]) +
 				', ' +
 				descuento +
-				', 0,' +
+				', "2021-5-3" ,' +
 				id_usuario +
 				');';
 

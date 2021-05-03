@@ -68,7 +68,6 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 
 	let newInmueble: Inmueble;
 
-	//try {
 	newInmueble =
 		{
 			id_catastro: catastro,
@@ -95,9 +94,6 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 			descuento: inmueble[0][0].descuento,
 			propietario: inmueble[0][0].propietario,
 		} || null;
-	/*} catch (error) {
-		newInmueble = null;
-	}*/
 
 	return res.json(newInmueble);
 }
@@ -394,6 +390,56 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 	if (eddy == ' ') {
 		return res.json('Este inmueble no existe.');
 	} else {
+		const conn2 = await connect();
+		const id_ubicacio = await conn2.query(
+			'SELECT I.id_ubicacion as Uber FROM Inmueble I WHERE I.id_catastro = "' + id_catastro + '";'
+		);
+
+		var Ubers: number;
+		JSON.parse(JSON.stringify(id_ubicacio[0])).forEach((item) => {
+			Ubers = item.Uber;
+		});
+
+		const id_ubicacion = Ubers;
+		console.log(Ubers);
+		console.log(id_ubicacion[0]);
+
+		if (!(req.body.extras === undefined)) {
+			let updateextra: string = 'DELETE FROM Extra ';
+			let wherextra: string = 'WHERE id_catastro = "' + id_catastro + '";';
+			await conn2.query(updateextra + wherextra);
+		}
+
+		let deleteContiene: string = 'DELETE FROM Contiene ';
+		let whereContiene: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteCaracteristicas: string = 'DELETE FROM CaractIntrinsecas ';
+		let whereCaracteristicas: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteCatalogo: string = 'DELETE FROM Catalogo ';
+		let whereCatalogo: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteInmueble: string = 'DELETE FROM Inmueble ';
+		let whereInmueble: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteImagen: string = 'DELETE FROM Imagen ';
+		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
+		let whereUbicacion: string = 'WHERE id_ubicacion = ' + id_ubicacion + ';';
+
+		await conn2.query(deleteContiene + whereContiene);
+		await conn2.query(deleteCaracteristicas + whereCaracteristicas);
+		await conn2.query(deleteCatalogo + whereCatalogo);
+		await conn2.query(deleteInmueble + whereInmueble);
+		await conn2.query(deleteImagen + whereImagen);
+		await conn2.query(deleteUbicacion + whereUbicacion);
+
+		return registerInmueble(req, res);
+	}
+}
+/* anterior editInmuebe
+
 		const superficie = req.body.superficie;
 		const breveDescripcion = req.body.breveDescripcion;
 		const id_tipoInmueble = req.body.id_tipoInmueble;
@@ -413,48 +459,6 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		const nCocina = req.body.nCocina;
 		const descuento = req.body.descuento;
 		const id_usuario = req.body.id_usuario;
-
-		const conn2 = await connect();
-		const id_ubicacion = conn2.query(
-			'SELECT id_ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
-		);
-
-		if (!(req.body.extras === undefined)) {
-			const extras = req.body.extras;
-			let updateextra: string = 'DELETE FROM Extra ';
-			let wherextra: string = 'WHERE id_catastro = "' + id_catastro + '";';
-			await conn2.query(updateextra + wherextra);
-		}
-
-		let deleteContiene: string = 'DELETE FROM Contiene ';
-		let whereContiene: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteCaracteristicas: string = 'DELETE FROM CaracteristicaIntrinseca ';
-		let whereCaracteristicas: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteCatalogo: string = 'DELETE FROM Catalogo ';
-		let whereCatalogo: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteInmueble: string = 'DELETE FROM Inmueble ';
-		let whereInmueble: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteImagen: string = 'DELETE FROM Imagen ';
-		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
-		let whereUbicacion: string = 'WHERE id_ubicacion = "' + id_ubicacion + '";';
-
-		await conn2.query(deleteContiene + whereContiene);
-		await conn2.query(deleteCaracteristicas + whereCaracteristicas);
-		await conn2.query(deleteCatalogo + whereCatalogo);
-		await conn2.query(deleteInmueble + whereInmueble);
-		await conn2.query(deleteImagen + whereImagen);
-		await conn2.query(deleteUbicacion + whereUbicacion);
-
-		return res.json('Inmueble editado');
-	}
-}
-/* anterior editInmuebe
 
 		for (var i = 0; i < imagenes.length; i++){
 			let insertintoImagen: string = 'INSERT INTO Imagen (id_catastro, valor)';

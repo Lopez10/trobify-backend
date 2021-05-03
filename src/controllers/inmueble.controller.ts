@@ -98,29 +98,34 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	return res.json(newInmueble);
 }
 
-export async function existeInmueble(id_catastro: String): Promise<Boolean> {
-	let select: string = 'COUNT(id_catastro) as cuenta';
-	let from: string = 'Inmueble';
-	let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
-
-	const conn = await connect();
-	const consulta = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-
-	var contar: number;
-	JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
-		contar = Number(item.cuenta);
-	});
-
-	if (contar == 0) return true;
-
+async function existeInmueble(id_catastro: string): Promise<Boolean> {
+	if ((await existeCatastro('Imagen', id_catastro)) > 0) return true;
+	if ((await existeCatastro('Inmueble', id_catastro)) > 0) return true;
+	if ((await existeCatastro('catalogo', id_catastro)) > 0) return true;
+	if ((await existeCatastro('caractintrinsecas', id_catastro)) > 0) return true;
+	if ((await existeCatastro('contiene', id_catastro)) > 0) return true;
 	return false;
 }
 
-export async function registerInmueble(req: Request, res: Response): Promise<Response> {
-	if (!existeInmueble(req.body.id_catastro)) {
+export async function existeCatastro(from: string, id_catastro: string): Promise<number> {
+	let select: string = 'COUNT(id_catastro) as cuenta';
+	let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
+	const conn = await connect();
+	const consulta = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
+
+	var contar: number = 0;
+	JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
+		contar = item.cuenta;
+	});
+	return contar;
+}
+
+export async function registrarInmueble(req: Request, res: Response): Promise<Response> {
+	const id_catastro: string = String(req.body.id_catastro);
+	if (await existeInmueble(id_catastro)) {
 		return res.json('Este inmueble ya se encuentra registrado en nuestra Base de Datos');
 	}
-	const id_catastro: string = String(req.body.id_catastro);
+
 	const superficie: number = Number(req.body.superficie);
 	const breveDescripcion: string = String(req.body.breveDescripcion);
 	const id_tipoInmueble: number = Number(req.body.id_tipoInmueble);
@@ -155,8 +160,6 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 			return res.json('Error al cargar la información extra');
 		}
 	}
-
-	//console.log('id_imagen: ' + id_imagen + ', id_ubicacion: ' + id_ubicacion);
 
 	const inmuebleCargado: boolean = Boolean(
 		cargarInmueble(
@@ -295,7 +298,6 @@ async function cargarInmueble(
 			', ' +
 			id_imagen +
 			');';
-		console.log(insert + ' ' + value);
 		await conn.query(insert + ' ' + value);
 	} catch {
 		return false;
@@ -435,7 +437,7 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		await conn2.query(deleteImagen + whereImagen);
 		await conn2.query(deleteUbicacion + whereUbicacion);
 
-		return registerInmueble(req, res);
+		return registrarInmueble(req, res);
 	}
 }
 /* anterior editInmuebe

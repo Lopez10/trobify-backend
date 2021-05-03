@@ -310,10 +310,11 @@ async function cargarCatalogo(
 	id_usuario: number
 ): Promise<Boolean> {
 	const conn = await connect();
-	//const fecha: Date = new Date();
+	const fecha: Date = new Date();
+
+	const hoy: string = '' + fecha.getFullYear() + '-' + fecha.getMonth() + '-' + fecha.getDay();
 	try {
 		let insert: string = 'INSERT INTO Catalogo ';
-		console.log(id_modalidad.length);
 		for (var i = 0; i < id_modalidad.length; i++) {
 			let value: string =
 				'VALUES ("' +
@@ -324,7 +325,9 @@ async function cargarCatalogo(
 				parseInt(precio[i]) +
 				', ' +
 				descuento +
-				', 0,' +
+				', "' +
+				hoy +
+				'", ' +
 				id_usuario +
 				');';
 

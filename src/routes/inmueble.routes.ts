@@ -12,9 +12,9 @@ const router = Router();
 
 router.route('/').post(registrarInmueble);
 
-router.route('/eliminarInmueble').post(eliminarInmueble);
+router.route('/').delete(eliminarInmueble);
 
-router.route('/editarInmueble').post(modificarInmueble);
+router.route('/').put(modificarInmueble);
 
 router.route('/:inmuebleId/:modalidadId').get(getInmueble);
 //     .delete(deleteCatalog)

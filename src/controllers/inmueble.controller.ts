@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import { RowDataPacket } from 'mysql2';
 import { connect } from '../database';
 import { Inmueble } from '../interface/inmueble.interface';
@@ -131,8 +131,8 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 	const id_estadoInmueble: number = Number(req.body.id_estadoInmueble);
 	const id_tipoVivienda: number = Number(req.body.id_tipoVivienda);
 	const imagen: string[] = req.body.imagen;
-	const id_modalidad: number = Number(req.body.id_modalidad);
-	const precio: number = Number(req.body.precio);
+	const id_modalidad: string[] = req.body.id_modalidad;
+	const precio: string[] = req.body.precio;
 	const nHab: number = Number(req.body.nHab);
 	const nBano: number = Number(req.body.nBano);
 	const id_certifEner: number = Number(req.body.id_certifEner);
@@ -202,8 +202,8 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 async function cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
 	const conn = await connect();
 	try {
+		let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
 		for (var i = 0; i < imagen.length; i++) {
-			let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
 			let value: string = 'VALUES ("' + id_catastro + '", "' + imagen[i] + '");';
 			await conn.query(insert + ' ' + value);
 		}
@@ -304,27 +304,33 @@ async function cargarInmueble(
 
 async function cargarCatalogo(
 	id_catastro: string,
-	id_modalidad: number,
-	precio: number,
+	id_modalidad: string[],
+	precio: string[],
 	descuento: number,
 	id_usuario: number
 ): Promise<Boolean> {
 	const conn = await connect();
+	//const fecha: Date = new Date();
 	try {
-		let insert: string = ' INSERT INTO Catalogo ';
-		let value: string =
-			'VALUES ("' +
-			id_catastro +
-			'", ' +
-			id_modalidad +
-			', ' +
-			precio +
-			', ' +
-			descuento +
-			', 0,' +
-			id_usuario +
-			');';
-		await conn.query(insert + ' ' + value);
+		let insert: string = 'INSERT INTO Catalogo ';
+		console.log(id_modalidad.length);
+		for (var i = 0; i < id_modalidad.length; i++) {
+			let value: string =
+				'VALUES ("' +
+				id_catastro +
+				'", ' +
+				parseInt(id_modalidad[i]) +
+				', ' +
+				parseInt(precio[i]) +
+				', ' +
+				descuento +
+				', 0,' +
+				id_usuario +
+				');';
+
+			console.log(insert + ' ' + value);
+			await conn.query(insert + ' ' + value);
+		}
 	} catch {
 		return false;
 	}
@@ -430,8 +436,16 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<Res
 
 export async function modificarInmueble(req: Request, res: Response): Promise<Response> {
 	let mensaje: string = 'Se ha quedado bien el día';
-	await eliminarInmueble(req, res);
-	await registrarInmueble(req, res);
+
+	const res1: Response = res;
+
+	setTimeout(() => {
+		eliminarInmueble(req, res1);
+	}, 1000);
+
+	setTimeout(() => {
+		registrarInmueble(req, res1);
+	}, 1000);
 
 	return res.json(mensaje);
 }

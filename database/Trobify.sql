@@ -65,7 +65,7 @@ CREATE TABLE CertificacionEnergetica (
 CREATE TABLE Imagen (
 	id_imagen INT AUTO_INCREMENT,
 	id_catastro CHAR(20),
-	valor TINYTEXT NOT NULL,
+	valor LONGTEXT NOT NULL,
 	PRIMARY KEY (id_imagen)
 );
 CREATE TABLE Inmueble (

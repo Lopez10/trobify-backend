@@ -35,7 +35,7 @@ FROM ubicacion;
 
 SELECT MIN(Im.id_imagen) as minimo FROM Imagen Im WHERE Im.id_catastro = "CARMELO0000000000001";
 
-SELECT COUNT(id_catastro) as cuenta FROM Imagen WHERE id_catastro LIKE ( "CARMELO0000000000001");
+SELECT COUNT(id_catastro) as cuenta FROM Imagen WHERE id_catastro LIKE ( "CARMELO0000000000002");
 SELECT COUNT(id_catastro) as cuenta FROM Inmueble WHERE id_catastro LIKE ( "CARMELO0000000000001");
 SELECT COUNT(id_catastro) as cuenta FROM catalogo WHERE id_catastro LIKE ( "CARMELO0000000000001");
 SELECT COUNT(id_catastro) as cuenta FROM caractintrinsecas WHERE id_catastro LIKE ( "CARMELO0000000000001");

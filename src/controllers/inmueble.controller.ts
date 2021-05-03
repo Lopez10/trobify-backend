@@ -102,104 +102,186 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	return res.json(newInmueble);
 }
 
-export async function registerInmueble(req: Request, res: Response): Promise<Response> {
-	const id_catastro = req.body.id_catastro;
-
-	let select: string = 'I.id_catastro';
-	let from: string = 'Inmueble I';
-	let where: string = '"' + id_catastro + '" = I.id_catastro;';
+export async function existeInmueble(id_catastro: String): Promise<Boolean> {
+	let select: string = 'COUNT(id_catastro) as cuenta';
+	let from: string = 'Inmueble';
+	let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
 
 	const conn = await connect();
-	const consultaReg = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-	const reggy = consultaReg[0].toString();
-	console.log(reggy);
-	if (!(reggy == "")) {
-		return res.json('Este inmueble ya existe.');
-	} else {
-		const superficie = req.body.superficie;
-		const breveDescripcion = req.body.breveDescripcion;
-		const id_tipoInmueble = req.body.id_tipoInmueble;
-		const id_estadoInmueble = req.body.id_estadoInmueble;
-		const id_tipoVivienda = req.body.id_tipoVivienda;
-		const imagen = req.body.imagen;
-		const id_modalidad = req.body.id_modalidad;
-		const precio = req.body.precio;
-		const nHab = req.body.nHab;
-		const nBano = req.body.nBano;
-		const id_certifEner = req.body.id_certifEner;
-		const id_caractSecundaria = req.body.id_caractSecundaria;
-		const id_provincia = req.body.id_provincia;
-		const direccion = req.body.direccion;
-		const longitud = req.body.longitud;
-		const latitud = req.body.latitud;
-		const nCocina = req.body.nCocina;
-		const descuento = req.body.descuento;
-		const id_usuario = req.body.id_usuario;
+	const consulta = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
 
-		const conn2 = await connect();
+	var contar: number;
+	JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
+		contar = Number(item.cuenta);
+	});
 
-		if(!(req.body.extras === undefined)){
-			const extras = req.body.extras;
-			let insertintoextra: string = 'INSERT INTO Extra (id_catastro, valor) '
-			let valuesextra: string = 'VALUES ("' +
-									  id_catastro +
-									  '", "' +
-									  extras +
-									  '");';
-			await conn2.query(insertintoextra + valuesextra);
+	if (contar == 0) return true;
+
+	return false;
+}
+
+export async function registerInmueble(req: Request, res: Response): Promise<Response> {
+	if (!existeInmueble(req.body.id_catastro)) {
+		return res.json('Este inmueble ya se encuentra registrado en nuestra Base de Datos');
+	}
+	const id_catastro: string = String(req.body.id_catastro);
+	const superficie: number = Number(req.body.superficie);
+	const breveDescripcion: string = String(req.body.breveDescripcion);
+	const id_tipoInmueble: number = Number(req.body.id_tipoInmueble);
+	const id_estadoInmueble: number = Number(req.body.id_estadoInmueble);
+	const id_tipoVivienda: number = Number(req.body.id_tipoVivienda);
+	const imagen: string[] = req.body.imagen;
+	const id_modalidad: number = Number(req.body.id_modalidad);
+	const precio: number = Number(req.body.precio);
+	const nHab: number = Number(req.body.nHab);
+	const nBano: number = Number(req.body.nBano);
+	const id_certifEner: number = Number(req.body.id_certifEner);
+	const id_caractSecundaria: string[] = req.body.id_caractSecundaria;
+	const id_provincia: number = Number(req.body.id_provincia);
+	const direccion: string = String(req.body.direccion);
+	const longitud: number = Number(req.body.longitud);
+	const latitud: number = Number(req.body.latitud);
+	const nCocina: number = Number(req.body.nCocina);
+	const descuento: number = Number(req.body.descuento);
+	const id_usuario: number = Number(req.body.id_usuario);
+
+	const id_imagen = await cargarImagenes(id_catastro, imagen);
+	if (id_imagen < 0) {
+		return res.json('Error al cargar las imágenes');
+	}
+	const id_ubicacion = await cargarUbicacion(id_provincia, direccion, longitud, latitud);
+	if (id_ubicacion < 0) {
+		return res.json('Error al cargar la Ubicacion');
+	}
+
+	if (!(req.body.extras === undefined)) {
+		if (!cargarExtras(id_catastro, req.body.extras)) {
+			return res.json('Error al cargar la información extra');
 		}
+	}
 
-		let insertintoubi: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) '
-		let valuesubi: string = 'VALUES ("' +
-								direccion +
-								'", ' +
-								id_provincia +
-								', ' + 
-								latitud +
-								', ' +
-								longitud +
-								');';
-		
-		console.log(insertintoubi + valuesubi);
-		await conn2.query(insertintoubi + valuesubi);
+	//console.log('id_imagen: ' + id_imagen + ', id_ubicacion: ' + id_ubicacion);
 
-		const consultaubicacion = await conn2.query('Select MAX(id_ubicacion) as maximo from ubicacion;');
+	const inmuebleCargado: boolean = Boolean(
+		cargarInmueble(
+			id_catastro,
+			superficie,
+			breveDescripcion,
+			id_ubicacion,
+			id_tipoInmueble,
+			id_estadoInmueble,
+			id_tipoVivienda,
+			id_imagen
+		)
+	);
 
-		console.log(consultaubicacion[0]);
-        var maximo: number;
-        JSON.parse(JSON.stringify(consultaubicacion[0])).forEach((item) => {
-            maximo = item.maximo;
-        });
+	if (!inmuebleCargado) {
+		return res.json('Error al cargar el inmueble');
+	}
 
-        const id_ubicacion = maximo;
-        console.log(maximo);
-		//console.log(id_ubicacion);
+	const catalogoCargado: boolean = Boolean(
+		cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
+	);
+	if (!catalogoCargado) {
+		return res.json('Error al cargar el catalogo');
+	}
 
-		const imagenes =imagen.toString().split(" ");
+	const caracteristicasIntrinsecasCargado: boolean = Boolean(
+		cargarCaractericticasIntrinsecas(id_catastro, nBano, nCocina, id_certifEner, nHab)
+	);
 
-		for (var i = 0; i < imagenes.length; i++){
-			let insertImagen: string = 'INSERT INTO Imagen (id_catastro, valor) ';
-			let valImagen: string = 'VALUES ("' +
-									id_catastro +
-									'", "' +
-									imagenes[i] +
-									'");';
-			await conn2.query(insertImagen + valImagen);
+	if (!caracteristicasIntrinsecasCargado) {
+		return res.json('Error al cargar las características Intrinsecas');
+	}
+
+	const contieneCargado: boolean = Boolean(cargarContiene(id_catastro, id_caractSecundaria));
+
+	if (!contieneCargado) {
+		return res.json('Error al cargar las características Intrinsecas');
+	}
+
+	return res.json('El inmueble se ha registrado satisfactoriamente');
+}
+
+async function cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
+	const conn = await connect();
+	try {
+		for (var i = 0; i < imagen.length; i++) {
+			let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
+			let value: string = 'VALUES ("' + id_catastro + '", "' + imagen[i] + '");';
+			await conn.query(insert + ' ' + value);
 		}
+	} catch {
+		return -1;
+	}
 
-		const idmin = await conn2.query('SELECT MIN(Im.id_imagen) as minimo FROM Imagen Im WHERE Im.id_catastro = "' + id_catastro + '";');
+	const calculoMinimo = await conn.query(
+		'SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
+	);
 
-		console.log(idmin[0]);
-        var minimo: number;
-        JSON.parse(JSON.stringify(idmin[0])).forEach((item) => {
-            minimo = item.minimo;
-        });
+	var idMinimo: number;
+	JSON.parse(JSON.stringify(calculoMinimo[0])).forEach((item) => {
+		idMinimo = item.minimo;
+	});
 
-        const id_imagen = minimo;
-        console.log(minimo);
+	return idMinimo;
+}
 
-		let insertinto: string = 'INSERT INTO Inmueble ';
-		let values: string =
+async function cargarExtras(id_catastro: String, extras: String[]): Promise<Boolean> {
+	const conn = await connect();
+	try {
+		for (var i = 0; i < extras.length; i++) {
+			let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
+			let value: string = 'VALUES ("' + id_catastro + '", "' + extras[i] + '");';
+			await conn.query(insert + ' ' + value);
+		}
+	} catch {
+		return false;
+	}
+
+	return true;
+}
+
+async function cargarUbicacion(
+	id_provincia: number,
+	direccion: string,
+	longitud: number,
+	latitud: number
+): Promise<number> {
+	const conn = await connect();
+	try {
+		let insert: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) ';
+		let value: string =
+			'VALUES ("' + direccion + '", ' + id_provincia + ', ' + latitud + ', ' + longitud + ');';
+		await conn.query(insert + ' ' + value);
+	} catch {
+		return -1;
+	}
+
+	const calculoMaximo = await conn.query('Select MAX(id_ubicacion) as maximo from ubicacion;');
+
+	var idMaximo: number;
+	JSON.parse(JSON.stringify(calculoMaximo[0])).forEach((item) => {
+		idMaximo = Number(item.maximo);
+	});
+
+	return idMaximo;
+}
+
+async function cargarInmueble(
+	id_catastro: string,
+	superficie: number,
+	breveDescripcion: string,
+	id_ubicacion: number,
+	id_tipoInmueble: number,
+	id_estadoInmueble: number,
+	id_tipoVivienda: number,
+	id_imagen: number
+): Promise<Boolean> {
+	const conn = await connect();
+	try {
+		let insert: string = 'INSERT INTO Inmueble ';
+		let value: string =
 			'VALUES ("' +
 			id_catastro +
 			'", ' +
@@ -217,58 +299,86 @@ export async function registerInmueble(req: Request, res: Response): Promise<Res
 			', ' +
 			id_imagen +
 			');';
-
-		let insertinto2: string = ' INSERT INTO Catalogo ';
-		let val2: string = 'VALUES ("' +
-							id_catastro +
-							'", ' +
-							id_modalidad +
-							', ' +
-							precio +
-							', ' +
-							descuento +
-							', 0,' +
-							id_usuario +
-							');';
-/*
-		let insertinto3: string = ' INSERT INTO Contiene ';					
-		let val3: string = 'VALUES ('+
-						   caracteristica + 
-						   ', ' +
-						   catast + 
-						   ');';
-*/
-		let insertinto4: string = 'INSERT INTO CaractIntrinsecas ';
-		let val4: string = 'VALUES ("' +
-							id_catastro +
-							'", ' +
-							nBano +
-							', ' +
-							nCocina +
-							', ' +
-							id_certifEner +
-							', ' +
-							nHab +
-							');';
-
-		console.log(insertinto + values);
-		await conn2.query(insertinto + values);
-		await conn2.query(insertinto2 + val2);
-		await conn2.query(insertinto4 + val4);
-		const caracteristicas = id_caractSecundaria.toString().split(" ");
-		for (var i = 0; i < caracteristicas.length; i++){
-			let insertinto3: string = 'INSERT INTO Contiene ';					
-			let val3: string = 'VALUES ('+
-								caracteristicas[i] + 
-							   ', "' +
-							   id_catastro + 
-							   '");';
-			console.log(insertinto3 + val3);
-			await conn2.query(insertinto3 + val3);
-		}
-
-		return res.json('Inmueble creado');
+		console.log(insert + ' ' + value);
+		await conn.query(insert + ' ' + value);
+	} catch {
+		return false;
 	}
+	return true;
+}
+
+async function cargarCatalogo(
+	id_catastro: string,
+	id_modalidad: number,
+	precio: number,
+	descuento: number,
+	id_usuario: number
+): Promise<Boolean> {
+	const conn = await connect();
+	try {
+		let insert: string = ' INSERT INTO Catalogo ';
+		let value: string =
+			'VALUES ("' +
+			id_catastro +
+			'", ' +
+			id_modalidad +
+			', ' +
+			precio +
+			', ' +
+			descuento +
+			', 0,' +
+			id_usuario +
+			');';
+		await conn.query(insert + ' ' + value);
+	} catch {
+		return false;
+	}
+	return true;
+}
+
+async function cargarCaractericticasIntrinsecas(
+	id_catastro: string,
+	nBano: number,
+	nCocina: number,
+	id_certifEner: number,
+	nHab: number
+): Promise<Boolean> {
+	const conn = await connect();
+	try {
+		let insert: string = 'INSERT INTO CaractIntrinsecas ';
+		let value: string =
+			'VALUES ("' +
+			id_catastro +
+			'", ' +
+			nBano +
+			', ' +
+			nCocina +
+			', ' +
+			id_certifEner +
+			', ' +
+			nHab +
+			');';
+		await conn.query(insert + ' ' + value);
+	} catch {
+		return false;
+	}
+	return true;
+}
+
+async function cargarContiene(id_catastro: String, caracteristicas: String[]): Promise<Boolean> {
+	const conn = await connect();
+
+	try {
+		for (var i = 0; i < caracteristicas.length; i++) {
+			let insert: string = 'INSERT INTO Contiene ';
+			let value: string = 'VALUES (' + caracteristicas[i] + ', "' + id_catastro + '");';
+			await conn.query(insert + ' ' + value);
+		}
+	} catch {
+		return false;
+	}
+
+	return true;
 }
 
 export async function editInmueble(req: Request, res: Response): Promise<Response> {
@@ -305,9 +415,11 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		const id_usuario = req.body.id_usuario;
 
 		const conn2 = await connect();
-		const id_ubicacion = conn2.query('SELECT id_ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";');
-		
-		if(!(req.body.extras === undefined)){
+		const id_ubicacion = conn2.query(
+			'SELECT id_ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
+		);
+
+		if (!(req.body.extras === undefined)) {
 			const extras = req.body.extras;
 			let updateextra: string = 'DELETE FROM Extra ';
 			let wherextra: string = 'WHERE id_catastro = "' + id_catastro + '";';
@@ -327,7 +439,7 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 		let whereInmueble: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 		let deleteImagen: string = 'DELETE FROM Imagen ';
-		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";'
+		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
 		let whereUbicacion: string = 'WHERE id_ubicacion = "' + id_ubicacion + '";';
@@ -442,10 +554,6 @@ export async function editInmueble(req: Request, res: Response): Promise<Respons
 			await conn2.query(inse2 + values2);
 		}
 		*/
-
-
-
-
 
 // Delete
 // export async function deleteCatalog(req: Request, res:Response): Promise<Response> {

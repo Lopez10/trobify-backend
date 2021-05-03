@@ -125,7 +125,6 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 	if (await existeInmueble(id_catastro)) {
 		return res.json('Este inmueble ya se encuentra registrado en nuestra Base de Datos');
 	}
-
 	const superficie: number = Number(req.body.superficie);
 	const breveDescripcion: string = String(req.body.breveDescripcion);
 	const id_tipoInmueble: number = Number(req.body.id_tipoInmueble);
@@ -150,19 +149,14 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 	if (id_imagen < 0) {
 		return res.json('Error al cargar las imágenes');
 	}
+
 	const id_ubicacion = await cargarUbicacion(id_provincia, direccion, longitud, latitud);
 	if (id_ubicacion < 0) {
 		return res.json('Error al cargar la Ubicacion');
 	}
 
-	if (!(req.body.extras === undefined)) {
-		if (!cargarExtras(id_catastro, req.body.extras)) {
-			return res.json('Error al cargar la información extra');
-		}
-	}
-
 	const inmuebleCargado: boolean = Boolean(
-		cargarInmueble(
+		await cargarInmueble(
 			id_catastro,
 			superficie,
 			breveDescripcion,
@@ -173,30 +167,33 @@ export async function registrarInmueble(req: Request, res: Response): Promise<Re
 			id_imagen
 		)
 	);
-
 	if (!inmuebleCargado) {
 		return res.json('Error al cargar el inmueble');
 	}
 
-	const catalogoCargado: boolean = Boolean(
-		cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
-	);
-	if (!catalogoCargado) {
-		return res.json('Error al cargar el catalogo');
-	}
-
 	const caracteristicasIntrinsecasCargado: boolean = Boolean(
-		cargarCaractericticasIntrinsecas(id_catastro, nBano, nCocina, id_certifEner, nHab)
+		await cargarCaractericticasIntrinsecas(id_catastro, nBano, nCocina, id_certifEner, nHab)
 	);
-
 	if (!caracteristicasIntrinsecasCargado) {
 		return res.json('Error al cargar las características Intrinsecas');
 	}
 
-	const contieneCargado: boolean = Boolean(cargarContiene(id_catastro, id_caractSecundaria));
-
+	const contieneCargado: boolean = Boolean(await cargarContiene(id_catastro, id_caractSecundaria));
 	if (!contieneCargado) {
-		return res.json('Error al cargar las características Intrinsecas');
+		return res.json('Error al cargar las características Secundarias');
+	}
+
+	if (!(req.body.extras === undefined)) {
+		if (!cargarExtras(id_catastro, req.body.extras)) {
+			return res.json('Error al cargar la información extra');
+		}
+	}
+
+	const catalogoCargado: boolean = Boolean(
+		await cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
+	);
+	if (!catalogoCargado) {
+		return res.json('Error al cargar el catalogo');
 	}
 
 	return res.json('El inmueble se ha registrado satisfactoriamente');
@@ -363,13 +360,12 @@ async function cargarCaractericticasIntrinsecas(
 	return true;
 }
 
-async function cargarContiene(id_catastro: String, caracteristicas: String[]): Promise<Boolean> {
+async function cargarContiene(id_catastro: string, caracteristicas: string[]): Promise<Boolean> {
 	const conn = await connect();
-
 	try {
 		for (var i = 0; i < caracteristicas.length; i++) {
 			let insert: string = 'INSERT INTO Contiene ';
-			let value: string = 'VALUES (' + caracteristicas[i] + ', "' + id_catastro + '");';
+			let value: string = 'VALUES (' + parseInt(caracteristicas[i]) + ', "' + id_catastro + '");';
 			await conn.query(insert + ' ' + value);
 		}
 	} catch {
@@ -379,205 +375,63 @@ async function cargarContiene(id_catastro: String, caracteristicas: String[]): P
 	return true;
 }
 
-export async function editInmueble(req: Request, res: Response): Promise<Response> {
-	const id_catastro = req.body.id_catastro;
+async function eliminarSegunId(
+	tabla: string,
+	columna: string,
+	parametro: string
+): Promise<boolean> {
+	let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
+	try {
+		const conn = await connect();
+		await conn.query(consulta);
+	} catch {
+		//return false;
+	}
 
-	let select: string = 'I.id_catastro';
-	let from: string = 'Inmueble I';
-	let where: string = '"' + id_catastro + '" = I.id_catastro;';
+	return true;
+}
+
+export async function eliminarInmueble(req: Request, res: Response): Promise<Response> {
+	const id_catastro: string = String(req.body.id_catastro);
 
 	const conn = await connect();
-	const consultaEdit = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
-	const eddy = consultaEdit[0].toString();
-	if (eddy == ' ') {
-		return res.json('Este inmueble no existe.');
-	} else {
-		const conn2 = await connect();
-		const id_ubicacio = await conn2.query(
-			'SELECT I.id_ubicacion as Uber FROM Inmueble I WHERE I.id_catastro = "' + id_catastro + '";'
-		);
+	const ubicacion = await conn.query(
+		'SELECT id_ubicacion as ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
+	);
 
-		var Ubers: number;
-		JSON.parse(JSON.stringify(id_ubicacio[0])).forEach((item) => {
-			Ubers = item.Uber;
-		});
-
-		const id_ubicacion = Ubers;
-		console.log(Ubers);
-		console.log(id_ubicacion[0]);
-
-		if (!(req.body.extras === undefined)) {
-			let updateextra: string = 'DELETE FROM Extra ';
-			let wherextra: string = 'WHERE id_catastro = "' + id_catastro + '";';
-			await conn2.query(updateextra + wherextra);
-		}
-
-		let deleteContiene: string = 'DELETE FROM Contiene ';
-		let whereContiene: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteCaracteristicas: string = 'DELETE FROM CaractIntrinsecas ';
-		let whereCaracteristicas: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteCatalogo: string = 'DELETE FROM Catalogo ';
-		let whereCatalogo: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteInmueble: string = 'DELETE FROM Inmueble ';
-		let whereInmueble: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteImagen: string = 'DELETE FROM Imagen ';
-		let whereImagen: string = 'WHERE id_catastro = "' + id_catastro + '";';
-
-		let deleteUbicacion: string = 'DELETE FROM Ubicacion ';
-		let whereUbicacion: string = 'WHERE id_ubicacion = ' + id_ubicacion + ';';
-
-		await conn2.query(deleteContiene + whereContiene);
-		await conn2.query(deleteCaracteristicas + whereCaracteristicas);
-		await conn2.query(deleteCatalogo + whereCatalogo);
-		await conn2.query(deleteInmueble + whereInmueble);
-		await conn2.query(deleteImagen + whereImagen);
-		await conn2.query(deleteUbicacion + whereUbicacion);
-
-		return registrarInmueble(req, res);
+	var id_ubicacion: number;
+	JSON.parse(JSON.stringify(ubicacion[0])).forEach((item) => {
+		id_ubicacion = item.ubicacion;
+	});
+	if (!(await existeInmueble(id_catastro))) {
+		return res.json('Este inmueble NO se encuentra en nuestra Base de Datos');
 	}
+
+	let mensajeFin: string = 'Los datos se han eliminado correctamente';
+	let fallo: boolean;
+
+	let tablasALimpiar: string[] = [
+		'Contiene',
+		'CaractIntrinsecas',
+		'Catalogo',
+		'Inmueble',
+		'Imagen',
+	];
+	for (let i = 0; i < tablasALimpiar.length; i++) {
+		fallo = await eliminarSegunId(tablasALimpiar[i], 'id_catastro', id_catastro);
+		if (!fallo)
+			mensajeFin = 'No se puede eliminar ' + id_catastro + ' de la tabla ' + tablasALimpiar[i];
+	}
+	fallo = await eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
+	if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
+
+	return res.json(mensajeFin);
 }
-/* anterior editInmuebe
 
-		const superficie = req.body.superficie;
-		const breveDescripcion = req.body.breveDescripcion;
-		const id_tipoInmueble = req.body.id_tipoInmueble;
-		const id_estadoInmueble = req.body.id_estadoInmueble;
-		const id_tipoVivienda = req.body.id_tipoVivienda;
-		const imagen = req.body.imagen;
-		const id_modalidad = req.body.id_modalidad;
-		const precio = req.body.precio;
-		const nHab = req.body.nHab;
-		const nBano = req.body.nBano;
-		const id_certifEner = req.body.id_certifEner;
-		const id_caractSecundaria = req.body.id_caractSecundaria;
-		const id_provincia = req.body.id_provincia;
-		const direccion = req.body.direccion;
-		const longitud = req.body.longitud;
-		const latitud = req.body.latitud;
-		const nCocina = req.body.nCocina;
-		const descuento = req.body.descuento;
-		const id_usuario = req.body.id_usuario;
+export async function modificarInmueble(req: Request, res: Response): Promise<Response> {
+	let mensaje: string = 'Se ha quedado bien el día';
+	await eliminarInmueble(req, res);
+	await registrarInmueble(req, res);
 
-		for (var i = 0; i < imagenes.length; i++){
-			let insertintoImagen: string = 'INSERT INTO Imagen (id_catastro, valor)';
-			let valuesImagen: string = 'Values ("'+
-										id_catastro + 
-										'", "' +
-										imagenes[i] +
-										'";';
-			await conn2.query(insertintoImagen + valuesImagen);
-		}
-
-		const consultaimagen = await conn2.query('SELECT MIN(Im.id_imagen) as minimo FROM Im.Imagen, I.Inmueble WHERE I.id_catastro = Im.id_catastro AND I.id_catastro = "' + id_catastro + '";');
-
-		console.log(consultaimagen[0]);
-        var minimo: number;
-        JSON.parse(JSON.stringify(consultaimagen[0])).forEach((item) => {
-            minimo = item.minimo;
-        });
-
-        const id_imagen = minimo;
-        console.log(minimo);
-
-		let update: string = 'Inmueble I, CaractIntrinsecas CI';
-		let set: string =
-			' I.id_tipoInmueble = "' +
-			id_tipoInmueble +
-			'" AND I.superficie = "' +
-			superficie +
-			'" AND I.id_tipoVivienda = "' +
-			id_tipoVivienda +
-			'" AND CI.nHab = "' +
-			nHab +
-			'" AND CI.nBano = "' +
-			nBano +
-			'" AND CI.nCocina = "' +
-			nCocina +
-			'" AND CI.id_certifEner = "' +
-			id_certifEner +
-			'" AND I.id_estadoInmueble = "' +
-			id_estadoInmueble +
-			'" AND I.id_imagen = "' +
-			id_imagen +
-			'" AND I.breveDescripcion = "' +
-			breveDescripcion;
-		let were: string =
-			'I.id_catastro = "'+ id_catastro + '" AND I.id_catastro = CI.id_catastro;';
-
-		let delet: string = 'DELETE FROM Catalogo C, Contiene CO ';
-		let were2: string = 'WHERE C.id_catastro = CO.id_catastro AND C.id_catastro = "'+ id_catastro + '" AND C.id_modalidad = "'+ id_modalidad + ';';
-
-		let inse: string = 'INSERT INTO Catalogo ';
-		let values: string = 'VALUES ("'+
-							 id_catastro +
-							 '", ' +
-							 id_modalidad +
-							 ', ' +
-							 precio +
-							 ', ' +
-							 descuento +
-							 ', 0, ' +
-							 id_usuario +
-							 ');';
-
-		let inse2: string = ' INSERT INTO Contiene CO';
-		let values2: string = ' VALUES (' +
-							  caracteristica +
-							  ', ' +
-							  catast +
-							  ');';
-
-		let updateubi: string = 'UPDATE Ubicacion '
-		let setubi: string = 'SET direccion = "' +
-								direccion +
-								'" AND prov = "' +
-								id_provincia +
-								'" AND latitud = "' + 
-								latitud +
-								'" AND longitud = "' +
-								longitud +
-								'";';
-
-		console.log(updateubi + setubi);
-		await conn2.query(delet + were2);
-		await conn2.query(updateubi + setubi);
-
-
-		await conn2.query('UPDATE ' + update + ' SET' + set + ' WHERE ' + were);
-
-		await conn2.query(inse + values);
-		for (var i = 0; i < id_caractSecundaria.toString().length; i++){
-			let inse2: string = 'UPDATE Contiene ';
-			let values2: string = 'VALUES ("' +
-								  id_caractSecundaria.toString().split(" ") +
-								  '", "' +
-								  id_catastro +
-								  '");';
-			await conn2.query(inse2 + values2);
-		}
-		*/
-
-// Delete
-// export async function deleteCatalog(req: Request, res:Response): Promise<Response> {
-//      const id = req.params.postId;
-//      const conn = await connect();
-//      const catalogo = conn.query('DELETE FROM Catalogo WHERE id = ?',[id]);
-//      return res.json({
-//           message: 'Catalogo eliminado'
-//      });
-// }
-
-// Put
-// export async function updateCatalog(req: Request, res:Response): Promise<Response> {
-//      const id = req.params.postId;
-//      const updatePost = req.body;
-//      const conn = await connect();
-//      const catalogo = conn.query('UPDATE Catalogo set ? WHERE id = ?',[updatePost, id]);
-//      return res.json({
-//           message: 'Catalogo actualizado'
-//      });
-// }
+	return res.json(mensaje);
+}

@@ -21,7 +21,7 @@ SELECT * FROM RolUsuario;
 SELECT * FROM Ubicacion;
 SELECT * FROM Provincias;
 
-
+DELETE FROM Ubicacion WHERE id_ubicacion = "18";
 
 SELECT inm.id_catastro, inm.superficie, inm.breveDescripcion, ubi.direccion, ubi.latitud, ubi.longitud, ubi.prov, cat.id_modalidad, cat.precio, cat.descuento, cat.id_usuario as propietario, car.nHab, car.nBano, car.nCocina, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, cer.certifEner 
 FROM inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI  
@@ -40,3 +40,7 @@ SELECT COUNT(id_catastro) as cuenta FROM Inmueble WHERE id_catastro LIKE ( "CARM
 SELECT COUNT(id_catastro) as cuenta FROM catalogo WHERE id_catastro LIKE ( "CARMELO0000000000001");
 SELECT COUNT(id_catastro) as cuenta FROM caractintrinsecas WHERE id_catastro LIKE ( "CARMELO0000000000001");
 SELECT COUNT(id_catastro) as cuenta FROM contiene WHERE id_catastro LIKE ( "CARMELO0000000000001");
+
+
+
+INSERT INTO Contiene  VALUES (3, "CARMELO0000000000001");

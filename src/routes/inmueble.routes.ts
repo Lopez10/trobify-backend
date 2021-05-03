@@ -3,15 +3,18 @@ import {
 	createInmueble,
 	getInmueble,
 	getUbicacion,
-	editInmueble,
+	modificarInmueble,
 	registrarInmueble,
+	eliminarInmueble,
 } from '../controllers/inmueble.controller';
 
 const router = Router();
 
 router.route('/').post(registrarInmueble);
 
-router.route('/edit').post(editInmueble);
+router.route('/eliminarInmueble').post(eliminarInmueble);
+
+router.route('/editarInmueble').post(modificarInmueble);
 
 router.route('/:inmuebleId/:modalidadId').get(getInmueble);
 //     .delete(deleteCatalog)

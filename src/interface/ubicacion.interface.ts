@@ -1,4 +1,4 @@
-export interface Ubicacion {
-    latitud: Number;
-    longitud: Number;
-}
+export type coordenada = {
+	yLatitud: number | string;
+	xLongitud: number | string;
+};

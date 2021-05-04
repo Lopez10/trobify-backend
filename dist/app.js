@@ -19,13 +19,18 @@ const morgan_1 = __importDefault(require("morgan"));
 const index_routes_1 = __importDefault(require("./routes/index.routes"));
 const catalog_routes_1 = __importDefault(require("./routes/catalog.routes"));
 const inmueble_routes_1 = __importDefault(require("./routes/inmueble.routes"));
+const usuarios_routes_1 = __importDefault(require("./routes/usuarios.routes"));
+const login_routes_1 = __importDefault(require("./routes/login.routes"));
+const path_1 = __importDefault(require("path"));
 class App {
     constructor(port) {
         this.port = port;
         this.app = express_1.default();
+        this.headers();
         this.settings();
         this.middlewares();
         this.routes();
+        this.static();
     }
     settings() {
         this.app.set('port', this.port || process.env.PORT || 3000);
@@ -38,6 +43,19 @@ class App {
         this.app.use(index_routes_1.default);
         this.app.use('/catalogo', catalog_routes_1.default);
         this.app.use('/inmueble', inmueble_routes_1.default);
+        this.app.use('/usuarios', usuarios_routes_1.default);
+        this.app.use('/login', login_routes_1.default);
+    }
+    static() {
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, 'views')));
+    }
+    headers() {
+        this.app.use((req, res, next) => {
+            res.append('Access-Control-Allow-Origin', ['*']);
+            res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+            res.append('Access-Control-Allow-Headers', 'Content-Type');
+            next();
+        });
     }
     listen() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -47,6 +65,4 @@ class App {
     }
 }
 exports.App = App;
-// app.use(express.json());
-// app.use(require('./routes/users'))
 //# sourceMappingURL=app.js.map

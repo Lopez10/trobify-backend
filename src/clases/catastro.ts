@@ -1,6 +1,6 @@
 import { coordenada } from '../interface/ubicacion.interface';
 
-class catastro {
+class Catastro {
 	RC: string;
 	direccion: string;
 	coordenadaUTM: coordenada;
@@ -71,3 +71,5 @@ class catastro {
 		return true;
 	}
 }
+
+let catastro = new Catastro('7138804YJ2773G0006ET');

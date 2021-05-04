@@ -99,12 +99,19 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 }
 
 async function existeInmueble(id_catastro: string): Promise<Boolean> {
+	let tabla = ['Imagen', 'Inmueble', 'catalogo', 'caractintrinsecas', 'contiene'];
+	for(var i = 0; i < tabla.length; i++){
+		if((await existeCatastro(tabla[i], id_catastro)) > 0) return true;
+		return false;
+	} 
+	/*
 	if ((await existeCatastro('Imagen', id_catastro)) > 0) return true;
 	if ((await existeCatastro('Inmueble', id_catastro)) > 0) return true;
 	if ((await existeCatastro('catalogo', id_catastro)) > 0) return true;
 	if ((await existeCatastro('caractintrinsecas', id_catastro)) > 0) return true;
 	if ((await existeCatastro('contiene', id_catastro)) > 0) return true;
 	return false;
+	*/
 }
 
 export async function existeCatastro(from: string, id_catastro: string): Promise<number> {

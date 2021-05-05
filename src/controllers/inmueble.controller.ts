@@ -1,25 +1,6 @@
-import { Request, response, Response } from 'express';
-import { RowDataPacket } from 'mysql2';
+import { Request, Response } from 'express';
 import { connect } from '../database';
 import { Inmueble } from '../interface/inmueble.interface';
-
-export async function createInmueble(req: Request, res: Response) {
-	const newInmueble: Inmueble = req.body;
-	const conn = await connect();
-	conn.query('INSERT INTO Catalogo SET ?', [newInmueble]);
-	return res.json({
-		message: 'Inmueble creado',
-	});
-}
-
-export async function getUbicacion(req: Request, res: Response): Promise<Response> {
-	const conn = await connect();
-	const ubicacion = await conn.query(
-		'SELECT i.catastro_id, u.longitud, u.latitud FROM Inmueble i, Ubicacion u WHERE u.ubicacion_id = i.ubicacion_id'
-	);
-
-	return res.json(ubicacion[0]);
-}
 
 export async function getInmueble(req: Request, res: Response): Promise<Response> {
 	const modalidad: number = Number(req.params.modalidadId);
@@ -104,14 +85,6 @@ async function existeInmueble(id_catastro: string): Promise<Boolean> {
 		if((await existeCatastro(tabla[i], id_catastro)) > 0) return true;
 		return false;
 	} 
-	/*
-	if ((await existeCatastro('Imagen', id_catastro)) > 0) return true;
-	if ((await existeCatastro('Inmueble', id_catastro)) > 0) return true;
-	if ((await existeCatastro('catalogo', id_catastro)) > 0) return true;
-	if ((await existeCatastro('caractintrinsecas', id_catastro)) > 0) return true;
-	if ((await existeCatastro('contiene', id_catastro)) > 0) return true;
-	return false;
-	*/
 }
 
 export async function existeCatastro(from: string, id_catastro: string): Promise<number> {
@@ -201,7 +174,6 @@ export async function regInmueble(req: Request): Promise<string> {
 	if (!catalogoCargado) {
 		return 'Error al cargar el catalogo';
 	}
-
 }
 
 export async function registrarInmueble(req: Request, res: Response): Promise<Response> {
@@ -443,7 +415,6 @@ export async function deleteInmueble(req:Request, roll: Boolean): Promise<string
 	if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
 
 	if(roll) {regInmueble(req);}
-
 	return 'Este inmueble ha sido eliminado';
 }
 
@@ -454,6 +425,5 @@ export async function eliminarInmueble(req: Request, res: Response): Promise<Res
 
 export async function modificarInmueble(req: Request, res: Response): Promise<Response> {
 	deleteInmueble(req, true);
-
 	return res.json('Tus muertos, so desgraciado');
 }

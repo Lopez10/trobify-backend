@@ -1,17 +1,43 @@
 import { coordenada } from '../interface/ubicacion.interface';
 
 class Catastro {
-	RC: string;
+	id_catastro: string;
 	direccion: string;
-	coordenadaUTM: coordenada;
-	coordenadaDecimal: coordenada;
+	coordenadaEPSG25830: coordenada;
 
 	//7138804YJ2773G0006ET
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
 	constructor(id_catastro: string) {
 		if (this.validarReferenciaCatastral(id_catastro)) {
-			this.RC = id_catastro;
+			this.id_catastro = id_catastro;
 		}
+	}
+
+	calculaRC(id_catastro: string): string {
+		return id_catastro.substring(0, 14);
+	}
+
+	codigoSRS(id?: number): string {
+		if (id == null || id < 1 || id > 14) return 'EPSG:25830';
+		let SRS: string;
+		switch (id) {
+			case 1: {
+				//Geográficas en ED 50
+				SRS = 'EPSG:4230';
+				break;
+			}
+			case 2: {
+				//Geográficas en WGS 80
+				SRS = 'EPSG:4326';
+				break;
+			}
+			case 3: {
+				//Geográficas en ETRS89
+				SRS = 'EPSG:4258';
+				break;
+			}
+		}
+		return SRS;
 	}
 
 	validarReferenciaCatastral(referenciaCatastral: string): boolean {

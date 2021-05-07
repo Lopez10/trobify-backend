@@ -7,10 +7,26 @@ class Catastro {
 
 	//7138804YJ2773G0006ET
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
+
 	constructor(id_catastro: string) {
 		if (this.validarReferenciaCatastral(id_catastro)) {
 			this.id_catastro = id_catastro;
 		}
+	}
+
+	/*
+	private constructor(){}
+
+	static async create(id_catastro: string): Promise<Catastro> {
+		const catastro = new Catastro();
+		catastro.id_catastro = id_catastro;
+  
+		return catastro;
+	 }
+	 */
+
+	async consultaCatastroUbicacion(id_catastro: string): Promise<String> {
+		return;
 	}
 
 	calculaRC(id_catastro: string): string {

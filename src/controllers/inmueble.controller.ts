@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { connect } from '../database';
 import { Inmueble } from '../interface/inmueble.interface';
+import { Singleton } from '../Singleton';
 
 export async function getInmueble(req: Request, res: Response): Promise<Response> {
 	const modalidad: number = Number(req.params.modalidadId);
@@ -14,11 +15,9 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 		'inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND cer.id_certifEner = car.id_certifEner AND ubi.id_ubicacion = inm.id_ubicacion AND inm.id_estadoInmueble = est.id_estadoInmueble  AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
 	where += ' AND cat.id_modalidad = ' + modalidad + ' ';
 	where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
-
-	const conn = await connect();
-	const inmueble = await conn.query('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
-
-	const imagenes = await conn.query(
+	let BD: Singleton = Singleton.getInstance();
+	const inmueble = BD.accesoBD('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
+	const imagenes = BD.accesoBD(
 		'SELECT valor FROM imagen WHERE id_catastro LIKE ("' + catastro + '")'
 	);
 	var img: string[] = [''];
@@ -27,7 +26,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	});
 	img.splice(0, 1);
 
-	const caracteristicas = await conn.query(
+	const caracteristicas = BD.accesoBD(
 		'SELECT ca.caracteristica FROM contiene co, caractsecundarias ca WHERE co.id_caractSecundaria = ca.id_caractSecundaria AND co.id_catastro LIKE ("' +
 			catastro +
 			'")'
@@ -38,9 +37,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	});
 	caract.splice(0, 1);
 
-	const extras = await conn.query(
-		'SELECT valor FROM extra WHERE id_catastro LIKE ("' + catastro + '")'
-	);
+	const extras = BD.accesoBD('SELECT valor FROM extra WHERE id_catastro LIKE ("' + catastro + '")');
 	var ext: string[] = [''];
 	JSON.parse(JSON.stringify(extras[0])).forEach((item) => {
 		ext.push(item.valor);
@@ -81,10 +78,10 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 
 async function existeInmueble(id_catastro: string): Promise<Boolean> {
 	let tabla = ['Imagen', 'Inmueble', 'catalogo', 'caractintrinsecas', 'contiene'];
-	for(var i = 0; i < tabla.length; i++){
-		if((await existeCatastro(tabla[i], id_catastro)) > 0) return true;
+	for (var i = 0; i < tabla.length; i++) {
+		if ((await existeCatastro(tabla[i], id_catastro)) > 0) return true;
 		return false;
-	} 
+	}
 }
 
 export async function existeCatastro(from: string, id_catastro: string): Promise<number> {
@@ -380,7 +377,7 @@ async function eliminarSegunId(
 	return true;
 }
 
-export async function deleteInmueble(req:Request, roll: Boolean): Promise<string> {
+export async function deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 	const id_catastro: string = String(req.body.id_catastro);
 
 	const conn = await connect();
@@ -414,7 +411,9 @@ export async function deleteInmueble(req:Request, roll: Boolean): Promise<string
 	fallo = await eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
 	if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
 
-	if(roll) {regInmueble(req);}
+	if (roll) {
+		regInmueble(req);
+	}
 	return 'Este inmueble ha sido eliminado';
 }
 

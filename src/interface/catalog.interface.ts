@@ -1,4 +1,4 @@
-export interface Catalog {
+export interface CatalogInterface {
 	precio: number;
 	tipo: string;
 }

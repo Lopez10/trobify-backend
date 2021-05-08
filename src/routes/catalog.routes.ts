@@ -1,15 +1,13 @@
 import { Router } from 'express';
-import { getCatalog, getProvincias, getFiltros } from '../controllers/catalogo.controller';
+import { Construccion } from '../clases/Catalogo/Construccion';
+
 const router = Router();
+let construccionCatalogo = new Construccion();
 
-router.route('/')
-     .get(getCatalog)
+router.route('/').get(construccionCatalogo.getCatalog);
 
-router.route('/Provincias')
-     .get(getProvincias)
+router.route('/Provincias').get(construccionCatalogo.getProvincias);
 
-     
-router.route('/:id_cliente')
-     .get(getFiltros) 
+router.route('/:id_cliente').get(construccionCatalogo.getFiltros);
 
 export default router;

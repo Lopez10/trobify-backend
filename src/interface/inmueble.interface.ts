@@ -1,4 +1,4 @@
-export interface Inmueble {
+export interface InmuebleInterface {
 	id_catastro: string;
 	tipoInmueble: string;
 	estadoInmueble: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { connect } from '../database';
-import { Inmueble } from '../interface/inmueble.interface';
+import { InmuebleInterface } from '../interface/inmueble.interface';
 import { Singleton } from '../Singleton';
 
 export async function getInmueble(req: Request, res: Response): Promise<Response> {
@@ -44,7 +44,7 @@ export async function getInmueble(req: Request, res: Response): Promise<Response
 	});
 	ext.splice(0, 1);
 
-	let newInmueble: Inmueble;
+	let newInmueble: InmuebleInterface;
 
 	newInmueble =
 		{

@@ -1,20 +1,18 @@
-import { request, response, Router } from 'express';
-import {
-	getInmueble,
-	modificarInmueble,
-	registrarInmueble,
-	eliminarInmueble,
-} from '../controllers/inmueble.controller';
-
+import { Router } from 'express';
+import { Construccion } from '../clases/Inmueble/Construccion';
+import { Eliminar } from '../clases/Inmueble/Eliminar';
 const router = Router();
 
-router.route('/').post(registrarInmueble);
+let construccionInmueble = new Construccion();
+let eliminacionInmueble = new Eliminar();
 
-router.route('/').delete(eliminarInmueble);
+router.route('/').post(construccionInmueble.registrarInmueble);
 
-router.route('/').put(modificarInmueble);
+router.route('/').delete(eliminacionInmueble.eliminarInmueble);
 
-router.route('/:inmuebleId/:modalidadId').get(getInmueble);
+router.route('/').put(eliminacionInmueble.modificarInmueble);
+
+router.route('/:inmuebleId/:modalidadId').get(construccionInmueble.getInmueble);
 //     .delete(deleteCatalog)
 //     .put(updateCatalog);
 

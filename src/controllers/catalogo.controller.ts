@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { connect } from '../database';
+import { Inmueble } from '../interface/inmueble.interface';
 
 export async function getProvincias(req: Request, res: Response): Promise<Response> {
 	let select: string = 'SELECT * ';
@@ -237,4 +238,25 @@ function getPrecio(minimo: number, maximo: number, aMrgn: string, margen: number
 	//console.log('AND cat.precio BETWEEN ' + min + ' AND ' + max);
 
 	return ' AND cat.precio BETWEEN ' + min + ' AND ' + max;
+}
+
+export async function getInmueblesPropietario(req: Request, res: Response): Promise<Response> {
+	let mail: string = req.params.id_mail;
+
+	let select: string =
+		'inm.id_catastro, inm.superficie, inm.breveDescripcion, ubi.direccion, ubi.latitud, ubi.longitud, ubi.prov, cat.id_modalidad, cat.precio, cat.descuento, cat.id_usuario as propietario, car.nHab, car.nBano, car.nCocina, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, cer.certifEner, img.valor as urlImg';
+	let from: String =
+		'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, caractintrinsecas intr, imagen img, usuario usu';
+	let where: String =
+		'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND inm.id_catastro = intr.id_catastro AND cer.id_certifEner = car.id_certifEner AND ubi.id_ubicacion = inm.id_ubicacion AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble AND cat.id_usuario = usu.id_usuario';
+	where += ' AND usu.mail = "' + mail + '"';
+
+	console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
+
+	const conn = await connect();
+	const inmuebles = await conn.query(
+		'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
+	);
+
+	return res.json(inmuebles[0]);
 }

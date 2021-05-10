@@ -18,8 +18,8 @@ export interface Inmueble {
 	caracteristicas: string[];
 	extras?: string[];
 
-	modalidad: number;
-	precio: number;
-	descuento: number;
+	modalidad: number | number[];
+	precio: number | number[];
+	descuento: number | number[];
 	propietario: number;
 }

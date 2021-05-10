@@ -2,6 +2,23 @@ import { Inmueble } from './Inmueble';
 import { Request, Response } from 'express';
 
 export class Eliminar extends Inmueble {
+	async eliminarInmueble(req: Request, res: Response): Promise<Response> {
+		let a = this.deleteInmueble(req, false);
+		return res.json(a);
+	}
+
+	async modificarInmueble(req: Request, res: Response): Promise<Response> {
+		this.deleteInmueble(req, true);
+		return res.json('Tus muertos, so desgraciado');
+	}
+
+	async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
+		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
+
+		this.BD.accesoBD(consulta);
+
+		return true;
+	}
 	async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
 
@@ -37,23 +54,5 @@ export class Eliminar extends Inmueble {
 
 		if (roll) this.regInmueble(req);
 		return mensajeFin;
-	}
-
-	async eliminarInmueble(req: Request, res: Response): Promise<Response> {
-		let a = this.deleteInmueble(req, false);
-		return res.json(a);
-	}
-
-	async modificarInmueble(req: Request, res: Response): Promise<Response> {
-		this.deleteInmueble(req, true);
-		return res.json('Tus muertos, so desgraciado');
-	}
-
-	async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
-		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
-
-		this.BD.accesoBD(consulta);
-
-		return true;
 	}
 }

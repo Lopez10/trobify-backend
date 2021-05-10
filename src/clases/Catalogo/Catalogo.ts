@@ -1,35 +1,9 @@
-import { Request, Response } from 'express';
 import { Singleton } from '../../Singleton';
 
 export class Catalogo {
 	BD: Singleton;
 	constructor() {
 		this.BD = Singleton.getInstance();
-	}
-	async getProvincias(req: Request, res: Response): Promise<Response> {
-		let select: string = 'SELECT * ';
-		let from: String = 'FROM Provincias ';
-		let where: String = '';
-		if (!(req.query.prov === undefined) && Number(req.query.prov) < 53) {
-			where += 'WHERE provincia_id = ' + req.query.prov + ';';
-		}
-
-		const provincias = this.BD.accesoBD(select + from + where);
-		return res.json(provincias[0]);
-	}
-
-	async getFiltros(req: Request, res: Response): Promise<Response> {
-		const id: number = +req.params.id_cliente;
-
-		let select: string = '*';
-		let from: string = ' Filtros F ';
-		let where: string = ' F.id_cliente = ' + id + '';
-
-		const filter = this.BD.accesoBD(
-			' SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ' ;'
-		);
-
-		return res.json(filter[0]);
 	}
 
 	criteriosMinimosDeFiltrado(

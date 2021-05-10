@@ -57,6 +57,10 @@ export class Construccion extends Catalogo {
 		return res.json(catalogo[0]);
 	}
 
+	getInmueblePropietario(req: Request, res: Response) {
+		// SELECT filtrando por correo
+	}
+
 	private comprobacionUndefined(req, where: String) {
 		if (
 			!(req.query.tpoViv === undefined) &&

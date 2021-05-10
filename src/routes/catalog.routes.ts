@@ -5,9 +5,6 @@ const router = Router();
 let construccionCatalogo = new Construccion();
 
 router.route('/').get(construccionCatalogo.getCatalog);
-
-router.route('/Provincias').get(construccionCatalogo.getProvincias);
-
-router.route('/:id_cliente').get(construccionCatalogo.getFiltros);
+router.route('/:mailPropietario').get(construccionCatalogo.getInmueblePropietario);
 
 export default router;

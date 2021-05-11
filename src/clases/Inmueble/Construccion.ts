@@ -19,7 +19,6 @@ export class Construccion extends Inmueble {
 		let inmueble = await Inmueble.BD.accesoBD(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
-		console.log(inmueble[0]);
 		let imagenes = await Inmueble.BD.accesoBD(
 			'SELECT valor FROM imagen WHERE id_catastro LIKE ("' + catastro + '")'
 		);
@@ -81,7 +80,7 @@ export class Construccion extends Inmueble {
 	}
 
 	async registrarInmueble(req: Request, res: Response): Promise<Response> {
-		let b = super.regInmueble(req);
+		let b = Inmueble.regInmueble(req);
 		return res.json(b);
 	}
 }

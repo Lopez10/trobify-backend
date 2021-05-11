@@ -24,12 +24,11 @@ export class Inmueble {
 		var contar: number = 0;
 		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 			contar = item.cuenta;
-			console.log(contar);
 		});
 		return contar;
 	}
 
-	protected async regInmueble(req: Request): Promise<string> {
+	static async regInmueble(req: Request): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
 		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
@@ -129,7 +128,6 @@ export class Inmueble {
 		const calculoMinimo = await Inmueble.BD.accesoBD(
 			'SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
 		);
-		console.log(calculoMinimo[0]);
 		var idMinimo: number;
 		JSON.parse(JSON.stringify(calculoMinimo[0])).forEach((item) => {
 			idMinimo = item.minimo;

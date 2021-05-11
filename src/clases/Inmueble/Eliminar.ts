@@ -3,23 +3,23 @@ import { Request, Response } from 'express';
 
 export class Eliminar extends Inmueble {
 	async eliminarInmueble(req: Request, res: Response): Promise<Response> {
-		let a = this.deleteInmueble(req, false);
+		let a = Eliminar.deleteInmueble(req, false);
 		return res.json(a);
 	}
 
 	async modificarInmueble(req: Request, res: Response): Promise<Response> {
-		this.deleteInmueble(req, true);
+		Eliminar.deleteInmueble(req, true);
 		return res.json('Tus muertos, so desgraciado');
 	}
 
-	async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
+	static async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
 		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
 
 		await Inmueble.BD.accesoBD(consulta);
 
 		return true;
 	}
-	async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
+	static async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
 
 		const ubicacion = await Inmueble.BD.accesoBD(
@@ -45,14 +45,15 @@ export class Eliminar extends Inmueble {
 			'Imagen',
 		];
 		for (let i = 0; i < tablasALimpiar.length; i++) {
-			fallo = await this.eliminarSegunId(tablasALimpiar[i], 'id_catastro', id_catastro);
+			fallo = await Eliminar.eliminarSegunId(tablasALimpiar[i], 'id_catastro', id_catastro);
 			if (!fallo)
 				mensajeFin = 'No se puede eliminar ' + id_catastro + ' de la tabla ' + tablasALimpiar[i];
 		}
-		fallo = await this.eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
+		fallo = await Eliminar.eliminarSegunId('Ubicacion', 'id_ubicacion', '' + id_ubicacion);
 		if (!fallo) mensajeFin = 'No se puede eliminar ' + id_ubicacion + ' de la tabla ' + 'Ubicacion';
 
-		if (roll) this.regInmueble(req);
+		if (roll) super.regInmueble(req);
 		return mensajeFin;
 	}
 }
+

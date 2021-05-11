@@ -1,16 +1,17 @@
 import { Singleton } from '../../Singleton';
 
 export class Catalogo {
-	BD: Singleton;
+	static BD: Singleton;
 	constructor() {
-		this.BD = Singleton.getInstance();
+		Catalogo.BD = Singleton.getInstance();
 	}
 
-	criteriosMinimosDeFiltrado(
+	protected criteriosMinimosDeFiltrado(
 		idModalidad: Number,
 		idTipoInmueble: Number,
 		idProvincia: Number
 	): boolean {
+		console.log(idModalidad, idTipoInmueble, idProvincia);
 		if (isNaN(+idProvincia) || idProvincia < 0 || idProvincia > 52) {
 			return false;
 		}
@@ -26,7 +27,7 @@ export class Catalogo {
 		return true;
 	}
 
-	getSubconsultaModalidadProvinciaTipoinmueble(
+	protected getSubconsultaModalidadProvinciaTipoinmueble(
 		idModalidad: number,
 		idTipoInmueble: number,
 		idProvincia: number
@@ -52,7 +53,7 @@ export class Catalogo {
 
 		return subConsulta;
 	}
-	getSubconsultaCaracterisiticasSecundarias(entrada: string, parametro: string): String {
+	protected getSubconsultaCaracterisiticasSecundarias(entrada: string, parametro: string): String {
 		if (entrada === 'undefined' || entrada == '') {
 			return '';
 		}
@@ -89,7 +90,7 @@ export class Catalogo {
 		return resultado;
 	}
 
-	getOrderBy(entrada: number): String {
+	protected getOrderBy(entrada: number): String {
 		let resultado: string = '';
 		if (isNaN(+entrada) || entrada < 1 || entrada > 6) {
 			resultado = ' cat.f_insercion';
@@ -116,7 +117,7 @@ export class Catalogo {
 		}
 		return resultado;
 	}
-	getPrecio(minimo: number, maximo: number, aMrgn: string, margen: number): string {
+	protected getPrecio(minimo: number, maximo: number, aMrgn: string, margen: number): string {
 		if (isNaN(+minimo) || minimo < 0) {
 			return '';
 		}

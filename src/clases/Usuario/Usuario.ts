@@ -3,9 +3,9 @@ import { Request, Response } from 'express';
 import { UsuariosInterface } from '../../interface/usuarios.interface';
 
 export class Usuario {
-	BD: Singleton;
+	static BD: Singleton;
 	constructor() {
-		this.BD = Singleton.getInstance();
+		Usuario.BD = Singleton.getInstance();
 	}
 
 	async getUsuariosLog(req: Request, res: Response) {
@@ -15,7 +15,7 @@ export class Usuario {
 		let select: string = 'u.mail, u.contrasena';
 		let from: string = ' Usuario u ';
 
-		const consultaLog = this.BD.accesoBD(
+		const consultaLog = await Usuario.BD.accesoBD(
 			' SELECT ' +
 				select +
 				' FROM ' +
@@ -37,7 +37,7 @@ export class Usuario {
 		let select: string = '*';
 		let from: string = ' Usuario';
 
-		const filter = this.BD.accesoBD(' SELECT ' + select + ' FROM ' + from + ';');
+		const filter = await Usuario.BD.accesoBD(' SELECT ' + select + ' FROM ' + from + ';');
 
 		return res.json(filter[0]);
 	}

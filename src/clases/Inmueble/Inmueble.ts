@@ -2,33 +2,36 @@ import { Request, Response } from 'express';
 import { Singleton } from '../../Singleton';
 
 export class Inmueble {
-	BD: Singleton;
+	static BD: Singleton;
 	constructor() {
-		this.BD = Singleton.getInstance();
+		Inmueble.BD = Singleton.getInstance();
 	}
 
-	async existeInmueble(id_catastro: string): Promise<Boolean> {
+	static async existeInmueble(id_catastro: string): Promise<Boolean> {
 		let tabla = ['Imagen', 'Inmueble', 'catalogo', 'caractintrinsecas', 'contiene'];
 		for (var i = 0; i < tabla.length; i++) {
-			if ((await this.existeCatastro(tabla[i], id_catastro)) > 0) return true;
+			if ((await Inmueble.existeCatastro(tabla[i], id_catastro)) > 0) return true;
 			return false;
 		}
 	}
 
-	async existeCatastro(from: string, id_catastro: string): Promise<number> {
+	static async existeCatastro(from: string, id_catastro: string): Promise<number> {
 		let select: string = 'COUNT(id_catastro) as cuenta';
 		let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
-		const consulta = this.BD.accesoBD('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where);
+		const consulta = await Inmueble.BD.accesoBD(
+			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
+		);
 		var contar: number = 0;
 		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 			contar = item.cuenta;
+			console.log(contar);
 		});
 		return contar;
 	}
 
-	async regInmueble(req: Request): Promise<string> {
+	protected async regInmueble(req: Request): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
-		if (await this.existeInmueble(id_catastro)) {
+		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
 		}
 		const superficie: number = Number(req.body.superficie);
@@ -51,18 +54,19 @@ export class Inmueble {
 		const descuento: number = Number(req.body.descuento);
 		const id_usuario: number = Number(req.body.id_usuario);
 
-		const id_imagen = await this.cargarImagenes(id_catastro, imagen);
+		const id_imagen = await Inmueble.cargarImagenes(id_catastro, imagen);
+
 		if (id_imagen < 0) {
 			return 'Error al cargar las imágenes';
 		}
 
-		const id_ubicacion = await this.cargarUbicacion(id_provincia, direccion, longitud, latitud);
+		const id_ubicacion = await Inmueble.cargarUbicacion(id_provincia, direccion, longitud, latitud);
 		if (id_ubicacion < 0) {
 			return 'Error al cargar la Ubicacion';
 		}
 
 		const inmuebleCargado: boolean = Boolean(
-			await this.cargarInmueble(
+			await Inmueble.cargarInmueble(
 				id_catastro,
 				superficie,
 				breveDescripcion,
@@ -78,48 +82,54 @@ export class Inmueble {
 		}
 
 		const caracteristicasIntrinsecasCargado: boolean = Boolean(
-			await this.cargarCaractericticasIntrinsecas(id_catastro, nBano, nCocina, id_certifEner, nHab)
+			await Inmueble.cargarCaractericticasIntrinsecas(
+				id_catastro,
+				nBano,
+				nCocina,
+				id_certifEner,
+				nHab
+			)
 		);
 		if (!caracteristicasIntrinsecasCargado) {
 			return 'Error al cargar las características Intrinsecas';
 		}
 
 		const contieneCargado: boolean = Boolean(
-			await this.cargarContiene(id_catastro, id_caractSecundaria)
+			await Inmueble.cargarContiene(id_catastro, id_caractSecundaria)
 		);
 		if (!contieneCargado) {
 			return 'Error al cargar las características Secundarias';
 		}
 
 		if (!(req.body.extras === undefined)) {
-			if (!this.cargarExtras(id_catastro, req.body.extras)) {
+			if (!Inmueble.cargarExtras(id_catastro, req.body.extras)) {
 				return 'Error al cargar la información extra';
 			}
 		}
 
 		const catalogoCargado: boolean = Boolean(
-			await this.cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
+			await Inmueble.cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
 		);
 		if (!catalogoCargado) {
 			return 'Error al cargar el catalogo';
 		}
 	}
 
-	async cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
+	static async cargarImagenes(id_catastro: string, imagen: string[]): Promise<number> {
 		try {
 			let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
 			for (var i = 0; i < imagen.length; i++) {
 				let value: string = 'VALUES ("' + id_catastro + '", "' + imagen[i] + '");';
-				await this.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.accesoBD(insert + ' ' + value);
 			}
 		} catch {
 			return -1;
 		}
 
-		const calculoMinimo = this.BD.accesoBD(
+		const calculoMinimo = await Inmueble.BD.accesoBD(
 			'SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
 		);
-
+		console.log(calculoMinimo[0]);
 		var idMinimo: number;
 		JSON.parse(JSON.stringify(calculoMinimo[0])).forEach((item) => {
 			idMinimo = item.minimo;
@@ -128,12 +138,12 @@ export class Inmueble {
 		return idMinimo;
 	}
 
-	async cargarExtras(id_catastro: String, extras: String[]): Promise<Boolean> {
+	static async cargarExtras(id_catastro: String, extras: String[]): Promise<Boolean> {
 		try {
 			for (var i = 0; i < extras.length; i++) {
 				let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
 				let value: string = 'VALUES ("' + id_catastro + '", "' + extras[i] + '");';
-				this.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.accesoBD(insert + ' ' + value);
 			}
 		} catch {
 			return false;
@@ -142,7 +152,7 @@ export class Inmueble {
 		return true;
 	}
 
-	async cargarUbicacion(
+	static async cargarUbicacion(
 		id_provincia: number,
 		direccion: string,
 		longitud: number,
@@ -152,12 +162,14 @@ export class Inmueble {
 			let insert: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) ';
 			let value: string =
 				'VALUES ("' + direccion + '", ' + id_provincia + ', ' + latitud + ', ' + longitud + ');';
-			this.BD.accesoBD(insert + ' ' + value);
+			await Inmueble.BD.accesoBD(insert + ' ' + value);
 		} catch {
 			return -1;
 		}
 
-		const calculoMaximo = this.BD.accesoBD('Select MAX(id_ubicacion) as maximo from ubicacion;');
+		const calculoMaximo = await Inmueble.BD.accesoBD(
+			'Select MAX(id_ubicacion) as maximo from ubicacion;'
+		);
 
 		var idMaximo: number;
 		JSON.parse(JSON.stringify(calculoMaximo[0])).forEach((item) => {
@@ -167,7 +179,7 @@ export class Inmueble {
 		return idMaximo;
 	}
 
-	async cargarInmueble(
+	static async cargarInmueble(
 		id_catastro: string,
 		superficie: number,
 		breveDescripcion: string,
@@ -197,14 +209,14 @@ export class Inmueble {
 				', ' +
 				id_imagen +
 				');';
-			this.BD.accesoBD(insert + ' ' + value);
+			await Inmueble.BD.accesoBD(insert + ' ' + value);
 		} catch {
 			return false;
 		}
 		return true;
 	}
 
-	async cargarCatalogo(
+	static async cargarCatalogo(
 		id_catastro: string,
 		id_modalidad: string[],
 		precio: string[],
@@ -231,7 +243,7 @@ export class Inmueble {
 					'", ' +
 					id_usuario +
 					');';
-				this.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.accesoBD(insert + ' ' + value);
 			}
 		} catch {
 			return false;
@@ -239,7 +251,7 @@ export class Inmueble {
 		return true;
 	}
 
-	async cargarCaractericticasIntrinsecas(
+	static async cargarCaractericticasIntrinsecas(
 		id_catastro: string,
 		nBano: number,
 		nCocina: number,
@@ -260,19 +272,19 @@ export class Inmueble {
 				', ' +
 				nHab +
 				');';
-			this.BD.accesoBD(insert + ' ' + value);
+			await Inmueble.BD.accesoBD(insert + ' ' + value);
 		} catch {
 			return false;
 		}
 		return true;
 	}
 
-	async cargarContiene(id_catastro: string, caracteristicas: string[]): Promise<Boolean> {
+	static async cargarContiene(id_catastro: string, caracteristicas: string[]): Promise<Boolean> {
 		try {
 			for (var i = 0; i < caracteristicas.length; i++) {
 				let insert: string = 'INSERT INTO Contiene ';
 				let value: string = 'VALUES (' + parseInt(caracteristicas[i]) + ', "' + id_catastro + '");';
-				this.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.accesoBD(insert + ' ' + value);
 			}
 		} catch {
 			return false;

@@ -2,16 +2,7 @@ import { Catalogo } from './Catalogo';
 import { Request, Response } from 'express';
 
 export class Construccion extends Catalogo {
-	async getCatalog(req: Request, res: Response): Promise<Response> {
-		if (
-			!this.criteriosMinimosDeFiltrado(
-				Number(req.query.opt),
-				Number(req.query.tpoInm),
-				Number(req.query.prov)
-			)
-		) {
-			return res.json('Los parámetros introducidos no son suficientes');
-		}
+	public async getCatalog(req: Request, res: Response): Promise<Response> {
 		let consulta: string;
 
 		let idProvincia: number = Number(req.query.prov);
@@ -27,15 +18,15 @@ export class Construccion extends Catalogo {
 		where += ' AND cat.id_modalidad = ' + idModalidad;
 		where +=
 			'' +
-			this.getSubconsultaModalidadProvinciaTipoinmueble(idModalidad, idTipoInmueble, idProvincia);
+			super.getSubconsultaModalidadProvinciaTipoinmueble(idModalidad, idTipoInmueble, idProvincia);
 		where +=
 			'' +
-			this.getSubconsultaCaracterisiticasSecundarias(String(req.query.caract), 'caracteristica');
+			super.getSubconsultaCaracterisiticasSecundarias(String(req.query.caract), 'caracteristica');
 
-		where = this.comprobacionUndefined(req, where);
+		where = Construccion.comprobacionUndefined(req, where);
 		where +=
 			'' +
-			this.getPrecio(
+			super.getPrecio(
 				Number(req.query.preMin),
 				Number(req.query.preMax),
 				String(req.query.aMrgn),
@@ -50,10 +41,10 @@ export class Construccion extends Catalogo {
 			' WHERE ' +
 			where +
 			' ORDER BY ' +
-			this.getOrderBy(Number(req.query.ord)) +
+			super.getOrderBy(Number(req.query.ord)) +
 			';';
 
-		const catalogo = this.BD.accesoBD(consulta);
+		const catalogo = await Catalogo.BD.accesoBD(consulta);
 		return res.json(catalogo[0]);
 	}
 
@@ -61,7 +52,7 @@ export class Construccion extends Catalogo {
 		// SELECT filtrando por correo
 	}
 
-	private comprobacionUndefined(req, where: String) {
+	static comprobacionUndefined(req, where: String) {
 		if (
 			!(req.query.tpoViv === undefined) &&
 			req.query.tpoViv != '' &&

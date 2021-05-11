@@ -15,14 +15,14 @@ export class Eliminar extends Inmueble {
 	async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
 		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
 
-		this.BD.accesoBD(consulta);
+		await Inmueble.BD.accesoBD(consulta);
 
 		return true;
 	}
 	async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
 
-		const ubicacion = this.BD.accesoBD(
+		const ubicacion = await Inmueble.BD.accesoBD(
 			'SELECT id_ubicacion as ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
 		);
 
@@ -30,7 +30,7 @@ export class Eliminar extends Inmueble {
 		JSON.parse(JSON.stringify(ubicacion[0])).forEach((item) => {
 			id_ubicacion = item.ubicacion;
 		});
-		if (!(await this.existeInmueble(id_catastro))) {
+		if (!(await Inmueble.existeInmueble(id_catastro))) {
 			return 'Este inmueble NO se encuentra en nuestra Base de Datos';
 		}
 

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { InmuebleInterface } from '../../interface/inmueble.interface';
 
 export class Construccion extends Inmueble {
-	async getInmueble(req: Request, res: Response): Promise<Response> {
+	async getInmueble(req: Request, res: Response) {
 		const modalidad: number = Number(req.params.modalidadId);
 		const catastro: string = String(req.params.inmuebleId);
 
@@ -16,10 +16,11 @@ export class Construccion extends Inmueble {
 		where += ' AND cat.id_modalidad = ' + modalidad + ' ';
 		where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
 
-		const inmueble = this.BD.accesoBD(
+		let inmueble = await Inmueble.BD.accesoBD(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
-		const imagenes = this.BD.accesoBD(
+		console.log(inmueble[0]);
+		let imagenes = await Inmueble.BD.accesoBD(
 			'SELECT valor FROM imagen WHERE id_catastro LIKE ("' + catastro + '")'
 		);
 		var img: string[] = [''];
@@ -28,7 +29,7 @@ export class Construccion extends Inmueble {
 		});
 		img.splice(0, 1);
 
-		const caracteristicas = this.BD.accesoBD(
+		let caracteristicas = await Inmueble.BD.accesoBD(
 			'SELECT ca.caracteristica FROM contiene co, caractsecundarias ca WHERE co.id_caractSecundaria = ca.id_caractSecundaria AND co.id_catastro LIKE ("' +
 				catastro +
 				'")'
@@ -39,7 +40,7 @@ export class Construccion extends Inmueble {
 		});
 		caract.splice(0, 1);
 
-		const extras = this.BD.accesoBD(
+		let extras = await Inmueble.BD.accesoBD(
 			'SELECT valor FROM extra WHERE id_catastro LIKE ("' + catastro + '")'
 		);
 		var ext: string[] = [''];
@@ -76,12 +77,11 @@ export class Construccion extends Inmueble {
 				descuento: inmueble[0][0].descuento,
 				propietario: inmueble[0][0].propietario,
 			} || null;
-
 		return res.json(newInmueble);
 	}
 
 	async registrarInmueble(req: Request, res: Response): Promise<Response> {
-		let b = this.regInmueble(req);
+		let b = super.regInmueble(req);
 		return res.json(b);
 	}
 }

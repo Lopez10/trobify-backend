@@ -39,15 +39,6 @@ export class Construccion extends Inmueble {
 		});
 		caract.splice(0, 1);
 
-		let extras = await Inmueble.BD.accesoBD(
-			'SELECT valor FROM extra WHERE id_catastro LIKE ("' + catastro + '")'
-		);
-		var ext: string[] = [''];
-		JSON.parse(JSON.stringify(extras[0])).forEach((item) => {
-			ext.push(item.valor);
-		});
-		ext.splice(0, 1);
-
 		let newInmueble: InmuebleInterface;
 
 		newInmueble =
@@ -69,7 +60,6 @@ export class Construccion extends Inmueble {
 				nBanos: inmueble[0][0].nBano,
 				nCocinas: inmueble[0][0].nCocina,
 				caracteristicas: caract,
-				extras: ext,
 
 				modalidad: modalidad,
 				precio: inmueble[0][0].precio,

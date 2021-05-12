@@ -12,6 +12,7 @@ export class Singleton {
 
 	public async accesoBD(consulta: string): Promise<any> {
 		const conn = await connect();
+		console.log(consulta);
 		return await conn.query(consulta);
 	}
 }

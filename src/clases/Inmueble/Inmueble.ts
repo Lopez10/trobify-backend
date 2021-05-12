@@ -30,7 +30,7 @@ export class Inmueble {
 
 	static async regInmueble(req: Request): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
-		console.log(req);
+		console.log(req.body);
 		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
 		}
@@ -61,6 +61,7 @@ export class Inmueble {
 		}
 
 		const id_ubicacion = await Inmueble.cargarUbicacion(id_provincia, direccion, longitud, latitud);
+		console.log(id_ubicacion);
 		if (id_ubicacion < 0) {
 			return 'Error al cargar la Ubicacion';
 		}
@@ -77,6 +78,7 @@ export class Inmueble {
 				id_imagen
 			)
 		);
+		console.log(inmuebleCargado);
 		if (!inmuebleCargado) {
 			return 'Error al cargar el inmueble';
 		}
@@ -99,12 +101,6 @@ export class Inmueble {
 		);
 		if (!contieneCargado) {
 			return 'Error al cargar las características Secundarias';
-		}
-
-		if (!(req.body.extras === undefined)) {
-			if (!Inmueble.cargarExtras(id_catastro, req.body.extras)) {
-				return 'Error al cargar la información extra';
-			}
 		}
 
 		const catalogoCargado: boolean = Boolean(
@@ -135,20 +131,6 @@ export class Inmueble {
 		});
 
 		return idMinimo;
-	}
-
-	static async cargarExtras(id_catastro: String, extras: String[]): Promise<Boolean> {
-		try {
-			for (var i = 0; i < extras.length; i++) {
-				let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
-				let value: string = 'VALUES ("' + id_catastro + '", "' + extras[i] + '");';
-				await Inmueble.BD.accesoBD(insert + ' ' + value);
-			}
-		} catch {
-			return false;
-		}
-
-		return true;
 	}
 
 	static async cargarUbicacion(
@@ -188,30 +170,27 @@ export class Inmueble {
 		id_tipoVivienda: number,
 		id_imagen: number
 	): Promise<Boolean> {
-		try {
-			let insert: string = 'INSERT INTO Inmueble ';
-			let value: string =
-				'VALUES ("' +
-				id_catastro +
-				'", ' +
-				superficie +
-				', "' +
-				breveDescripcion +
-				'", ' +
-				id_ubicacion +
-				', ' +
-				id_tipoInmueble +
-				', ' +
-				id_estadoInmueble +
-				', ' +
-				id_tipoVivienda +
-				', ' +
-				id_imagen +
-				');';
-			await Inmueble.BD.accesoBD(insert + ' ' + value);
-		} catch {
-			return false;
-		}
+		console.log('entra');
+		let insert: string = 'INSERT INTO Inmueble ';
+		let value: string =
+			'VALUES ("' +
+			id_catastro +
+			'", ' +
+			superficie +
+			', "' +
+			breveDescripcion +
+			'", ' +
+			id_ubicacion +
+			', ' +
+			id_tipoInmueble +
+			', ' +
+			id_estadoInmueble +
+			', ' +
+			id_tipoVivienda +
+			', ' +
+			id_imagen +
+			');';
+		await Inmueble.BD.accesoBD(insert + ' ' + value);
 		return true;
 	}
 

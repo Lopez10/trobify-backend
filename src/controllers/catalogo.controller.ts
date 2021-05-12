@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { connect } from '../database';
+import { Catastro } from '../clases/catastro';
 
 export async function getProvincias(req: Request, res: Response): Promise<Response> {
 	let select: string = 'SELECT * ';
@@ -28,6 +29,10 @@ export async function getFiltros(req: Request, res: Response): Promise<Response>
 }
 
 export async function getCatalog(req: Request, res: Response): Promise<Response> {
+	let catastro: any = Catastro.create('7138804YJ2773G0006ET');
+
+	console.log(catastro);
+
 	if (
 		!criteriosMinimosDeFiltrado(
 			Number(req.query.opt),

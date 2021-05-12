@@ -1,42 +1,105 @@
 import { coordenada } from '../interface/ubicacion.interface';
+import axios from 'axios';
 
-class Catastro {
+export class Catastro {
 	id_catastro: string;
 	direccion: string;
-	coordenadaEPSG25830: coordenada;
+	localidad: string;
+	codigoPostal: number;
+	//superficie: number;
+	coordenada: coordenada;
 
 	//7138804YJ2773G0006ET
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
 
-	constructor(id_catastro: string) {
-		if (this.validarReferenciaCatastral(id_catastro)) {
-			this.id_catastro = id_catastro;
-		}
-	}
+	private constructor() {}
 
-	/*
-	private constructor(){}
+	static async create(id_catastro: string, SRS?: number): Promise<Catastro> {
+		const ubicacionCatastro = await Catastro.consultaCatastroUbicacion(id_catastro);
 
-	static async create(id_catastro: string): Promise<Catastro> {
+		const otrosDatosCatastro = await Catastro.consultaCatastroDatosInmueble(id_catastro);
+
 		const catastro = new Catastro();
 		catastro.id_catastro = id_catastro;
-  
-		return catastro;
-	 }
-	 */
+		//catastro.superficie = Number(otrosDatosCatastro[1]);
 
-	async consultaCatastroUbicacion(id_catastro: string): Promise<String> {
-		return;
+		catastro.direccion = ubicacionCatastro[2];
+		catastro.localidad = ubicacionCatastro[3];
+		catastro.codigoPostal = Number(otrosDatosCatastro[0]);
+		catastro.coordenada = {
+			yLatitud: Number(ubicacionCatastro[0]),
+			xLongitud: Number(ubicacionCatastro[1]),
+		};
+		console.log(catastro);
+		return catastro;
 	}
 
-	calculaRC(id_catastro: string): string {
+	static async consultaCatastroUbicacion(id_catastro: string, SRS?: number): Promise<string[]> {
+		const host: string = 'http://ovc.catastro.meh.es';
+		let httpGet: string =
+			'/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx/Consulta_CPMRC?Provincia=&Municipio=';
+		httpGet += '&SRS=' + Catastro.codigoSRS();
+		httpGet += '&RC=' + Catastro.calculaRC(id_catastro);
+
+		return await axios.get(host + httpGet).then((result) => {
+			var cadenaTexto: string = JSON.stringify(result.data).trim();
+
+			var direccion: string = cadenaTexto.substring(
+				cadenaTexto.indexOf('<ldt>') + 5,
+				cadenaTexto.indexOf('</ldt>')
+			);
+			direccion = direccion.substring(0, direccion.indexOf(' ('));
+
+			var clave: number = direccion.lastIndexOf(' ');
+
+			var localidad: string = direccion.substring(clave + 1, direccion.length);
+
+			direccion = direccion.substring(0, clave);
+
+			return [
+				cadenaTexto
+					.substring(cadenaTexto.indexOf('<xcen>') + 6, cadenaTexto.indexOf('</xcen>'))
+					.trim(),
+				cadenaTexto.substring(cadenaTexto.indexOf('<ycen>') + 6, cadenaTexto.indexOf('</ycen>')),
+				direccion,
+				localidad,
+			];
+		});
+	}
+
+	static async consultaCatastroDatosInmueble(id_catastro: string): Promise<number[]> {
+		const host: string = 'http://ovc.catastro.meh.es';
+		let httpGet: string =
+			'/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPRC_Codigos?CodigoProvincia=&CodigoMunicipio=&CodigoMunicipioINE=';
+		httpGet += '&RC=' + Catastro.calculaRC(id_catastro);
+
+		return await axios.get(host + httpGet).then((result) => {
+			var cadenaTexto: string = JSON.stringify(result.data).trim();
+			var fragmento: string = id_catastro.substring(14, 18);
+
+			cadenaTexto += cadenaTexto.substring(
+				cadenaTexto.indexOf(fragmento),
+				cadenaTexto.indexOf('</rcdnp>')
+			);
+			return [
+				Number(
+					cadenaTexto.substring(cadenaTexto.indexOf('<dp>') + 4, cadenaTexto.indexOf('</dp>'))
+				),
+				/*
+				Number(
+					cadenaTexto.substring(cadenaTexto.indexOf('<sfc>') + 5, cadenaTexto.indexOf('</sfc>'))
+				),*/
+			];
+		});
+	}
+
+	static calculaRC(id_catastro: string): string {
 		return id_catastro.substring(0, 14);
 	}
 
-	codigoSRS(id?: number): string {
-		if (id == null || id < 1 || id > 14) return 'EPSG:25830';
+	static codigoSRS(idSRS?: number): string {
 		let SRS: string;
-		switch (id) {
+		switch (idSRS) {
 			case 1: {
 				//Geográficas en ED 50
 				SRS = 'EPSG:4230';
@@ -47,7 +110,7 @@ class Catastro {
 				SRS = 'EPSG:4326';
 				break;
 			}
-			case 3: {
+			default: {
 				//Geográficas en ETRS89
 				SRS = 'EPSG:4258';
 				break;
@@ -113,5 +176,3 @@ class Catastro {
 		return true;
 	}
 }
-
-let catastro = new Catastro('7138804YJ2773G0006ET');

@@ -1,4 +1,4 @@
-export type coordenada = {
+export interface coordenada {
 	yLatitud: number | string;
 	xLongitud: number | string;
-};
+}

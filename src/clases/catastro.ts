@@ -2,35 +2,38 @@ import { coordenada } from '../interface/ubicacion.interface';
 import axios from 'axios';
 
 export class Catastro {
-	id_catastro: string;
+	id_catastro: string; //
 	direccion: string;
-	localidad: string;
+	localidad: string; //
 	codigoPostal: number;
-	//superficie: number;
-	coordenada: coordenada;
+	codigoProvincia: number;
+	superficie: number;
+	coordenada: coordenada; //
 
 	//7138804YJ2773G0006ET
+	//0230809UH0403S0001LF
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
 
 	private constructor() {}
 
 	static async create(id_catastro: string, SRS?: number): Promise<Catastro> {
-		const ubicacionCatastro = await Catastro.consultaCatastroUbicacion(id_catastro);
-
-		const otrosDatosCatastro = await Catastro.consultaCatastroDatosInmueble(id_catastro);
-
 		const catastro = new Catastro();
 		catastro.id_catastro = id_catastro;
-		//catastro.superficie = Number(otrosDatosCatastro[1]);
 
-		catastro.direccion = ubicacionCatastro[2];
-		catastro.localidad = ubicacionCatastro[3];
-		catastro.codigoPostal = Number(otrosDatosCatastro[0]);
+		const ubicacionCatastro = await Catastro.consultaCatastroUbicacion(id_catastro);
 		catastro.coordenada = {
 			yLatitud: Number(ubicacionCatastro[0]),
 			xLongitud: Number(ubicacionCatastro[1]),
 		};
-		console.log(catastro);
+		catastro.localidad = ubicacionCatastro[2];
+
+		const otrosDatosCatastro = await Catastro.consultaCatastroDatosInmueble(id_catastro);
+		catastro.direccion = otrosDatosCatastro[0];
+		catastro.codigoPostal = Number(otrosDatosCatastro[1]);
+		catastro.codigoProvincia = Number(otrosDatosCatastro[2]);
+		catastro.superficie = Number(otrosDatosCatastro[3]);
+
+		//console.log(catastro);
 		return catastro;
 	}
 
@@ -61,34 +64,36 @@ export class Catastro {
 					.substring(cadenaTexto.indexOf('<xcen>') + 6, cadenaTexto.indexOf('</xcen>'))
 					.trim(),
 				cadenaTexto.substring(cadenaTexto.indexOf('<ycen>') + 6, cadenaTexto.indexOf('</ycen>')),
-				direccion,
 				localidad,
 			];
 		});
 	}
 
-	static async consultaCatastroDatosInmueble(id_catastro: string): Promise<number[]> {
+	static async consultaCatastroDatosInmueble(id_catastro: string): Promise<string[]> {
 		const host: string = 'http://ovc.catastro.meh.es';
 		let httpGet: string =
 			'/ovcservweb/OVCSWLocalizacionRC/OVCCallejeroCodigos.asmx/Consulta_DNPRC_Codigos?CodigoProvincia=&CodigoMunicipio=&CodigoMunicipioINE=';
-		httpGet += '&RC=' + Catastro.calculaRC(id_catastro);
+		httpGet += '&RC=' + id_catastro;
 
 		return await axios.get(host + httpGet).then((result) => {
 			var cadenaTexto: string = JSON.stringify(result.data).trim();
-			var fragmento: string = id_catastro.substring(14, 18);
 
-			cadenaTexto += cadenaTexto.substring(
-				cadenaTexto.indexOf(fragmento),
-				cadenaTexto.indexOf('</rcdnp>')
+			var direccion: string = cadenaTexto.substring(
+				cadenaTexto.indexOf('<ldt>') + 5,
+				cadenaTexto.indexOf('</ldt>')
 			);
+			direccion = direccion.substring(0, direccion.indexOf(' ('));
+			direccion = direccion.substring(0, direccion.lastIndexOf(' '));
+			var clave: number = direccion.lastIndexOf(' ');
+
+			var cP: string = direccion.substring(clave + 1, direccion.length);
+			direccion = direccion.substring(0, clave);
+
 			return [
-				Number(
-					cadenaTexto.substring(cadenaTexto.indexOf('<dp>') + 4, cadenaTexto.indexOf('</dp>'))
-				),
-				/*
-				Number(
-					cadenaTexto.substring(cadenaTexto.indexOf('<sfc>') + 5, cadenaTexto.indexOf('</sfc>'))
-				),*/
+				direccion,
+				cP,
+				cadenaTexto.substring(cadenaTexto.indexOf('<cp>') + 4, cadenaTexto.indexOf('</cp>')),
+				cadenaTexto.substring(cadenaTexto.indexOf('<sfc>') + 5, cadenaTexto.indexOf('</sfc>')),
 			];
 		});
 	}

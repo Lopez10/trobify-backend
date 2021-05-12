@@ -9,10 +9,15 @@ export class Eliminar extends Inmueble {
 
 	async modificarInmueble(req: Request, res: Response): Promise<Response> {
 		Eliminar.deleteInmueble(req, true);
+		console.log(req);
 		return res.json('Tus muertos, so desgraciado');
 	}
 
-	static async eliminarSegunId(tabla: string, columna: string, parametro: string): Promise<boolean> {
+	static async eliminarSegunId(
+		tabla: string,
+		columna: string,
+		parametro: string
+	): Promise<boolean> {
 		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
 
 		await Inmueble.BD.accesoBD(consulta);
@@ -21,7 +26,6 @@ export class Eliminar extends Inmueble {
 	}
 	static async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
-
 		const ubicacion = await Inmueble.BD.accesoBD(
 			'SELECT id_ubicacion as ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
 		);
@@ -56,4 +60,3 @@ export class Eliminar extends Inmueble {
 		return mensajeFin;
 	}
 }
-

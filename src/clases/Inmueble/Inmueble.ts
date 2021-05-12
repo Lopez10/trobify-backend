@@ -30,6 +30,7 @@ export class Inmueble {
 
 	static async regInmueble(req: Request): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
+		console.log(req);
 		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
 		}

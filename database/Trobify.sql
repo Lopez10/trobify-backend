@@ -13,6 +13,8 @@ CREATE TABLE Provincias (
 CREATE TABLE Ubicacion (
 	id_ubicacion INT AUTO_INCREMENT,
 	direccion VARCHAR(250) NOT NULL,
+    codPostal VARCHAR(5) NOT NULL,
+    localidad VARCHAR(50) NOT NULL,
 	prov TINYINT NOT NULL,
 	latitud DOUBLE NOT NULL,
 	longitud DOUBLE NOT NULL,
@@ -91,6 +93,7 @@ CREATE TABLE Catalogo (
 	descuento DOUBLE NOT NULL,
 	f_insercion DATE NOT NULL,
 	id_usuario INT NOT NULL,
+    publicado BOOLEAN NOT NULL,
 	PRIMARY KEY (id_modalidad, id_catastro),
 	FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad),
 	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),

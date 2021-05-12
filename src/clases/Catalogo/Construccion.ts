@@ -78,10 +78,10 @@ export class Construccion extends Catalogo {
 			where += ' AND inm.id_estadoInmueble in (' + req.query.stdo + ')';
 		}
 		if (!(req.query.nHab === undefined)) {
-			where += ' AND intr.nHab >= ' + req.query.nHab;
+			where += ' AND car.nHab >= ' + req.query.nHab;
 		}
 		if (!(req.query.nBan === undefined)) {
-			where += ' AND intr.nBano >= ' + req.query.nBan;
+			where += ' AND car.nBano >= ' + req.query.nBan;
 		}
 		if (!(req.query.supMin === undefined) && !(req.query.supMax === undefined)) {
 			where += ' AND inm.superficie BETWEEN ' + req.query.supMin + ' AND ' + req.query.supMax;

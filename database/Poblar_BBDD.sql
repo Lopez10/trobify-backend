@@ -204,10 +204,6 @@ INSERT INTO Contiene values
 	(3, "2803110YK5320S0015PL"),
 	(8, "2803110YK5320S0015PL"),
 	(9, "2803110YK5320S0015PL");
-INSERT INTO Extra values 
-	(1, "5738211YJ2753H0024XK", "Urna gravida porttitor phasellus sagittis habitasse quam interdum ultricies arcu quis elementum enim sapien risus litora eleifend, rhoncus curabitur vitae leo malesuada eget luctus rutrum tincidunt proin nec cum laoreet aliquet." ),
-	(2, "5139410YJ2753G0019EU", "Inceptos tempus rutrum netus rhoncus elementum morbi integer eget dictumst venenatis torquent tellus sociis mollis, nec cras justo ornare velit pretium gravida sodales aenean vulputate curae purus ultrices. Pharetra purus sodales nisl semper maecenas fames neque, facilisi luctus torquent ad faucibus vivamus conubia, donec mauris interdum primis dictumst phasellus."),
-	(3, "5738211YJ2753H0024XK", "Se cree ampliamente que la historia de Lorem Ipsum se origina con Cicerón en el siglo I aC y su texto De Finibus bonorum et malorum. Esta obra filosófica, también conocida como En los extremos del bien y del mal, se dividió en cinco libros."); 
 INSERT INTO RolUsuario values
 	(1, "Particular"),
 	(2, "Inmobiliaria");
@@ -243,11 +239,3 @@ INSERT INTO Catalogo values
 INSERT INTO Filtros values
 	(1, 1, 1, 1, 32, 5, 1000, 500000, 0, 0, 10, 70, 1, 1, 7, '1', '1,9', '1,2,3'),
 	(2, 2, 1, 1, 12, 3, 1000, 400000, 0, 0, 20, 50, 2, 2, 5, '2', '3,6', '4,5,6'); 
-INSERT INTO Favoritos values 
-	(1, "5255904YJ2755C0009IZ", 1),
-	(1, "6006007YJ2760E0001AL", 1),
-	(1, "9604837YJ2790D0002UM", 1),
-	(2, "9529207YJ2792H0001AM", 1),
-	(3, "2803110YK5320S0015PL", 1),
-	(3, "1659301YJ2715H0011UE", 2),
-	(4, "7499403YJ2779N0002RT", 2);

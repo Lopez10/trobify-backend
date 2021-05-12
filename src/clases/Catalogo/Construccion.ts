@@ -12,9 +12,9 @@ export class Construccion extends Catalogo {
 		let select: string =
 			'inm.id_catastro, inm.superficie, inm.breveDescripcion, ubi.direccion, ubi.latitud, ubi.longitud, ubi.prov, cat.id_modalidad, cat.precio, cat.descuento, cat.id_usuario as propietario, car.nHab, car.nBano, car.nCocina, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, cer.certifEner, img.valor as urlImg';
 		let from: String =
-			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, caractintrinsecas intr, imagen img';
+			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, imagen img';
 		let where: String =
-			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND inm.id_catastro = intr.id_catastro AND cer.id_certifEner = car.id_certifEner AND ubi.id_ubicacion = inm.id_ubicacion AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
+			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
 		where += ' AND cat.id_modalidad = ' + idModalidad;
 		where +=
 			'' +
@@ -48,8 +48,22 @@ export class Construccion extends Catalogo {
 		return res.json(catalogo[0]);
 	}
 
-	getInmueblePropietario(req: Request, res: Response) {
-		// SELECT filtrando por correo
+ 	async getInmueblesPropietario(req: Request, res: Response): Promise<Response> {
+		let mail: string = req.params.id_mail;
+	
+		let select: string =
+			'inm.id_catastro, inm.superficie, inm.breveDescripcion, ubi.direccion, ubi.latitud, ubi.longitud, ubi.prov, cat.id_modalidad, cat.precio, cat.descuento, cat.id_usuario as propietario, car.nHab, car.nBano, car.nCocina, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, cer.certifEner, img.valor as urlImg';
+		let from: String =
+			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, imagen img, usuario usu';
+		let where: String =
+			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble AND cat.id_usuario = usu.id_usuario';
+		where += ' AND usu.mail = "' + mail + '"';
+
+		const inmuebles = await Catalogo.BD.accesoBD(
+			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
+		);
+	
+		return res.json(inmuebles[0]);
 	}
 
 	static comprobacionUndefined(req, where: String) {

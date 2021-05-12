@@ -1,9 +1,7 @@
 USE Trobify;
 
 -- Eliminar tablas de la base de datos. El borrado debe seguir este orden para que no haya problemas con las claves ajenas.
-DROP TABLE Favoritos; 
 DROP TABLE Filtros; 
-DROP TABLE Extra; 
 DROP TABLE Contiene; 
 DROP TABLE CaractSecundarias;
 DROP TABLE CaractIntrinsecas;

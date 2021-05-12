@@ -8,6 +8,8 @@ Para insertar datos en la BD hay que tener en cuenta:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+12/05/2021 --> Javi
+Quitar tabla FAVORITOS, EXTRAS.
 
 20/04/2021 --> Carmelo
 Quitar tabla USUARIO

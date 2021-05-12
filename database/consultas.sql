@@ -1,9 +1,7 @@
 USE Trobify;
 
 -- consultas de tablas unitarias
-SELECT * FROM Favoritos; 
 SELECT * FROM Filtros; 
-SELECT * FROM Extra; 
 SELECT * FROM Imagen; 
 SELECT * FROM Contiene; 
 SELECT * FROM CaractSecundarias;

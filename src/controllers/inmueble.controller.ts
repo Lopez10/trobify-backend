@@ -360,7 +360,6 @@ async function cargarContiene(id_catastro: string, caracteristicas: string[]): P
 	} catch {
 		return false;
 	}
-
 	return true;
 }
 
@@ -381,7 +380,7 @@ async function eliminarSegunId(
 }
 
 export async function deleteInmueble(req:Request, roll: Boolean): Promise<string> {
-	const id_catastro: string = String(req.body.id_catastro);
+	const id_catastro: string = String(req.params.id_catastro);
 
 	const conn = await connect();
 	const ubicacion = await conn.query(

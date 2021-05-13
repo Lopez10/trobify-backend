@@ -34,9 +34,6 @@ export class Inmueble {
 		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
 		}
-		/*
-		const superficie: number = Number(req.body.superficie);
-		*/
 		const breveDescripcion: string = String(req.body.breveDescripcion);
 		const id_tipoInmueble: number = Number(req.body.id_tipoInmueble);
 		const id_estadoInmueble: number = Number(req.body.id_estadoInmueble);
@@ -48,12 +45,6 @@ export class Inmueble {
 		const nBano: number = Number(req.body.nBano);
 		const id_certifEner: number = Number(req.body.id_certifEner);
 		const id_caractSecundaria: string[] = req.body.id_caractSecundaria;
-		/*
-		const id_provincia: number = Number(req.body.id_provincia);
-		const direccion: string = String(req.body.direccion);
-		const longitud: number = Number(req.body.longitud);
-		const latitud: number = Number(req.body.latitud);
-		*/
 		const nCocina: number = Number(req.body.nCocina);
 		const descuento: number = Number(req.body.descuento);
 		const id_usuario: number = Number(req.body.id_usuario);
@@ -226,25 +217,13 @@ export class Inmueble {
 		try {
 			let insert: string = 'INSERT INTO Catalogo ';
 			for (var i = 0; i < id_modalidad.length; i++) {
-				console.log('********************************');
-				console.log(parseInt(precio[i]));
-				console.log('********************************');
-
-				let valor: number = 99999;
-
-				if (!isNaN(parseInt(precio[i]))) valor = parseInt(precio[i]);
-
-				if (publicado == null) {
-					publicado = 1;
-				}
-
 				let value: string =
 					'VALUES ("' +
 					id_catastro +
 					'", ' +
 					parseInt(id_modalidad[i]) +
 					', ' +
-					valor +
+					parseInt(precio[i]) +
 					', ' +
 					descuento +
 					', "' +

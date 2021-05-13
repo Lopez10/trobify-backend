@@ -16,10 +16,6 @@ export class Construccion extends Inmueble {
 		where += ' AND cat.id_modalidad = ' + modalidad + ' ';
 		where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
 
-		console.log('-----------------------------');
-		console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
-		console.log('-----------------------------');
-
 		let inmueble = await Inmueble.BD.accesoBD(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
@@ -44,11 +40,6 @@ export class Construccion extends Inmueble {
 		caract.splice(0, 1);
 
 		let newInmueble: InmuebleInterface;
-		console.log('--------INMUEBLE-------------');
-		console.log(inmueble[0]);
-		console.log(inmueble[0]);
-		console.log('-----------------------------');
-
 		try {
 			newInmueble = {
 				id_catastro: catastro,

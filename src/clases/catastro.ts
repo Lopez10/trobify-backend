@@ -22,8 +22,8 @@ export class Catastro {
 
 		const ubicacionCatastro = await Catastro.consultaCatastroUbicacion(id_catastro);
 		catastro.coordenada = {
-			yLatitud: Number(ubicacionCatastro[0]),
-			xLongitud: Number(ubicacionCatastro[1]),
+			yLatitud: Number(ubicacionCatastro[1]),
+			xLongitud: Number(ubicacionCatastro[0]),
 		};
 		catastro.localidad = ubicacionCatastro[2];
 
@@ -33,7 +33,6 @@ export class Catastro {
 		catastro.codigoProvincia = Number(otrosDatosCatastro[2]);
 		catastro.superficie = Number(otrosDatosCatastro[3]);
 
-		//console.log(catastro);
 		return catastro;
 	}
 

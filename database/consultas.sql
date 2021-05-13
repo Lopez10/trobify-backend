@@ -7,7 +7,6 @@ SELECT * FROM Contiene;
 SELECT * FROM CaractSecundarias;
 SELECT * FROM CaractIntrinsecas;
 SELECT * FROM DiferentesTiposInmuebles; 
-SELECT * FROM extra;
 SELECT * FROM Catalogo; 
 SELECT * FROM Inmueble; 
 SELECT * FROM CertificacionEnergetica; 
@@ -40,5 +39,5 @@ WHERE inm.id_catastro = cat.id_catastro
     AND inm.id_estadoInmueble = est.id_estadoInmueble  
     AND inm.id_tipoVivienda = tpoV.id_tipoVivienda 
     AND inm.id_tipoInmueble = tpoI.id_tipoInmueble 
-    AND cat.id_modalidad = 1  
+    AND cat.id_modalidad = 2  
     AND inm.id_catastro LIKE ("0230809UH0403S0001LF");

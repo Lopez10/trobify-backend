@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Construccion } from '../clases/Catalogo/Construccion';
+import { Construccion } from '../controllers/Catalogo/Construccion';
 
 const router = Router();
 let construccionCatalogo = new Construccion();

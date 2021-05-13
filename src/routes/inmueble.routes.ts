@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { Construccion } from '../clases/Inmueble/Construccion';
-import { Eliminar } from '../clases/Inmueble/Eliminar';
+import { Construccion } from '../controllers/Inmueble/Construccion';
+import { Eliminar } from '../controllers/Inmueble/Eliminar';
 const router = Router();
 
 let construccionInmueble = new Construccion();

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Singleton } from '../../Singleton';
+import { Catastro } from '../catastro';
 
 export class Inmueble {
 	static BD: Singleton;
@@ -30,11 +31,12 @@ export class Inmueble {
 
 	static async regInmueble(req: Request): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
-		console.log(req.body);
 		if (await Inmueble.existeInmueble(id_catastro)) {
 			return 'Este inmueble ya se encuentra registrado en nuestra Base de Datos';
 		}
+		/*
 		const superficie: number = Number(req.body.superficie);
+		*/
 		const breveDescripcion: string = String(req.body.breveDescripcion);
 		const id_tipoInmueble: number = Number(req.body.id_tipoInmueble);
 		const id_estadoInmueble: number = Number(req.body.id_estadoInmueble);
@@ -46,13 +48,16 @@ export class Inmueble {
 		const nBano: number = Number(req.body.nBano);
 		const id_certifEner: number = Number(req.body.id_certifEner);
 		const id_caractSecundaria: string[] = req.body.id_caractSecundaria;
+		/*
 		const id_provincia: number = Number(req.body.id_provincia);
 		const direccion: string = String(req.body.direccion);
 		const longitud: number = Number(req.body.longitud);
 		const latitud: number = Number(req.body.latitud);
+		*/
 		const nCocina: number = Number(req.body.nCocina);
 		const descuento: number = Number(req.body.descuento);
 		const id_usuario: number = Number(req.body.id_usuario);
+		const publicado: number = Number(req.body.publicado);
 
 		const id_imagen = await Inmueble.cargarImagenes(id_catastro, imagen);
 
@@ -60,8 +65,9 @@ export class Inmueble {
 			return 'Error al cargar las imágenes';
 		}
 
-		const id_ubicacion = await Inmueble.cargarUbicacion(id_provincia, direccion, longitud, latitud);
-		console.log(id_ubicacion);
+		let consultaCatastro: Catastro = await Catastro.create(id_catastro);
+
+		const id_ubicacion = await Inmueble.cargarUbicacion(consultaCatastro);
 		if (id_ubicacion < 0) {
 			return 'Error al cargar la Ubicacion';
 		}
@@ -69,7 +75,7 @@ export class Inmueble {
 		const inmuebleCargado: boolean = Boolean(
 			await Inmueble.cargarInmueble(
 				id_catastro,
-				superficie,
+				consultaCatastro.superficie,
 				breveDescripcion,
 				id_ubicacion,
 				id_tipoInmueble,
@@ -78,7 +84,6 @@ export class Inmueble {
 				id_imagen
 			)
 		);
-		console.log(inmuebleCargado);
 		if (!inmuebleCargado) {
 			return 'Error al cargar el inmueble';
 		}
@@ -104,7 +109,14 @@ export class Inmueble {
 		}
 
 		const catalogoCargado: boolean = Boolean(
-			await Inmueble.cargarCatalogo(id_catastro, id_modalidad, precio, descuento, id_usuario)
+			await Inmueble.cargarCatalogo(
+				id_catastro,
+				id_modalidad,
+				precio,
+				descuento,
+				id_usuario,
+				publicado
+			)
 		);
 		if (!catalogoCargado) {
 			return 'Error al cargar el catalogo';
@@ -133,16 +145,24 @@ export class Inmueble {
 		return idMinimo;
 	}
 
-	static async cargarUbicacion(
-		id_provincia: number,
-		direccion: string,
-		longitud: number,
-		latitud: number
-	): Promise<number> {
+	static async cargarUbicacion(catastro: Catastro): Promise<number> {
 		try {
-			let insert: string = 'INSERT INTO Ubicacion (direccion, prov, latitud, longitud) ';
+			let insert: string =
+				'INSERT INTO Ubicacion (direccion, codPostal, localidad, prov, latitud, longitud) ';
 			let value: string =
-				'VALUES ("' + direccion + '", ' + id_provincia + ', ' + latitud + ', ' + longitud + ');';
+				'VALUES ("' +
+				catastro.direccion +
+				'", ' +
+				catastro.codigoPostal +
+				', "' +
+				catastro.localidad +
+				'", ' +
+				catastro.codigoProvincia +
+				', ' +
+				catastro.coordenada.yLatitud +
+				', ' +
+				catastro.coordenada.xLongitud +
+				');';
 			await Inmueble.BD.accesoBD(insert + ' ' + value);
 		} catch {
 			return -1;
@@ -156,7 +176,6 @@ export class Inmueble {
 		JSON.parse(JSON.stringify(calculoMaximo[0])).forEach((item) => {
 			idMaximo = Number(item.maximo);
 		});
-
 		return idMaximo;
 	}
 
@@ -170,7 +189,6 @@ export class Inmueble {
 		id_tipoVivienda: number,
 		id_imagen: number
 	): Promise<Boolean> {
-		console.log('entra');
 		let insert: string = 'INSERT INTO Inmueble ';
 		let value: string =
 			'VALUES ("' +
@@ -199,7 +217,8 @@ export class Inmueble {
 		id_modalidad: string[],
 		precio: string[],
 		descuento: number,
-		id_usuario: number
+		id_usuario: number,
+		publicado: number
 	): Promise<Boolean> {
 		const fecha: Date = new Date();
 
@@ -207,19 +226,33 @@ export class Inmueble {
 		try {
 			let insert: string = 'INSERT INTO Catalogo ';
 			for (var i = 0; i < id_modalidad.length; i++) {
+				console.log('********************************');
+				console.log(parseInt(precio[i]));
+				console.log('********************************');
+
+				let valor: number = 99999;
+
+				if (!isNaN(parseInt(precio[i]))) valor = parseInt(precio[i]);
+
+				if (publicado == null) {
+					publicado = 1;
+				}
+
 				let value: string =
 					'VALUES ("' +
 					id_catastro +
 					'", ' +
 					parseInt(id_modalidad[i]) +
 					', ' +
-					parseInt(precio[i]) +
+					valor +
 					', ' +
 					descuento +
 					', "' +
 					hoy +
 					'", ' +
 					id_usuario +
+					', ' +
+					publicado +
 					');';
 				await Inmueble.BD.accesoBD(insert + ' ' + value);
 			}

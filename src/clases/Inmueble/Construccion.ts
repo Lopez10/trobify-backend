@@ -8,13 +8,17 @@ export class Construccion extends Inmueble {
 		const catastro: string = String(req.params.inmuebleId);
 
 		let select: string =
-			'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, car.nCocina, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov, cat.id_usuario as propietario';
+			'cat.precio, cat.descuento, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, inm.superficie, car.nHab, car.nBano, car.nCocina, cer.certifEner, ubi.direccion, ubi.latitud, ubi.longitud, inm.breveDescripcion, ubi.prov, cat.id_usuario as propietario, cat.publicado';
 		let from: String =
 			'inmueble inm, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, ubicacion ubi, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI';
 		let where: String =
 			'inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND cer.id_certifEner = car.id_certifEner AND ubi.id_ubicacion = inm.id_ubicacion AND inm.id_estadoInmueble = est.id_estadoInmueble  AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
 		where += ' AND cat.id_modalidad = ' + modalidad + ' ';
 		where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
+
+		console.log('-----------------------------');
+		console.log('SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';');
+		console.log('-----------------------------');
 
 		let inmueble = await Inmueble.BD.accesoBD(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
@@ -40,9 +44,13 @@ export class Construccion extends Inmueble {
 		caract.splice(0, 1);
 
 		let newInmueble: InmuebleInterface;
+		console.log('--------INMUEBLE-------------');
+		console.log(inmueble[0]);
+		console.log(inmueble[0]);
+		console.log('-----------------------------');
 
-		newInmueble =
-			{
+		try {
+			newInmueble = {
 				id_catastro: catastro,
 				tipoInmueble: inmueble[0][0].tipoInmueble,
 				estadoInmueble: inmueble[0][0].estadoInmueble,
@@ -65,7 +73,11 @@ export class Construccion extends Inmueble {
 				precio: inmueble[0][0].precio,
 				descuento: inmueble[0][0].descuento,
 				propietario: inmueble[0][0].propietario,
-			} || null;
+				publicado: inmueble[0][0].publicado,
+			};
+		} catch {
+			newInmueble = null;
+		}
 		return res.json(newInmueble);
 	}
 

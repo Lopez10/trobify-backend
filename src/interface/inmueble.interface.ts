@@ -22,4 +22,5 @@ export interface InmuebleInterface {
 	precio: number;
 	descuento: number;
 	propietario: number;
+	publicado: number;
 }

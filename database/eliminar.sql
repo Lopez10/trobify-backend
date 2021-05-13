@@ -5,7 +5,7 @@ DROP TABLE Filtros;
 DROP TABLE Contiene; 
 DROP TABLE CaractSecundarias;
 DROP TABLE CaractIntrinsecas;
-DROP TABLE Catalogo; 
+DROP TABLE Catalogo;
 DROP TABLE Inmueble; 
 DROP TABLE Imagen; 
 DROP TABLE CertificacionEnergetica; 

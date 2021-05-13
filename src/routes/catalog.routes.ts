@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { getCatalog, getInmueblesPropietario } from '../controllers/catalogo.controller';
+import { Construccion } from '../controllers/Catalogo/Construccion';
+
 const router = Router();
+let construccionCatalogo = new Construccion();
 
-router.route('/').get(getCatalog);
-
-router.route('/:id_mail').get(getInmueblesPropietario);
+router.route('/').get(construccionCatalogo.getCatalog);
+router.route('/:mailPropietario').get(construccionCatalogo.getInmueblesPropietario);
 
 export default router;

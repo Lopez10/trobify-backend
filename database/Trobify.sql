@@ -13,6 +13,8 @@ CREATE TABLE Provincias (
 CREATE TABLE Ubicacion (
 	id_ubicacion INT AUTO_INCREMENT,
 	direccion VARCHAR(250) NOT NULL,
+    codPostal VARCHAR(5) NOT NULL,
+    localidad VARCHAR(50) NOT NULL,
 	prov TINYINT NOT NULL,
 	latitud DOUBLE NOT NULL,
 	longitud DOUBLE NOT NULL,
@@ -91,6 +93,7 @@ CREATE TABLE Catalogo (
 	descuento DOUBLE NOT NULL,
 	f_insercion DATE NOT NULL,
 	id_usuario INT NOT NULL,
+    publicado BOOLEAN NOT NULL,
 	PRIMARY KEY (id_modalidad, id_catastro),
 	FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad),
 	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
@@ -118,13 +121,6 @@ CREATE TABLE Contiene (
 	FOREIGN KEY (id_caractSecundaria) REFERENCES CaractSecundarias (id_caractSecundaria),
 	FOREIGN KEY (id_catastro) REFERENCES CaractIntrinsecas (id_catastro)
 );
-CREATE TABLE Extra (
-	id_extra INT AUTO_INCREMENT,
-	id_catastro CHAR(20),
-	valor TEXT NOT NULL,
-	PRIMARY KEY (id_extra),
-	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro)
-);
 CREATE TABLE Filtros (
 	id_filtro INT AUTO_INCREMENT,
 	id_usuario INT,
@@ -145,12 +141,5 @@ CREATE TABLE Filtros (
 	tipoViv VARCHAR(50),
 	caract VARCHAR(50),
 	PRIMARY KEY (id_filtro),
-	FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario)
-);
-CREATE TABLE Favoritos (
-	id_usuario INT NOT NULL,
-	id_catastro CHAR(20) NOT NULL,
-	id_modalidad INT NOT NULL,
-	FOREIGN KEY (id_modalidad, id_catastro) REFERENCES Catalogo (id_modalidad, id_catastro),
 	FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario)
 );

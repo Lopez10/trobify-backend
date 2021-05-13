@@ -1,4 +1,4 @@
-export interface Inmueble {
+export interface InmuebleInterface {
 	id_catastro: string;
 	tipoInmueble: string;
 	estadoInmueble: string;
@@ -22,4 +22,5 @@ export interface Inmueble {
 	precio: number | number[];
 	descuento: number | number[];
 	propietario: number;
+	publicado: number;
 }

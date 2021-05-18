@@ -41,4 +41,71 @@ export class Usuario {
 
 		return res.json(filter[0]);
 	}
+
+	static async existeUsuario(mail: string): Promise<boolean> {
+		let select: string = 'COUNT(mail) as cuenta';
+		let from: string = 'Usuario';
+		let where: string = 'mail LIKE ( "' + mail + '")';
+		const consulta = await Usuario.BD.accesoBD(
+			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
+		);
+		var contar: number = 0;
+		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
+			contar = item.cuenta;
+		});
+		if (contar != 0) return true;
+		return false;
+	}
+
+	async regUsuario(req: Request, res: Response): Promise<Response> {
+		const mail: string = String(req.body.mail);
+		if (await Usuario.existeUsuario(mail)) {
+			return res.json({ message: 'El usuario ya existe en la base de datos' });
+		}
+
+		let usuario: UsuariosInterface = {
+			nombre: String(req.body.nombre),
+			apellidos: String(req.body.apellidos),
+			id_rol: Number(parseInt(req.body.id_rol)),
+			vendedor: false,
+			mail: mail,
+			contrasena: String(req.body.contrasena),
+			telefono: Number(parseInt(req.body.telefono)),
+		};
+
+		const usuarioCargado: boolean = Boolean(await Usuario.cargarUsuario(usuario));
+
+		if (!usuarioCargado) {
+			return res.json({ message: 'Ha habido un error al cargar el usuario en la Base de Datos' });
+		}
+
+		return res.json({ message: 'El usuario se ha registrado correctamente' });
+	}
+
+	static async cargarUsuario(usuario: UsuariosInterface): Promise<Boolean> {
+		let insert: string =
+			'INSERT INTO Usuario (nombre, apellidos, id_rol, vendedor, mail, contrasena, telefono) ';
+		let value: string =
+			'VALUES ("' +
+			usuario.nombre +
+			'", "' +
+			usuario.apellidos +
+			'", ' +
+			usuario.id_rol +
+			', ' +
+			usuario.vendedor +
+			', "' +
+			usuario.mail +
+			'", "' +
+			usuario.contrasena +
+			'", ' +
+			usuario.telefono +
+			');';
+		try {
+			await Usuario.BD.accesoBD(insert + ' ' + value);
+			return true;
+		} catch {
+			return false;
+		}
+	}
 }

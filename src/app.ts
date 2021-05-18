@@ -7,6 +7,7 @@ import CatalogRoutes from './routes/catalog.routes';
 import InmuebleRoutes from './routes/inmueble.routes';
 import UsuariosRoutes from './routes/usuarios.routes';
 import LoginRoutes from './routes/login.routes';
+import RegistroRoutes from './routes/registro.routes';
 import path from 'path';
 
 export class App {
@@ -35,6 +36,7 @@ export class App {
 		this.app.use('/catalogo', CatalogRoutes);
 		this.app.use('/inmueble', InmuebleRoutes);
 		this.app.use('/usuarios', UsuariosRoutes);
+		this.app.use('/registro', RegistroRoutes);
 		this.app.use('/login', LoginRoutes);
 	}
 

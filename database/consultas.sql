@@ -41,3 +41,7 @@ WHERE inm.id_catastro = cat.id_catastro
     AND inm.id_tipoInmueble = tpoI.id_tipoInmueble 
     AND cat.id_modalidad = 2  
     AND inm.id_catastro LIKE ("0230809UH0403S0001LF");
+    
+    
+INSERT INTO Usuario (nombre, apellidos, id_rol, vendedor, mail, contrasena, telefono)  
+VALUES ("Carmelo", "Molero Castillo", 1, false, "postman@gmail.com", "dD12345678%", 666555888);

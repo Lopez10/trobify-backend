@@ -60,7 +60,7 @@ export class Usuario {
 	async regUsuario(req: Request, res: Response): Promise<Response> {
 		const mail: string = String(req.body.mail);
 		if (await Usuario.existeUsuario(mail)) {
-			return res.json({ message: 'El usuario ya existe en la base de datos' });
+			return res.json(false);
 		}
 
 		let usuario: UsuariosInterface = {
@@ -76,10 +76,10 @@ export class Usuario {
 		const usuarioCargado: boolean = Boolean(await Usuario.cargarUsuario(usuario));
 
 		if (!usuarioCargado) {
-			return res.json({ message: 'Ha habido un error al cargar el usuario en la Base de Datos' });
+			return res.json(false);
 		}
 
-		return res.json({ message: 'El usuario se ha registrado correctamente' });
+		return res.json(true);
 	}
 
 	static async cargarUsuario(usuario: UsuariosInterface): Promise<Boolean> {

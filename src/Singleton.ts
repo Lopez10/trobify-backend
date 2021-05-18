@@ -10,9 +10,10 @@ export class Singleton {
 		return Singleton.instance;
 	}
 
-	public async accesoBD(consulta: string): Promise<any> {
+	public async accesoBD(consulta: string, mas?: string[]): Promise<any> {
 		const conn = await connect();
 		console.log(consulta);
+		if (mas) return await conn.query(consulta, mas);
 		return await conn.query(consulta);
 	}
 }

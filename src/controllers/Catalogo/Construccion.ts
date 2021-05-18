@@ -1,5 +1,6 @@
 import { Catalogo } from './Catalogo';
 import { Request, Response } from 'express';
+import { connect } from '../../database';
 
 export class Construccion extends Catalogo {
 	public async getCatalog(req: Request, res: Response): Promise<Response> {
@@ -49,20 +50,19 @@ export class Construccion extends Catalogo {
 	}
 
  	async getInmueblesPropietario(req: Request, res: Response): Promise<Response> {
-		let mail: string = req.params.id_mail;
-	
+		let mail: string = req.params.mailPropietario;
+
 		let select: string =
 			'inm.id_catastro, inm.superficie, inm.breveDescripcion, ubi.direccion, ubi.latitud, ubi.longitud, ubi.prov, cat.id_modalidad, cat.precio, cat.descuento, cat.id_usuario as propietario, car.nHab, car.nBano, car.nCocina, tpoI.tipoInmueble, tpoV.tipoVivienda, est.estadoInmueble, cer.certifEner, img.valor as urlImg';
 		let from: String =
 			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, imagen img, usuario usu';
 		let where: String =
-			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble AND cat.id_usuario = usu.id_usuario';
-		where += ' AND usu.mail = "' + mail + '"';
-
+			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble ';
+			
 		const inmuebles = await Catalogo.BD.accesoBD(
-			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
+			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + 'AND cat.id_usuario = usu.id_usuario AND usu.mail = ?;', [mail]
 		);
-	
+			
 		return res.json(inmuebles[0]);
 	}
 

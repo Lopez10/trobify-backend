@@ -47,7 +47,7 @@ export class Inmueble {
 		const id_caractSecundaria: string[] = req.body.id_caractSecundaria;
 		const nCocina: number = Number(req.body.nCocina);
 		const descuento: number = Number(req.body.descuento);
-		const id_usuario: number = Number(req.body.id_usuario);
+		const mail: string = (req.body.mail);
 		const publicado: number = Number(req.body.publicado);
 
 		const id_imagen = await Inmueble.cargarImagenes(id_catastro, imagen);
@@ -95,6 +95,7 @@ export class Inmueble {
 		const contieneCargado: boolean = Boolean(
 			await Inmueble.cargarContiene(id_catastro, id_caractSecundaria)
 		);
+		console.log(contieneCargado);
 		if (!contieneCargado) {
 			return 'Error al cargar las características Secundarias';
 		}
@@ -105,10 +106,11 @@ export class Inmueble {
 				id_modalidad,
 				precio,
 				descuento,
-				id_usuario,
+				mail,
 				publicado
 			)
 		);
+		console.log(catalogoCargado);
 		if (!catalogoCargado) {
 			return 'Error al cargar el catalogo';
 		}
@@ -208,10 +210,14 @@ export class Inmueble {
 		id_modalidad: string[],
 		precio: string[],
 		descuento: number,
-		id_usuario: number,
+		mail: string,
 		publicado: number
 	): Promise<Boolean> {
 		const fecha: Date = new Date();
+		
+		console.log('hola');
+
+		let id_usuario = await this.obtenerUsuario(mail);
 
 		const hoy: string = '' + fecha.getFullYear() + '-' + fecha.getMonth() + '-' + fecha.getDay();
 		try {
@@ -281,5 +287,21 @@ export class Inmueble {
 		}
 
 		return true;
+	}
+
+	static async obtenerUsuario(mail: string): Promise<string> {
+			let select: string = 'SELECT id_usuario as user ';
+			let from: string = 'FROM Usuario ';
+			let where: string = 'WHERE mail = "' + mail + '";';
+
+			let id_usuario = await Inmueble.BD.accesoBD(select + from + where); 
+
+			var User: string;
+			JSON.parse(JSON.stringify(id_usuario[0])).forEach((item) => {
+				User = (item.user);
+			});
+
+			console.log(User);
+			return User;
 	}
 }

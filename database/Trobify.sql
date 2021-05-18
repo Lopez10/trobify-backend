@@ -35,7 +35,6 @@ CREATE TABLE Usuario (
 	mail VARCHAR(50) NOT NULL,
 	contrasena VARCHAR(30) NOT NULL,
 	telefono INT NOT NULL,
-	mayorEdad BOOLEAN NOT NULL,
 	PRIMARY KEY(id_usuario),
 	FOREIGN KEY (id_rol) REFERENCES RolUsuario (id_rol)
 );

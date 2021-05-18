@@ -208,10 +208,10 @@ INSERT INTO RolUsuario values
 	(1, "Particular"),
 	(2, "Inmobiliaria");
 INSERT INTO Usuario values 
-	(1, 'Alfredo', 'Sauce Marinada', 1, 0, 'prueba1@gmail.com', "aA123456789*", 956784512, 1),
-	(2, 'Diego', 'Caramelo Caricia', 2, 0, 'prueba2@gmail.com', "bB123456789*", 956784512, 1),
-	(3, 'Carlos', 'Molinillo Loco', 1, 0, 'prueba3@gmail.com', "cC123456789*", 956784512, 1),
-	(4, 'Juan Carlos', 'Rey Fugado', 2, 0, 'prueba4@gmail.com', "dD123456789*", 956784512, 1);
+	(1, 'Alfredo', 'Sauce Marinada', 1, 0, 'prueba1@gmail.com', "aA123456789*", 956784512),
+	(2, 'Diego', 'Caramelo Caricia', 2, 0, 'prueba2@gmail.com', "bB123456789*", 956784512),
+	(3, 'Carlos', 'Molinillo Loco', 1, 0, 'prueba3@gmail.com', "cC123456789*", 956784512),
+	(4, 'Juan Carlos', 'Rey Fugado', 2, 0, 'prueba4@gmail.com', "dD123456789*", 956784512);
 INSERT INTO Catalogo values 
 	("5738211YJ2753H0024XK", 1, 50000, 0, "2021-01-11" , 1, 1),
 	("5139410YJ2753G0019EU", 1, 60000, 0, "2020-08-12" , 2, 1),

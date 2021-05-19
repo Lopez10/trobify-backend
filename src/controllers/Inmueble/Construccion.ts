@@ -18,8 +18,6 @@ export class Construccion extends Inmueble {
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
 
-		//let imagenes: string[] = await Construccion.getImagenesByCatastro(catastro);
-
 		let imagenes: string[] = await Construccion.getConsultaByCatastro(
 			catastro,
 			'valor',
@@ -57,7 +55,7 @@ export class Construccion extends Inmueble {
 				id_catastro: catastro,
 				tipoInmueble: inmueble[0][0].tipoInmueble,
 				estadoInmueble: inmueble[0][0].estadoInmueble,
-				energia: inmueble[0][0].certifEner,
+				energia: inmueble[0][0].energia,
 				imagen: imagenes,
 				superficie: inmueble[0][0].superficie,
 				descripcion: inmueble[0][0].breveDescripcion,

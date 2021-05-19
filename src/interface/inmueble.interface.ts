@@ -16,7 +16,6 @@ export interface InmuebleInterface {
 	nBanos: number;
 	nCocinas: number;
 	caracteristicas: string[];
-	extras?: string[];
 
 	modalidad: number | string[];
 	precio: number | string[];

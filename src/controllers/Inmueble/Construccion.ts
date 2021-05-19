@@ -22,22 +22,16 @@ export class Construccion extends Inmueble {
 		let imagenes = await Inmueble.BD.accesoBD(
 			'SELECT valor FROM imagen WHERE id_catastro LIKE ("' + catastro + '")'
 		);
-		var img: string[] = [''];
-		JSON.parse(JSON.stringify(imagenes[0])).forEach((item) => {
-			img.push(item.valor);
-		});
-		img.splice(0, 1);
+
+		var img: string[] = await Inmueble.stringifyArray(imagenes);
 
 		let caracteristicas = await Inmueble.BD.accesoBD(
-			'SELECT ca.caracteristica FROM contiene co, caractsecundarias ca WHERE co.id_caractSecundaria = ca.id_caractSecundaria AND co.id_catastro LIKE ("' +
+			'SELECT ca.caracteristica as valor FROM contiene co, caractsecundarias ca WHERE co.id_caractSecundaria = ca.id_caractSecundaria AND co.id_catastro LIKE ("' +
 				catastro +
 				'")'
 		);
-		var caract: string[] = [''];
-		JSON.parse(JSON.stringify(caracteristicas[0])).forEach((item) => {
-			caract.push(item.caracteristica);
-		});
-		caract.splice(0, 1);
+
+		var caract: string[] = await Inmueble.stringifyArray(caracteristicas);
 
 		let newInmueble: InmuebleInterface;
 		try {

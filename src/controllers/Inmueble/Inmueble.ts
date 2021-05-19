@@ -17,16 +17,13 @@ export class Inmueble {
 	}
 
 	static async existeCatastro(from: string, id_catastro: string): Promise<number> {
-		let select: string = 'COUNT(id_catastro) as cuenta';
+		let select: string = 'COUNT(id_catastro) as valor';
 		let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
 		const consulta = await Inmueble.BD.accesoBD(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
-		var contar: number = 0;
-		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
-			contar = item.cuenta;
-		});
-		return contar;
+		
+		return this.stringifyNumber(consulta);
 	}
 
 	static async regInmueble(req: Request): Promise<string> {
@@ -128,14 +125,10 @@ export class Inmueble {
 		}
 
 		const calculoMinimo = await Inmueble.BD.accesoBD(
-			'SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
+			'SELECT MIN(id_imagen) as valor FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
 		);
-		var idMinimo: number;
-		JSON.parse(JSON.stringify(calculoMinimo[0])).forEach((item) => {
-			idMinimo = item.minimo;
-		});
 
-		return idMinimo;
+		return this.stringifyNumber(calculoMinimo);
 	}
 
 	static async cargarUbicacion(catastro: Catastro): Promise<number> {
@@ -162,14 +155,10 @@ export class Inmueble {
 		}
 
 		const calculoMaximo = await Inmueble.BD.accesoBD(
-			'Select MAX(id_ubicacion) as maximo from ubicacion;'
+			'Select MAX(id_ubicacion) as valor from ubicacion;'
 		);
 
-		var idMaximo: number;
-		JSON.parse(JSON.stringify(calculoMaximo[0])).forEach((item) => {
-			idMaximo = Number(item.maximo);
-		});
-		return idMaximo;
+		return this.stringifyNumber(calculoMaximo);
 	}
 
 	static async cargarInmueble(
@@ -290,18 +279,37 @@ export class Inmueble {
 	}
 
 	static async obtenerUsuario(mail: string): Promise<string> {
-			let select: string = 'SELECT id_usuario as user ';
+			let select: string = 'SELECT id_usuario as valor ';
 			let from: string = 'FROM Usuario ';
 			let where: string = 'WHERE mail = "' + mail + '";';
 
 			let id_usuario = await Inmueble.BD.accesoBD(select + from + where); 
 
-			var User: string;
-			JSON.parse(JSON.stringify(id_usuario[0])).forEach((item) => {
-				User = (item.user);
-			});
+			return this.stringifyString(id_usuario);
+	}
 
-			console.log(User);
-			return User;
+	static async stringifyString(x: string): Promise<string> {
+		var build: string;
+		JSON.parse(JSON.stringify(x[0])).forEach((item) => {
+			build = (item.valor);
+		});
+		return build;
+	}
+
+	static async stringifyNumber(x: number): Promise<number> {
+		var build: number = 0;
+		JSON.parse(JSON.stringify(x[0])).forEach((item) => {
+			build = Number(item.valor);
+		});
+		return build;
+	}
+
+	static async stringifyArray(x: string): Promise<string[]> {
+		var y: string[] = [''];
+		JSON.parse(JSON.stringify(x[0])).forEach((item) => {
+			y.push(item.valor);
+		});
+		
+		return y.splice(0, 1);
 	}
 }

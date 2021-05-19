@@ -11,7 +11,6 @@ export class Catalogo {
 		idTipoInmueble: Number,
 		idProvincia: Number
 	): boolean {
-		console.log(idModalidad, idTipoInmueble, idProvincia);
 		if (isNaN(+idProvincia) || idProvincia < 0 || idProvincia > 52) {
 			return false;
 		}
@@ -140,8 +139,6 @@ export class Catalogo {
 			max = max + max * margen;
 		}
 		if (min < 0) min = 0;
-
-		//console.log('AND cat.precio BETWEEN ' + min + ' AND ' + max);
 
 		return ' AND cat.precio BETWEEN ' + min + ' AND ' + max;
 	}

@@ -15,7 +15,7 @@ export class Construccion extends Catalogo {
 		let from: String =
 			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, imagen img';
 		let where: String =
-			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble';
+			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble AND cat.publicado = 1';
 		where += ' AND cat.id_modalidad = ' + idModalidad;
 		where +=
 			'' +
@@ -49,7 +49,7 @@ export class Construccion extends Catalogo {
 		return res.json(catalogo[0]);
 	}
 
- 	async getInmueblesPropietario(req: Request, res: Response): Promise<Response> {
+	async getInmueblesPropietario(req: Request, res: Response): Promise<Response> {
 		let mail: string = req.params.mailPropietario;
 
 		let select: string =
@@ -58,11 +58,18 @@ export class Construccion extends Catalogo {
 			'inmueble inm, ubicacion ubi, catalogo cat, CaractIntrinsecas car, CertificacionEnergetica cer, EstadoInmueble est, TipoDeVivienda tpoV, TipoDeInmueble tpoI, imagen img, usuario usu';
 		let where: String =
 			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble ';
-			
+
 		const inmuebles = await Catalogo.BD.accesoBD(
-			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + 'AND cat.id_usuario = usu.id_usuario AND usu.mail = ?;', [mail]
+			'SELECT ' +
+				select +
+				' FROM ' +
+				from +
+				' WHERE ' +
+				where +
+				'AND cat.id_usuario = usu.id_usuario AND usu.mail = ?;',
+			[mail]
 		);
-			
+
 		return res.json(inmuebles[0]);
 	}
 

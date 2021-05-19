@@ -9,8 +9,7 @@ export class Eliminar extends Inmueble {
 
 	async modificarInmueble(req: Request, res: Response): Promise<Response> {
 		Eliminar.deleteInmueble(req, true);
-		console.log(req);
-		return res.json('Tus muertos, so desgraciado');
+		return res.json('Eliminado');
 	}
 
 	static async eliminarSegunId(

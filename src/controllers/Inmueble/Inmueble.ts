@@ -23,7 +23,7 @@ export class Inmueble {
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 		
-		return this.stringifyNumber(consulta);
+		return this.stringifyString(consulta, 'number');
 	}
 
 	static async regInmueble(req: Request): Promise<string> {
@@ -128,7 +128,7 @@ export class Inmueble {
 			'SELECT MIN(id_imagen) as valor FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
 		);
 
-		return this.stringifyNumber(calculoMinimo);
+		return this.stringifyString(calculoMinimo, 'string');
 	}
 
 	static async cargarUbicacion(catastro: Catastro): Promise<number> {
@@ -158,7 +158,7 @@ export class Inmueble {
 			'Select MAX(id_ubicacion) as valor from ubicacion;'
 		);
 
-		return this.stringifyNumber(calculoMaximo);
+		return this.stringifyString(calculoMaximo, 'number');
 	}
 
 	static async cargarInmueble(
@@ -285,21 +285,14 @@ export class Inmueble {
 
 			let id_usuario = await Inmueble.BD.accesoBD(select + from + where); 
 
-			return this.stringifyString(id_usuario);
+			return this.stringifyString(id_usuario, 'string');
 	}
 
-	static async stringifyString(x: string): Promise<string> {
-		var build: string;
+	static async stringifyString(x: any, type: string): Promise<any> {
+		let build;
 		JSON.parse(JSON.stringify(x[0])).forEach((item) => {
-			build = (item.valor);
-		});
-		return build;
-	}
-
-	static async stringifyNumber(x: number): Promise<number> {
-		var build: number = 0;
-		JSON.parse(JSON.stringify(x[0])).forEach((item) => {
-			build = Number(item.valor);
+			if (type == 'number') build = Number(item.valor); 
+			if (type == 'string') build = (item.valor);
 		});
 		return build;
 	}

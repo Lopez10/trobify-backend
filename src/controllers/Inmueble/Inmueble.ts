@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { Singleton } from '../../Singleton';
+import { ConexionBD } from '../../ConexionBD';
 import { Catastro } from '../catastro';
 
 export class Inmueble {
-	static BD: Singleton;
+	static BD: ConexionBD;
 	constructor() {
-		Inmueble.BD = Singleton.getInstance();
+		Inmueble.BD = ConexionBD.getInstance();
 	}
 
 	static async existeInmueble(id_catastro: string): Promise<Boolean> {
@@ -19,7 +19,7 @@ export class Inmueble {
 	static async existeCatastro(from: string, id_catastro: string): Promise<number> {
 		let select: string = 'COUNT(id_catastro) as cuenta';
 		let where: string = 'id_catastro LIKE ( "' + id_catastro + '")';
-		const consulta = await Inmueble.BD.accesoBD(
+		const consulta = await Inmueble.BD.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 		var contar: number = 0;
@@ -112,13 +112,13 @@ export class Inmueble {
 			let insert: string = ' INSERT INTO Imagen (id_catastro, valor)';
 			for (var i = 0; i < imagen.length; i++) {
 				let value: string = 'VALUES ("' + id_catastro + '", "' + imagen[i] + '");';
-				await Inmueble.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.getConsulta(insert + ' ' + value);
 			}
 		} catch {
 			return -1;
 		}
 
-		const calculoMinimo = await Inmueble.BD.accesoBD(
+		const calculoMinimo = await Inmueble.BD.getConsulta(
 			'SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' + id_catastro + '";'
 		);
 		var idMinimo: number;
@@ -147,12 +147,12 @@ export class Inmueble {
 				', ' +
 				catastro.coordenada.xLongitud +
 				');';
-			await Inmueble.BD.accesoBD(insert + ' ' + value);
+			await Inmueble.BD.getConsulta(insert + ' ' + value);
 		} catch {
 			return -1;
 		}
 
-		const calculoMaximo = await Inmueble.BD.accesoBD(
+		const calculoMaximo = await Inmueble.BD.getConsulta(
 			'Select MAX(id_ubicacion) as maximo from ubicacion;'
 		);
 
@@ -192,7 +192,7 @@ export class Inmueble {
 			', ' +
 			id_imagen +
 			');';
-		await Inmueble.BD.accesoBD(insert + ' ' + value);
+		await Inmueble.BD.getConsulta(insert + ' ' + value);
 		return true;
 	}
 
@@ -228,7 +228,7 @@ export class Inmueble {
 					', ' +
 					publicado +
 					');';
-				await Inmueble.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.getConsulta(insert + ' ' + value);
 			}
 		} catch {
 			return false;
@@ -257,7 +257,7 @@ export class Inmueble {
 				', ' +
 				nHab +
 				');';
-			await Inmueble.BD.accesoBD(insert + ' ' + value);
+			await Inmueble.BD.getConsulta(insert + ' ' + value);
 		} catch {
 			return false;
 		}
@@ -269,7 +269,7 @@ export class Inmueble {
 			for (var i = 0; i < caracteristicas.length; i++) {
 				let insert: string = 'INSERT INTO Contiene ';
 				let value: string = 'VALUES (' + parseInt(caracteristicas[i]) + ', "' + id_catastro + '");';
-				await Inmueble.BD.accesoBD(insert + ' ' + value);
+				await Inmueble.BD.getConsulta(insert + ' ' + value);
 			}
 		} catch {
 			return false;
@@ -283,7 +283,7 @@ export class Inmueble {
 		let from: string = 'FROM Usuario ';
 		let where: string = 'WHERE mail = "' + mail + '";';
 
-		let id_usuario = await Inmueble.BD.accesoBD(select + from + where);
+		let id_usuario = await Inmueble.BD.getConsulta(select + from + where);
 
 		var User: string;
 		JSON.parse(JSON.stringify(id_usuario[0])).forEach((item) => {

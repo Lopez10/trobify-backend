@@ -1,4 +1,4 @@
-import { coordenada } from '../interface/ubicacion.interface';
+import { coordenada } from '../interface/baseDatos.interface';
 import axios from 'axios';
 
 export class Catastro {

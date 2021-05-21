@@ -1,6 +1,6 @@
 import { Catalogo } from './Catalogo';
 import { Request, Response } from 'express';
-import { connect } from '../../database';
+//import { connect } from '../../database';
 
 export class Construccion extends Catalogo {
 	public async getCatalog(req: Request, res: Response): Promise<Response> {
@@ -45,7 +45,7 @@ export class Construccion extends Catalogo {
 			super.getOrderBy(Number(req.query.ord)) +
 			';';
 
-		const catalogo = await Catalogo.BD.accesoBD(consulta);
+		const catalogo = await Catalogo.BD.getConsulta(consulta);
 		return res.json(catalogo[0]);
 	}
 
@@ -59,7 +59,7 @@ export class Construccion extends Catalogo {
 		let where: String =
 			'ubi.id_ubicacion = inm.id_ubicacion AND inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND inm.id_imagen = img.id_imagen AND cer.id_certifEner = car.id_certifEner AND inm.id_estadoInmueble = est.id_estadoInmueble AND inm.id_tipoVivienda = tpoV.id_tipoVivienda AND inm.id_tipoInmueble = tpoI.id_tipoInmueble ';
 
-		const inmuebles = await Catalogo.BD.accesoBD(
+		const inmuebles = await Catalogo.BD.getConsulta(
 			'SELECT ' +
 				select +
 				' FROM ' +

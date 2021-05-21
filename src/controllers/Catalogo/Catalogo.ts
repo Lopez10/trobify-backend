@@ -1,9 +1,9 @@
-import { Singleton } from '../../Singleton';
+import { ConexionBD } from '../../ConexionBD';
 
 export class Catalogo {
-	static BD: Singleton;
+	static BD: ConexionBD;
 	constructor() {
-		Catalogo.BD = Singleton.getInstance();
+		Catalogo.BD = ConexionBD.getInstance();
 	}
 
 	protected criteriosMinimosDeFiltrado(

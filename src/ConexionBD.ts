@@ -1,18 +1,20 @@
-import { BD } from '../../interface/baseDatos.interface';
+//import { connect } from './database';
 import { createPool } from 'mysql2/promise';
 
-export class BaseDeDatos {
-	private static instance: BaseDeDatos;
+export class ConexionBD {
+	static getConsulta(arg0: string) {
+		throw new Error('Method not implemented.');
+	}
+	private static instance: ConexionBD;
 	private constructor() {}
 
-	public static getInstance(): BaseDeDatos {
-		if (BaseDeDatos.instance == null) {
-			BaseDeDatos.instance = new BaseDeDatos();
+	public static getInstance(): ConexionBD {
+		if (ConexionBD.instance == null) {
+			ConexionBD.instance = new ConexionBD();
 		}
-		return BaseDeDatos.instance;
+		return ConexionBD.instance;
 	}
-
-	private async getConexion() {
+	async getConexion() {
 		const connection = await createPool({
 			host: 'localhost',
 			user: 'root',
@@ -23,7 +25,6 @@ export class BaseDeDatos {
 		});
 		return connection;
 	}
-
 	public async getConsulta(consulta: string, mas?: string[]): Promise<any> {
 		const conn = await this.getConexion();
 		console.log(consulta);

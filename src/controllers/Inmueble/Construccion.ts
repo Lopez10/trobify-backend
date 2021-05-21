@@ -14,7 +14,7 @@ export class Construccion extends Inmueble {
 			'inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND ubi.id_ubicacion = inm.id_ubicacion';
 		where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
 
-		let inmueble = await Inmueble.BD.accesoBD(
+		let inmueble = await Inmueble.BD.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
 
@@ -99,7 +99,7 @@ export class Construccion extends Inmueble {
 		tabla: string,
 		atributoComparado: string
 	): Promise<string[]> {
-		let consulta = await Inmueble.BD.accesoBD(
+		let consulta = await Inmueble.BD.getConsulta(
 			'SELECT ' +
 				atributo +
 				' FROM ' +

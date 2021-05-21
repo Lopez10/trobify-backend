@@ -1,17 +1,18 @@
-//import { connect } from './database';
+import { BD } from '../../interface/baseDatos.interface';
 import { createPool } from 'mysql2/promise';
 
-export class Singleton {
-	private static instance: Singleton;
+export class BaseDeDatos {
+	private static instance: BaseDeDatos;
 	private constructor() {}
 
-	public static getInstance(): Singleton {
-		if (Singleton.instance == null) {
-			Singleton.instance = new Singleton();
+	public static getInstance(): BaseDeDatos {
+		if (BaseDeDatos.instance == null) {
+			BaseDeDatos.instance = new BaseDeDatos();
 		}
-		return Singleton.instance;
+		return BaseDeDatos.instance;
 	}
-	async getConexion() {
+
+	private async getConexion() {
 		const connection = await createPool({
 			host: 'localhost',
 			user: 'root',
@@ -22,7 +23,8 @@ export class Singleton {
 		});
 		return connection;
 	}
-	public async accesoBD(consulta: string, mas?: string[]): Promise<any> {
+
+	public async getConsulta(consulta: string, mas?: string[]): Promise<any> {
 		const conn = await this.getConexion();
 		console.log(consulta);
 		if (mas) return await conn.query(consulta, mas);

@@ -10,6 +10,8 @@ import LoginRoutes from './routes/login.routes';
 import RegistroRoutes from './routes/registro.routes';
 import path from 'path';
 
+import CatastroRoutes from './routes/catastro.routes';
+
 export class App {
 	private app: Application;
 
@@ -38,6 +40,8 @@ export class App {
 		this.app.use('/usuarios', UsuariosRoutes);
 		this.app.use('/registro', RegistroRoutes);
 		this.app.use('/login', LoginRoutes);
+
+		this.app.use('/catastro', CatastroRoutes);
 	}
 
 	static() {

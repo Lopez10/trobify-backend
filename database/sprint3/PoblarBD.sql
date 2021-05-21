@@ -101,6 +101,22 @@ INSERT INTO Provincias values
 	(50, "Zaragoza", "Zaragoza", 41.65629, -0.8765379),
 	(51, "Ceuta", "Ceuta", 35.88829, -5.316195),
 	(52, "Melilla", "Melilla", 35.29234, -2.938794);
+INSERT INTO Ubicacion values 
+	(1, "CL Mojinos Escozios, 1", 46001, "Valencia", 46, 39.4871949333484, -0.386685065869677),
+	(2, "CL Mojinos Escozios, 2", 46001, "Valencia", 46, 39.4893477412253, -0.359905893239999),
+	(3, "CL Mojinos Escozios, 3", 46001, "Valencia", 46, 39.4792124024639, -0.329178509261073),
+	(4, "CL Mojinos Escozios, 4", 46001, "Valencia", 46, 39.4762311393677, -0.361107522781074),
+	(5, "CL Mojinos Escozios, 5", 46001, "Valencia", 46, 39.4645035982133, -0.383509330653978),
+	(6, "CL Mojinos Escozios, 6", 46001, "Valencia", 46, 39.4674191037915, -0.402907064674194),
+	(7, "CL Mojinos Escozios, 7", 46001, "Valencia", 46, 39.470533258916, -0.324200329733761),
+	(8, "CL El Reno Renaldo, 2", 46001, "Valencia", 46, 39.5046473166715, -0.33518665696645),
+	(9, "CL El Reno Renaldo, 3", 46001, "Valencia", 46, 39.5044486424691, -0.422133137331399),
+	(10, "CL El Reno Renaldo, 4", 46001, "Valencia", 46, 39.4587384890199, -0.397757223783871),
+	(11, "CL El Reno Renaldo, 5", 46001, "Valencia", 46, 39.4788149081002, -0.381878547705376),
+	(12, "CL El Reno Renaldo, 6", 46001, "Valencia", 46, 39.4527078063733, -0.358189279609891),
+	(13, "CL El Reno Renaldo, 7", 46001, "Valencia", 46, 39.4755023667324, -0.362137490959139),
+	(14, "CL El Reno Renaldo, 8", 46001, "Valencia", 46, 39.4831209760484, -0.39071910790043),
+	(15, "CL El Reno Renaldo, 9", 12006, "Castellón", 12, 39.9817230131668, -0.049057649110209);
 INSERT INTO Imagen values 
 	(1, "5738211YJ2753H0024XK", "https://previews.dropbox.com/p/thumb/ABJMrf92xAzbol_8YLBjZ4RZ36IwA_qqpjIvDdOkQa-hmLUHTP_zw8wvre8uZFbTYnvYBLNWU8Za9FYhMuFxA9alpmTjZGJGcQjo3EMyQJFJc5z4nprIUhY7Gnabs7PenmPnGEwJzmlFhXDEzgnf6vsc3FCsro68TjGCAZeryL0J8hgkKV745GJDVU4ZFjv_pWG63Ci262EFTFJC1jYksFvRGwNqmfByDWrPYlzuyrKZBi13P_PxajmfrPDfQUdB0kOI3y_nMo1jwzOofawMguxEC4uPd5URSZF8FFrWYt6xWtwb0vQt_HsbkBaA85LdN3NkvC54rgEzfG3-79lgKn902MBYg43H8Ew95GWVXFZXNQ/p.jpeg"),
 	(16, "5738211YJ2753H0024XK", "https://www.cosasdearquitectos.com/wp-content/uploads/lars1.jpg"),
@@ -119,21 +135,21 @@ INSERT INTO Imagen values
 	(14, "9529207YJ2792H0001AM", "https://st3.idealista.com/news/archivos/styles/imagen_full/public/2017-05/la_ruina_habitada_00.jpg?sv=bnFHLRyi&itok=4yQBmHzz"),
 	(15, "2803110YK5320S0015PL", "https://cde.laprensa.e3.pe/ima/0/0/2/3/7/237229.jpg");
 INSERT INTO Inmueble values 
-	("5738211YJ2753H0024XK", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 1, 2, 1),
-	("5139410YJ2753G0019EU", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 2, 3, 2),
-	("3848901YJ2734H0001JP", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 3, 4, 3),
-	("5699408YJ2659H0025QQ", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 4, 5, 4),
-	("6918706YJ2761H0017HU", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 1, 6, 5),
-	("8052113YJ2785S0011MQ", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 2, 2, 1, 6),
-	("9733802YJ2793D0001WR", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 2, 3, 1, 7),
-	("1659301YJ2715H0011UE", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 2, 4, 1, 8),
-	("7499403YJ2779N0002RT", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 1, 1, 1, 9),
-	("5351001YJ2755A0001QK", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 1, 2, 1, 10),
-	("5255904YJ2755C0009IZ", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 3, 7, 11),
-	("6006007YJ2760E0001AL", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 4, 8, 12),
-	("9604837YJ2790D0002UM", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 1, 9, 13),
-	("9529207YJ2792H0001AM", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 2, 10, 14),
-	("2803110YK5320S0015PL", "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 3, 3, 2, 15);
+	("5738211YJ2753H0024XK", 100, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 01, 3, 1, 2, 1),
+	("5139410YJ2753G0019EU", 150, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 02, 3, 2, 3, 2),
+	("3848901YJ2734H0001JP", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 03, 3, 3, 4, 3),
+	("5699408YJ2659H0025QQ", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 04, 3, 4, 5, 4),
+	("6918706YJ2761H0017HU", 200, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 05, 3, 1, 6, 5),
+	("8052113YJ2785S0011MQ", 250, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 06, 2, 2, 1, 6),
+	("9733802YJ2793D0001WR", 300, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 07, 2, 3, 1, 7),
+	("1659301YJ2715H0011UE", 350, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 08, 2, 4, 1, 8),
+	("7499403YJ2779N0002RT", 400, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 09, 1, 1, 1, 9),
+	("5351001YJ2755A0001QK", 450, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 10, 1, 2, 1, 10),
+	("5255904YJ2755C0009IZ", 500, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 11, 3, 3, 7, 11),
+	("6006007YJ2760E0001AL", 750, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 12, 3, 4, 8, 12),
+	("9604837YJ2790D0002UM", 075, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 13, 3, 1, 9, 13),
+	("9529207YJ2792H0001AM", 125, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 14, 3, 2, 10, 14),
+	("2803110YK5320S0015PL", 225, "Lorem ipsum dolor sit amet consectetur adipiscing elit vestibulum, congue turpis quis sapien ultricies maecenas arcu, et eleifend pellentesque luctus in quisque etiam.", 15, 3, 3, 2, 15);
 INSERT INTO CaractIntrinsecas values 
 	("5738211YJ2753H0024XK", 1, 1, 1, 3),
 	("5139410YJ2753G0019EU", 2, 1, 2, 4),
@@ -150,22 +166,6 @@ INSERT INTO CaractIntrinsecas values
 	("9604837YJ2790D0002UM", 2, 1, 9, 4),
 	("9529207YJ2792H0001AM", 2, 1, 1, 6),
 	("2803110YK5320S0015PL", 1, 2, 2, 2);
-INSERT INTO DatosCatastro values 
-	("5738211YJ2753H0024XK", "CL Mojinos Escozios, 1", 46001, "Valencia", 46, 100, 39.4871949333484, -0.386685065869677),
-	("5139410YJ2753G0019EU", "CL Mojinos Escozios, 2", 46001, "Valencia", 46, 150, 39.4893477412253, -0.359905893239999),
-	("3848901YJ2734H0001JP", "CL Mojinos Escozios, 3", 46001, "Valencia", 46, 200, 39.4792124024639, -0.329178509261073),
-	("5699408YJ2659H0025QQ", "CL Mojinos Escozios, 4", 46001, "Valencia", 46, 250, 39.4762311393677, -0.361107522781074),
-	("6918706YJ2761H0017HU", "CL Mojinos Escozios, 5", 46001, "Valencia", 46, 200, 39.4645035982133, -0.383509330653978),
-	("8052113YJ2785S0011MQ", "CL Mojinos Escozios, 6", 46001, "Valencia", 46, 250, 39.4674191037915, -0.402907064674194),
-	("9733802YJ2793D0001WR", "CL Mojinos Escozios, 7", 46001, "Valencia", 46, 300, 39.470533258916, -0.324200329733761),
-	("1659301YJ2715H0011UE", "CL El Reno Renaldo, 2", 46001, "Valencia", 46, 350, 39.5046473166715, -0.33518665696645),
-	("7499403YJ2779N0002RT", "CL El Reno Renaldo, 3", 46001, "Valencia", 46, 400, 39.5044486424691, -0.422133137331399),
-	("5351001YJ2755A0001QK", "CL El Reno Renaldo, 4", 46001, "Valencia", 46, 450, 39.4587384890199, -0.397757223783871),
-	("5255904YJ2755C0009IZ", "CL El Reno Renaldo, 5", 46001, "Valencia", 46, 500, 39.4788149081002, -0.381878547705376),
-	("6006007YJ2760E0001AL", "CL El Reno Renaldo, 6", 46001, "Valencia", 46, 750, 39.4527078063733, -0.358189279609891),
-	("9604837YJ2790D0002UM", "CL El Reno Renaldo, 7", 46001, "Valencia", 46, 075, 39.4755023667324, -0.362137490959139),
-	("9529207YJ2792H0001AM", "CL El Reno Renaldo, 8", 46001, "Valencia", 46, 125, 39.4831209760484, -0.39071910790043),
-	("2803110YK5320S0015PL", "CL El Reno Renaldo, 9", 12006, "Castellón", 12, 225, 39.9817230131668, -0.049057649110209);
 INSERT INTO Contiene values
 	(1, "5738211YJ2753H0024XK"),
 	(2, "5738211YJ2753H0024XK"),

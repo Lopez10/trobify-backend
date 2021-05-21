@@ -10,6 +10,17 @@ CREATE TABLE Provincias (
 	longitud DOUBLE NOT NULL,	
 	PRIMARY KEY(id_provincia)
 );
+CREATE TABLE Ubicacion (
+	id_ubicacion INT AUTO_INCREMENT,
+	direccion VARCHAR(250) NOT NULL,
+    codPostal VARCHAR(5) NOT NULL,
+    localidad VARCHAR(50) NOT NULL,
+	prov TINYINT NOT NULL,
+	latitud DOUBLE NOT NULL,
+	longitud DOUBLE NOT NULL,
+	PRIMARY KEY(id_ubicacion),
+	FOREIGN KEY (prov) REFERENCES Provincias (id_provincia)
+);
 CREATE TABLE RolUsuario (
 	id_rol INT AUTO_INCREMENT,
 	rolUsuario VARCHAR(30) NOT NULL,
@@ -60,16 +71,19 @@ CREATE TABLE Imagen (
 );
 CREATE TABLE Inmueble (
 	id_catastro CHAR(20),
+	superficie SMALLINT NOT NULL,
 	breveDescripcion TEXT NOT NULL,
+	id_ubicacion INT NOT NULL,
 	id_tipoInmueble TINYINT NOT NULL,
 	id_estadoInmueble TINYINT NOT NULL,
-	id_tipoVivienda TINYINT NOT NULL,
-	id_imagen INT NOT NULL,
+    id_tipoVivienda TINYINT NOT NULL,
+    id_imagen INT NOT NULL,
 	PRIMARY KEY (id_catastro),
+	FOREIGN KEY (id_ubicacion) REFERENCES Ubicacion (id_ubicacion),
 	FOREIGN KEY (id_tipoInmueble) REFERENCES TipoDeInmueble (id_tipoInmueble),
 	FOREIGN KEY (id_tipoVivienda) REFERENCES TipoDeVivienda (id_tipoVivienda),
-	FOREIGN KEY (id_imagen) REFERENCES Imagen (id_imagen),
-	FOREIGN KEY (id_estadoInmueble) REFERENCES EstadoInmueble (id_estadoInmueble)
+    FOREIGN KEY (id_imagen) REFERENCES Imagen (id_imagen),
+    FOREIGN KEY (id_estadoInmueble) REFERENCES EstadoInmueble (id_estadoInmueble)
 );
 CREATE TABLE Catalogo (
 	id_catastro CHAR(20) NOT NULL,
@@ -78,24 +92,11 @@ CREATE TABLE Catalogo (
 	descuento DOUBLE NOT NULL,
 	f_insercion DATE NOT NULL,
 	id_usuario INT NOT NULL,
-	publicado BOOLEAN NOT NULL,
+    publicado BOOLEAN NOT NULL,
 	PRIMARY KEY (id_modalidad, id_catastro),
 	FOREIGN KEY (id_modalidad) REFERENCES Modalidad (id_modalidad),
 	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
 	FOREIGN KEY (id_usuario) REFERENCES Usuario (id_usuario)
-);
-CREATE TABLE DatosCatastro (
-	id_catastro VARCHAR(20),
-	direccion VARCHAR(250) NOT NULL,
-	codPostal VARCHAR(5) NOT NULL,
-	localidad VARCHAR(50) NOT NULL,
-	id_provincia TINYINT NOT NULL,
-	superficie INT NOT NULL,
-	latitud DOUBLE NOT NULL,
-	longitud DOUBLE NOT NULL,
-	PRIMARY KEY(id_catastro),
-	FOREIGN KEY (id_catastro) REFERENCES Inmueble (id_catastro),
-	FOREIGN KEY (id_provincia) REFERENCES Provincias (id_provincia)
 );
 CREATE TABLE CaractIntrinsecas (
 	id_catastro CHAR(20),

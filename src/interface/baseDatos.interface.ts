@@ -16,14 +16,12 @@ export interface coordenada {
 }
 
 export interface SedeCatastro {
-	id_catastro: string; //
-	direccion: string;
-	localidad: string; //
-	codPostal: number;
-	id_provincia: number;
-	superficie: number;
-	coordenada: coordenada; //
+	getDatosCatastro(id_catastro: string): Promise<any>;
+}
 
-	getDatosCatastro(id_catastro: string): Promise<DatosCatastro>;
-	insertDatosCatastro(datoCatastro: TipoCatastro): Promise<boolean>;
+export interface Consultas {
+	getDatos(id_catastro: string): any;
+	insertDatos(): string;
+	updateDatos(): string;
+	deleteDatos(): string;
 }

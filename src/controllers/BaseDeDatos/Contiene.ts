@@ -1,40 +1,52 @@
 import { ConexionBD } from '../../ConexionBD';
+import { Consultas } from '../../interface/baseDatos.interface';
 
-export class Contiene {
-    id_catastro: string;
-    id_caractSecundaria: number;
+export class Contiene implements Consultas {
+	private id_catastro: string;
+	private id_caractSecundaria: number[];
 
-    private constructor() {}
+	constructor(id_catastro?: string, id_caractSecundaria?: number[]) {
+		this.id_catastro = id_catastro;
+		this.id_caractSecundaria = id_caractSecundaria;
+	}
 
-    async getDatosContiene(id_catastro: string){
-        let contiene = new Contiene();
+	getDatos(id_catastro: string): Contiene {
+		let datos = new Contiene();
 
-        let select: string = 'SELECT id_catastro, id_caractSecundaria ';
-        let from: string = 'FROM Contiene ';
-        let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
+		let select: string = 'SELECT id_caractSecundaria ';
+		let from: string = 'FROM Contiene ';
+		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-        let consulta = await ConexionBD.getConsulta(select + from + where);
-        
-        contiene.id_catastro = id_catastro;
-        contiene.id_caractSecundaria = consulta[0].id_caractSecundaria;
+		let consulta = ConexionBD.getConsulta(select + from + where);
 
-        return contiene;
-    }
+		datos.id_catastro = id_catastro;
 
-   // async updateDatosContiene(id_catastro: string){}
+		// habrá que extraer un array
+		datos.id_caractSecundaria = consulta[0].id_caractSecundaria;
 
-    async insertDatosContiene(id_catastro: string, id_caractSecundaria: number[]){
-        try {
-            for ( let i = 0; i < id_caractSecundaria.length; i++ ){
-                let insert: string = 'INSERT INTO id_catastro, id_caractSecundaria ';
-                let values: string = 'VALUES ("' + id_catastro + '", "' + id_caractSecundaria + '");';
-                await ConexionBD.getConsulta(insert + values);
-            }
-        }catch {
-            return 'La tabla Contiene no ha sido actualizada, ha sucedido un error';
-        }
-        
-        return ('La tabla Contiene '+ id_catastro + 'ha sido actualizada');
-    }
+		return datos;
+	}
 
+	insertDatos(): string {
+		try {
+			for (let i = 0; i < this.id_caractSecundaria.length; i++) {
+				let insert: string = 'INSERT INTO id_catastro, id_caractSecundaria ';
+				let values: string =
+					'VALUES ("' + this.id_catastro + '", ' + this.id_caractSecundaria[i] + ');';
+				ConexionBD.getConsulta(insert + values);
+			}
+		} catch {
+			return 'ERROR al insertar los datos de CONTIENE';
+		}
+
+		return 'Los datos se han insertado correctamente en CONTIENE';
+	}
+
+	updateDatos(): string {
+		throw new Error('Method not implemented.');
+	}
+
+	deleteDatos(): string {
+		throw new Error('Method not implemented.');
+	}
 }

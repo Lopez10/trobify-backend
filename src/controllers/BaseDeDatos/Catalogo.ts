@@ -1,0 +1,89 @@
+import { ConexionBD } from '../../ConexionBD';
+import { Consultas } from '../../interface/baseDatos.interface';
+
+export class Catalogo implements Consultas {
+	private id_catastro: string;
+	private id_modalidad: number[];
+	private precio: number[];
+	private descuento: number[];
+	private f_insercion: Date;
+	private id_usuario: number;
+	private publicado: boolean[];
+
+	constructor(
+		id_catastro?: string,
+		id_modalidad?: number[],
+		precio?: number[],
+		descuento?: number[],
+		f_insercion?: Date,
+		id_usuario?: number,
+		publicado?: boolean[]
+	) {
+		this.id_catastro = id_catastro;
+		this.id_modalidad = id_modalidad;
+		this.precio = precio;
+		this.descuento = descuento;
+		this.f_insercion = f_insercion;
+		this.id_usuario = id_usuario;
+		this.publicado = publicado;
+	}
+
+	getDatos(id_catastro: string) {
+		let datos = new Catalogo();
+
+		let select: string =
+			'SELECT id_modalidad, precio, descuento, f_insercion, id_usuario, publicado ';
+		let from: string = 'FROM catalogo ';
+		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
+
+		let consulta = ConexionBD.getConsulta(select + from + where);
+
+		datos.id_catastro = id_catastro;
+		datos.f_insercion = consulta[0].f_insercion;
+		datos.id_usuario = consulta[0].id_usuario;
+		// habrá que extraer un array
+		datos.id_modalidad = consulta[0].id_modalidad;
+		datos.precio = consulta[0].precio;
+		datos.descuento = consulta[0].descuento;
+		datos.publicado = consulta[0].publicado;
+
+		return datos;
+	}
+	insertDatos(): string {
+		try {
+			for (let i = 0; i < this.id_modalidad.length; i++) {
+				let conversion: number = 0;
+				if (this.publicado[i]) conversion = 1;
+				let insert: string =
+					'INSERT INTO id_catastro, id_modalidad, precio, descuento, f_insercion,id_usuario, publicado ';
+				let values: string =
+					'VALUES ("' +
+					this.id_catastro +
+					'", ' +
+					this.id_modalidad +
+					', ' +
+					this.precio +
+					', ' +
+					this.descuento +
+					', ' +
+					this.f_insercion +
+					', ' +
+					this.id_usuario +
+					', ' +
+					conversion +
+					');';
+				ConexionBD.getConsulta(insert + values);
+			}
+		} catch {
+			return 'ERROR al insertar los datos de CATALOGO';
+		}
+
+		return 'Los datos se han insertado correctamente en CATALOGO';
+	}
+	updateDatos(): string {
+		throw new Error('Method not implemented.');
+	}
+	deleteDatos(): string {
+		throw new Error('Method not implemented.');
+	}
+}

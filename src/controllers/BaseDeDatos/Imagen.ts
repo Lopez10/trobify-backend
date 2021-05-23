@@ -1,4 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
 export class Imagen implements Consultas {
@@ -12,14 +12,18 @@ export class Imagen implements Consultas {
 		this.url = url;
 	}
 
-	getDatos(id_catastro: string) {
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla('imagen', 'id_catastro', this.id_catastro);
+	}
+
+	async getDatos(id_catastro: string): Promise<Imagen> {
 		let datos = new Imagen();
 
 		let select: string = 'SELECT id_imagen, valor ';
 		let from: string = 'FROM imagen ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = ConexionBD.getConsulta(select + from + where);
+		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 
@@ -35,7 +39,7 @@ export class Imagen implements Consultas {
 				let insert: string = 'INSERT INTO id_imagen, id_catastro, valor ';
 				let values: string =
 					'VALUES (' + this.id_imagen[i] + ', "' + this.id_catastro + '", "' + this.url[i] + '");';
-				ConexionBD.getConsulta(insert + values);
+				Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de IMEGEN';

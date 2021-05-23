@@ -1,20 +1,19 @@
-//import { connect } from './database';
-import { createPool } from 'mysql2/promise';
+//import { createPool } from 'mysql2/promise';
+import { createPool, Pool } from 'mysql2/promise';
 
 export class ConexionBD {
-	static getConsulta(arg0: string) {
-		throw new Error('Method not implemented.');
-	}
-	private static instance: ConexionBD;
+	/*
+	private static conexionBD: ConexionBD;
 	private constructor() {}
 
 	public static getInstance(): ConexionBD {
-		if (ConexionBD.instance == null) {
-			ConexionBD.instance = new ConexionBD();
+		if (ConexionBD.conexionBD == null) {
+			ConexionBD.conexionBD = new ConexionBD();
 		}
-		return ConexionBD.instance;
+		return ConexionBD.conexionBD;
 	}
-	async getConexion() {
+
+	static async getConexion() {
 		const connection = await createPool({
 			host: 'localhost',
 			user: 'root',
@@ -25,10 +24,43 @@ export class ConexionBD {
 		});
 		return connection;
 	}
-	public async getConsulta(consulta: string, mas?: string[]): Promise<any> {
-		const conn = await this.getConexion();
+
+	public static async getConsulta(consulta: string, mas?: string[]): Promise<any> {
+		const conn = await ConexionBD.getConexion();
 		console.log(consulta);
 		if (mas) return await conn.query(consulta, mas);
 		return await conn.query(consulta);
+	}
+*/
+
+	private static conexion: Pool;
+	private constructor() {}
+
+	public static async getConexion(): Promise<Pool> {
+		if (ConexionBD.conexion == null) {
+			ConexionBD.conexion = await createPool({
+				host: 'localhost',
+				user: 'root',
+				password: 'rootroot',
+				database: 'Trobify',
+				port: 3306,
+				connectionLimit: 100,
+			});
+		}
+		return ConexionBD.conexion;
+	}
+
+	public static async getConsulta(consulta: string, mas?: string[]): Promise<any> {
+		const conect = await ConexionBD.getConexion();
+
+		console.log(consulta);
+
+		let resultadoQuery: any;
+		if (mas) {
+			resultadoQuery = await conect.query(consulta, mas);
+		} else {
+			resultadoQuery = await conect.query(consulta);
+		}
+		return resultadoQuery;
 	}
 }

@@ -1,4 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
 export class Contiene implements Consultas {
@@ -10,14 +10,18 @@ export class Contiene implements Consultas {
 		this.id_caractSecundaria = id_caractSecundaria;
 	}
 
-	getDatos(id_catastro: string): Contiene {
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla('contiene', 'id_catastro', this.id_catastro);
+	}
+
+	async getDatos(id_catastro: string): Promise<Contiene> {
 		let datos = new Contiene();
 
 		let select: string = 'SELECT id_caractSecundaria ';
 		let from: string = 'FROM Contiene ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = ConexionBD.getConsulta(select + from + where);
+		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 
@@ -33,7 +37,7 @@ export class Contiene implements Consultas {
 				let insert: string = 'INSERT INTO id_catastro, id_caractSecundaria ';
 				let values: string =
 					'VALUES ("' + this.id_catastro + '", ' + this.id_caractSecundaria[i] + ');';
-				ConexionBD.getConsulta(insert + values);
+				Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de CONTIENE';

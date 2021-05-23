@@ -1,11 +1,12 @@
 import { ConexionBD } from '../../ConexionBD';
 
 export class Catalogo {
+	/*
 	static BD: ConexionBD;
 	constructor() {
 		Catalogo.BD = ConexionBD.getInstance();
 	}
-
+*/
 	protected criteriosMinimosDeFiltrado(
 		idModalidad: Number,
 		idTipoInmueble: Number,

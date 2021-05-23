@@ -3,10 +3,12 @@ import { Request, Response } from 'express';
 import { UsuariosInterface } from '../../interface/usuarios.interface';
 
 export class Usuario {
+	/*
 	static BD: ConexionBD;
 	constructor() {
 		Usuario.BD = ConexionBD.getInstance();
 	}
+	*/
 
 	async getUsuariosLog(req: Request, res: Response) {
 		const mail: string = req.body.mail;
@@ -15,7 +17,7 @@ export class Usuario {
 		let select: string = 'u.mail, u.contrasena';
 		let from: string = ' Usuario u ';
 
-		const consultaLog = await Usuario.BD.getConsulta(
+		const consultaLog = await ConexionBD.getConsulta(
 			' SELECT ' +
 				select +
 				' FROM ' +
@@ -37,7 +39,7 @@ export class Usuario {
 		let select: string = '*';
 		let from: string = ' Usuario';
 
-		const filter = await Usuario.BD.getConsulta(' SELECT ' + select + ' FROM ' + from + ';');
+		const filter = await ConexionBD.getConsulta(' SELECT ' + select + ' FROM ' + from + ';');
 
 		return res.json(filter[0]);
 	}
@@ -46,7 +48,7 @@ export class Usuario {
 		let select: string = 'COUNT(mail) as cuenta';
 		let from: string = 'Usuario';
 		let where: string = 'mail LIKE ( "' + mail + '")';
-		const consulta = await Usuario.BD.getConsulta(
+		const consulta = await ConexionBD.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 		var contar: number = 0;
@@ -102,7 +104,7 @@ export class Usuario {
 			usuario.telefono +
 			');';
 		try {
-			await Usuario.BD.getConsulta(insert + ' ' + value);
+			await ConexionBD.getConsulta(insert + ' ' + value);
 			return true;
 		} catch {
 			return false;

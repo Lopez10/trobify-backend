@@ -1,5 +1,3 @@
-import { DatosCatastro } from '../controllers/BaseDeDatos/DatosCatastro';
-
 export interface TipoCatastro {
 	id_catastro: string;
 	direccion: string;
@@ -16,12 +14,12 @@ export interface coordenada {
 }
 
 export interface SedeCatastro {
-	getDatosCatastro(id_catastro: string): Promise<any>;
+	getDatos(id_catastro: string): Promise<any>;
 }
 
-export interface Consultas {
-	getDatos(id_catastro: string): any;
+export interface Consultas extends SedeCatastro {
 	insertDatos(): string;
 	updateDatos(): string;
 	deleteDatos(): string;
+	existeYaElDato(): Promise<boolean>;
 }

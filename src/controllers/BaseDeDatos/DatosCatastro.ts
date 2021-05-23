@@ -1,7 +1,7 @@
-import { ConexionBD } from '../../ConexionBD';
-import { SedeCatastro, TipoCatastro, coordenada } from '../../interface/baseDatos.interface';
+import { Consulta } from '../../Consulta';
+import { coordenada, Consultas } from '../../interface/baseDatos.interface';
 
-export class DatosCatastro implements SedeCatastro {
+export class DatosCatastro implements Consultas {
 	private id_catastro: string; //
 	private direccion: string;
 	private localidad: string; //
@@ -12,15 +12,15 @@ export class DatosCatastro implements SedeCatastro {
 
 	private constructor() {}
 
-	async getDatosCatastro(id_catastro: string): Promise<DatosCatastro> {
+	async getDatos(): Promise<DatosCatastro> {
 		let catastro = new DatosCatastro();
 
 		let select: string =
 			'direccion, codPostal, localidad, d_provincia, superficie, latitud, longitud';
 		let from: string = 'datoscatastro';
-		let where: string = 'id_catastro LIKE "' + id_catastro + '";';
+		let where: string = 'id_catastro LIKE "' + this.id_catastro + '";';
 
-		let consulta = await ConexionBD.getConsulta(
+		let consulta = await Consulta.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 
@@ -29,7 +29,7 @@ export class DatosCatastro implements SedeCatastro {
 			xLongitud: consulta[0][0].longitud,
 		};
 
-		catastro.id_catastro = id_catastro;
+		catastro.id_catastro = this.id_catastro;
 		catastro.direccion = consulta[0][0].direccion;
 		catastro.localidad = consulta[0][0].localidad;
 		catastro.codPostal = consulta[0][0].codPostal;
@@ -40,8 +40,17 @@ export class DatosCatastro implements SedeCatastro {
 		return catastro;
 	}
 
-	insertDatosCatastro(datoCatastro: TipoCatastro): Promise<boolean> {
+	insertDatos(): string {
 		throw new Error('Method not implemented.');
+	}
+	updateDatos(): string {
+		throw new Error('Method not implemented.');
+	}
+	deleteDatos(): string {
+		throw new Error('Method not implemented.');
+	}
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla('datoscatastro', 'id_catastro', this.id_catastro);
 	}
 
 	validarReferenciaCatastral(referenciaCatastral: string): boolean {

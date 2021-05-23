@@ -1,4 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
 export class Catalogo implements Consultas {
@@ -27,8 +27,11 @@ export class Catalogo implements Consultas {
 		this.id_usuario = id_usuario;
 		this.publicado = publicado;
 	}
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla('catalogo', 'id_catastro', this.id_catastro);
+	}
 
-	getDatos(id_catastro: string) {
+	async getDatos(id_catastro: string): Promise<Catalogo> {
 		let datos = new Catalogo();
 
 		let select: string =
@@ -36,7 +39,7 @@ export class Catalogo implements Consultas {
 		let from: string = 'FROM catalogo ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = ConexionBD.getConsulta(select + from + where);
+		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 		datos.f_insercion = consulta[0].f_insercion;
@@ -72,7 +75,7 @@ export class Catalogo implements Consultas {
 					', ' +
 					conversion +
 					');';
-				ConexionBD.getConsulta(insert + values);
+				Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de CATALOGO';

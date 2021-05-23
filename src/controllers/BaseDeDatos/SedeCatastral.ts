@@ -11,7 +11,8 @@ export class SedeCatastral implements SedeCatastro {
 
 	private constructor() {}
 
-	async getDatosCatastro(id_catastro: string, SRS?: number): Promise<DatosCatastro> {
+	async getDatos(id_catastro: string, SRS?: number): Promise<DatosCatastro> {
+		/*
 		const catastro = new DatosCatastro();
 		catastro.id_catastro = id_catastro;
 
@@ -29,6 +30,8 @@ export class SedeCatastral implements SedeCatastro {
 		catastro.superficie = Number(otrosDatosCatastro[3]);
 
 		return catastro;
+		*/
+		return;
 	}
 
 	static async consultaCatastroUbicacion(id_catastro: string, SRS?: number): Promise<string[]> {

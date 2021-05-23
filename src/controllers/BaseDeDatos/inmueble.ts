@@ -1,4 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
 export class CaracteristicasIntrinsecas implements Consultas {
@@ -25,7 +25,15 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		this.id_imagen = id_imagen;
 	}
 
-	getDatos(id_catastro: string): CaracteristicasIntrinsecas {
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla(
+			'caractintrinsecas',
+			'id_catastro',
+			this.id_catastro
+		);
+	}
+
+	async getDatos(id_catastro: string): Promise<CaracteristicasIntrinsecas> {
 		let datos = new CaracteristicasIntrinsecas();
 
 		let select: string =
@@ -33,7 +41,7 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		let from: string = 'FROM inmueble ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = ConexionBD.getConsulta(select + from + where);
+		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 		datos.breveDescripcion = consulta[0].breveDescripcion;
@@ -62,7 +70,7 @@ export class CaracteristicasIntrinsecas implements Consultas {
 				', ' +
 				this.id_imagen +
 				');';
-			ConexionBD.getConsulta(insert + values);
+			Consulta.getConsulta(insert + values);
 		} catch {
 			return 'ERROR al insertar los datos de INMUEBLE';
 		}

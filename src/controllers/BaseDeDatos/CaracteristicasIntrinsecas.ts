@@ -1,5 +1,6 @@
-import { Consulta } from '../../Consulta';
+import { ConexionBD } from '../../ConexionBD';
 import { Consultas } from '../../interface/baseDatos.interface';
+import { Consulta } from './Consulta';
 
 export class CaracteristicasIntrinsecas implements Consultas {
 	private id_catastro: string;

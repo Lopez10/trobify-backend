@@ -1,5 +1,5 @@
-import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
+import { Consulta } from './Consulta';
 
 export class Catalogo implements Consultas {
 	private id_catastro: string;

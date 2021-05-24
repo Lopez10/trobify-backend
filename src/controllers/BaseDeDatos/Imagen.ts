@@ -1,5 +1,5 @@
-import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
+import { Consulta } from './Consulta';
 
 export class Imagen implements Consultas {
 	private id_imagen: number[];

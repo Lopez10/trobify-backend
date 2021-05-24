@@ -1,27 +1,18 @@
-import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
+import { CaracteristicasIntrinsecas } from '../BaseDeDatos/CaracteristicasIntrinsecas';
+import { Catalogo } from '../BaseDeDatos/Catalogo';
+import { Contiene } from '../BaseDeDatos/Contiene';
+import { DatosCatastro } from '../BaseDeDatos/DatosCatastro';
+import { Imagen } from '../BaseDeDatos/Imagen';
 
-export class Inmueble implements DatosInmueble {
-	id_catastro: string;
-	tipoInmueble: number;
-	estadoInmueble: number;
-	energia: number;
-	superficie: number;
-	descripcion: string;
-	direccion: string;
-	provincia: number;
-	longitud: number;
-	latitud: number;
-	tipoVivienda: number;
-	nHab: number;
-	nBanos: number;
-	nCocinas: number;
-	propietario: number;
-	publicado: boolean;
-	imagen: string | string[];
-	caracteristicas: number | number[];
-	modalidad: number | number[];
-	precio: number | number[];
-	descuento: number | number[];
+export class Inmueble {
+	private contiene: Contiene;
+	private caracteristicas: CaracteristicasIntrinsecas;
+	private catastro: DatosCatastro;
+	private imagen: Imagen;
+	private catalogo: Catalogo;
+	private inmueble: Inmueble;
+
+	private constructor() {}
 
 	getInmueblesSegunFiltros() {
 		throw new Error('Method not implemented.');

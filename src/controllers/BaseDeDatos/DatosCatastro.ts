@@ -1,5 +1,5 @@
-import { Consulta } from '../../Consulta';
 import { coordenada, Consultas } from '../../interface/baseDatos.interface';
+import { Consulta } from './Consulta';
 
 export class DatosCatastro implements Consultas {
 	private id_catastro: string; //

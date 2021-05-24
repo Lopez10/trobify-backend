@@ -2,6 +2,7 @@ import { Inmueble } from './Inmueble';
 import { Request, Response } from 'express';
 import { InmuebleInterface } from '../../interface/inmueble.interface';
 import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../BaseDeDatos/Consulta';
 
 export class Construccion extends Inmueble {
 	async getInmueble(req: Request, res: Response) {
@@ -15,7 +16,7 @@ export class Construccion extends Inmueble {
 			'inm.id_catastro = cat.id_catastro AND inm.id_catastro = car.id_catastro AND ubi.id_ubicacion = inm.id_ubicacion';
 		where += ' AND inm.id_catastro LIKE ("' + catastro + '")';
 
-		let inmueble = await ConexionBD.getConsulta(
+		let inmueble = await Consulta.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where + ';'
 		);
 
@@ -100,7 +101,7 @@ export class Construccion extends Inmueble {
 		tabla: string,
 		atributoComparado: string
 	): Promise<string[]> {
-		let consulta = await ConexionBD.getConsulta(
+		let consulta = await Consulta.getConsulta(
 			'SELECT ' +
 				atributo +
 				' FROM ' +

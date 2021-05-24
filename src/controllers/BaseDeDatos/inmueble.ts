@@ -1,7 +1,7 @@
 import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
-export class CaracteristicasIntrinsecas implements Consultas {
+export class Inmueble implements Consultas {
 	private id_catastro: string;
 	private breveDescripcion: string;
 	private id_tipoInmueble: number;
@@ -33,8 +33,8 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		);
 	}
 
-	async getDatos(id_catastro: string): Promise<CaracteristicasIntrinsecas> {
-		let datos = new CaracteristicasIntrinsecas();
+	async getDatos(id_catastro: string): Promise<Inmueble> {
+		let datos = new Inmueble();
 
 		let select: string =
 			'SELECT breveDescripcion, id_tipoInmueble, id_estadoInmueble, id_tipoVivienda, id_imagen ';

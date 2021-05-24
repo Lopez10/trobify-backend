@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { Construccion } from '../controllers/Inmueble/Construccion';
 import { Eliminar } from '../controllers/Inmueble/Eliminar';
+
 const router = Router();
 
 let construccionInmueble = new Construccion();
 let eliminacionInmueble = new Eliminar();
+
+//const
 
 router.route('/').post(construccionInmueble.registrarInmueble);
 

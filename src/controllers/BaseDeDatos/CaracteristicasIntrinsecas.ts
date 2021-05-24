@@ -1,4 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../../Consulta';
 import { Consultas } from '../../interface/baseDatos.interface';
 
 export class CaracteristicasIntrinsecas implements Consultas {
@@ -21,15 +21,18 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		this.nHab = nHab;
 		this.id_certifEner = id_certifEner;
 	}
+	async existeYaElDato(): Promise<boolean> {
+		return await Consulta.existeElementoEnTabla('catalogo', 'id_catastro', this.id_catastro);
+	}
 
-	getDatos(id_catastro: string): CaracteristicasIntrinsecas {
+	async getDatos(id_catastro: string): Promise<CaracteristicasIntrinsecas> {
 		let datos = new CaracteristicasIntrinsecas();
 
 		let select: string = 'SELECT nBano, nCocina, nHab, id_certifEner ';
 		let from: string = 'FROM caractintrinsecas ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = ConexionBD.getConsulta(select + from + where);
+		let consulta = Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 		datos.nBano = consulta[0].nBanos;
@@ -55,7 +58,7 @@ export class CaracteristicasIntrinsecas implements Consultas {
 				', ' +
 				this.nHab +
 				');';
-			ConexionBD.getConsulta(insert + values);
+			Consulta.getConsulta(insert + values);
 		} catch {
 			return 'ERROR al insertar los datos de CARACTINTRINSECAS';
 		}

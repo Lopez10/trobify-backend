@@ -1,6 +1,5 @@
 import { Inmueble } from './Inmueble';
 import { Request, Response } from 'express';
-import { ConexionBD } from '../../ConexionBD';
 import { Consulta } from '../BaseDeDatos/Consulta';
 
 export class Eliminar extends Inmueble {

@@ -1,6 +1,5 @@
 import { Catalogo } from './Catalogo';
 import { Request, Response } from 'express';
-import { ConexionBD } from '../../ConexionBD';
 import { Consulta } from '../BaseDeDatos/Consulta';
 //import { connect } from '../../database';
 

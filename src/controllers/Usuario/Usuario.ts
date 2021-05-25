@@ -1,4 +1,3 @@
-import { ConexionBD } from '../../ConexionBD';
 import { Request, Response } from 'express';
 import { UsuariosInterface } from '../../interface/usuarios.interface';
 import { Consulta } from '../BaseDeDatos/Consulta';

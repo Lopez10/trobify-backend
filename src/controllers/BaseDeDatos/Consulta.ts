@@ -1,18 +1,6 @@
 import { BaseDeDatos } from './BaseDeDatos';
 
 export class Consulta extends BaseDeDatos {
-	public static async getConsulta(consulta: string, mas?: string[]): Promise<any> {
-		console.log(consulta);
-
-		let resultadoQuery: any;
-		if (mas) {
-			resultadoQuery = await BaseDeDatos.conexion.query(consulta, mas);
-		} else {
-			resultadoQuery = await BaseDeDatos.conexion.query(consulta);
-		}
-		return resultadoQuery;
-	}
-
 	public static async cuantosElementosEnTabla(
 		tabla: string,
 		atributo: string,

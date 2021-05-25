@@ -1,6 +1,7 @@
 import { ConexionBD } from '../../ConexionBD';
 import { Request, Response } from 'express';
 import { UsuariosInterface } from '../../interface/usuarios.interface';
+import { Consulta } from '../BaseDeDatos/Consulta';
 
 export class Usuario {
 	/*
@@ -17,7 +18,7 @@ export class Usuario {
 		let select: string = 'u.mail, u.contrasena';
 		let from: string = ' Usuario u ';
 
-		const consultaLog = await ConexionBD.getConsulta(
+		const consultaLog = await Consulta.getConsulta(
 			' SELECT ' +
 				select +
 				' FROM ' +
@@ -39,7 +40,7 @@ export class Usuario {
 		let select: string = '*';
 		let from: string = ' Usuario';
 
-		const filter = await ConexionBD.getConsulta(' SELECT ' + select + ' FROM ' + from + ';');
+		const filter = await Consulta.getConsulta(' SELECT ' + select + ' FROM ' + from + ';');
 
 		return res.json(filter[0]);
 	}
@@ -48,7 +49,7 @@ export class Usuario {
 		let select: string = 'COUNT(mail) as cuenta';
 		let from: string = 'Usuario';
 		let where: string = 'mail LIKE ( "' + mail + '")';
-		const consulta = await ConexionBD.getConsulta(
+		const consulta = await Consulta.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 		var contar: number = 0;
@@ -104,7 +105,7 @@ export class Usuario {
 			usuario.telefono +
 			');';
 		try {
-			await ConexionBD.getConsulta(insert + ' ' + value);
+			await Consulta.getConsulta(insert + ' ' + value);
 			return true;
 		} catch {
 			return false;

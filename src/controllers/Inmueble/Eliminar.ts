@@ -1,6 +1,7 @@
 import { Inmueble } from './Inmueble';
 import { Request, Response } from 'express';
 import { ConexionBD } from '../../ConexionBD';
+import { Consulta } from '../BaseDeDatos/Consulta';
 
 export class Eliminar extends Inmueble {
 	async eliminarInmueble(req: Request, res: Response): Promise<Response> {
@@ -20,13 +21,13 @@ export class Eliminar extends Inmueble {
 	): Promise<boolean> {
 		let consulta: string = 'DELETE FROM ' + tabla + ' WHERE ' + columna + ' = "' + parametro + '";';
 
-		await ConexionBD.getConsulta(consulta);
+		await Consulta.getConsulta(consulta);
 
 		return true;
 	}
 	static async deleteInmueble(req: Request, roll: Boolean): Promise<string> {
 		const id_catastro: string = String(req.body.id_catastro);
-		const ubicacion = await ConexionBD.getConsulta(
+		const ubicacion = await Consulta.getConsulta(
 			'SELECT id_ubicacion as ubicacion FROM Inmueble WHERE id_catastro = "' + id_catastro + '";'
 		);
 

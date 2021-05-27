@@ -57,7 +57,7 @@ export class Inmueble implements Consultas {
 
 	insertDatos(): string {
 		try {
-			let insert: string = 'INSERT INTO nBano, nCocina, nHab, id_certifEner ';
+			let insert: string = 'INSERT INTO id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen ';
 			let values: string =
 				'VALUES ("' +
 				this.id_catastro +
@@ -81,10 +81,60 @@ export class Inmueble implements Consultas {
 	}
 
 	updateDatos(): string {
-		throw new Error('Method not implemented.');
+		try{
+			let update: string = 'UPDATE Inmueble ';
+			let set: string = 'SET id_catastro ="' +
+			                  'dato1' +
+							  '", breveDescripcion ="' +
+							  'dato1' +
+							  '", id_tipoInmueble = ' +
+							  'dato1' +
+							  ', id_estadoInmueble = ' +
+							  'dato1' +
+							  ', id_tipoVivienda = ' +
+							  'dato1' +
+							  ', id_imagen = '
+							  'dato1 ';
+			let where: string = 'WHERE id_catastro ="' +
+								this.id_catastro +
+								'", breveDescripcion ="' +
+								this.breveDescripcion +
+								'", id_tipoInmueble = ' +
+								this.id_tipoInmueble +
+								', id_estadoInmueble = ' +
+								this.id_estadoInmueble +
+								', id_tipoVivienda = ' +
+								this.id_tipoVivienda +
+								', id_imagen = ' +
+								this.id_imagen + ';';
+			let consulta: string = update + set + where;
+			Consulta.getConsulta(consulta);
+		} catch{
+			return 'El inmueble no ha podido ser actualizado';
+		}
+		return 'El inmueble ha sido actualizado satisfactoriamente';
 	}
 
 	deleteDatos(): string {
-		throw new Error('Method not implemented.');
+		try{
+			let delet: string = 'DELETE FROM Inmueble '
+			let where: string = 'WHERE id_catastro ="' +
+								this.id_catastro +
+								'", breveDescripcion ="' +
+								this.breveDescripcion +
+								'", id_tipoInmueble = ' +
+								this.id_tipoInmueble +
+								', id_estadoInmueble = ' +
+								this.id_estadoInmueble +
+								', id_tipoVivienda = ' +
+								this.id_tipoVivienda +
+								', id_imagen = ' +
+								this.id_imagen + ';';
+			let consulta: string = delet + where;
+			Consulta.getConsulta(consulta);
+		} catch{
+			return 'Ha sido imposible eliminar este inmueble';
+		}
+		return 'El inmueble ha sido eliminado';
 	}
 }

@@ -48,9 +48,7 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		try {
 			let insert: string = 'INSERT INTO nBano, nCocina, nHab, id_certifEner ';
 			let values: string =
-				'VALUES ("' +
-				this.id_catastro +
-				'", ' +
+				'VALUES (' +
 				this.nBano +
 				', ' +
 				this.nCocina +
@@ -68,10 +66,37 @@ export class CaracteristicasIntrinsecas implements Consultas {
 	}
 
 	updateDatos(): string {
-		throw new Error('Method not implemented.');
+		try {
+			let update: string = 'UPDATE CaractIntrinsecas ';
+			let set: string = 'SET nBano = ' +
+							   this.nBano +
+							   ', nCocina = ' +
+							   this.nCocina +
+							   ', id_certifEner = ' + 
+							   this.id_certifEner + 
+							   ', nHab = ' +
+							   this. nHab;
+			let where: string = ' WHERE id_catastro = "' + this.id_catastro + '";';
+
+			let consulta: string = update + set + where;
+			Consulta.getConsulta(consulta);
+		} catch {
+			return 'ERROR las características intrinsecas no han podido actualizarse.';
+		}
+		return 'Las características intrinsecas han sido actualizadas.';
 	}
 
 	deleteDatos(): string {
+		try{
+			let delet: string = 'DELETE FROM CaractIntrinsecas ';
+			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+
+			let consulta: string = delet + where;
+			Consulta.getConsulta(consulta);
+		} catch {
+			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.'
+		}
+		return 'Las características intrinsecas se han eliminado correctamente.'
 		throw new Error('Method not implemented.');
 	}
 }

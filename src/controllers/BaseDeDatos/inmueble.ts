@@ -110,7 +110,7 @@ export class Inmueble implements Consultas {
 			let consulta: string = update + set + where;
 			Consulta.getConsulta(consulta);
 		} catch{
-			return 'El inmueble no ha podido ser actualizado';
+			return 'ERROR El inmueble no ha podido ser actualizado';
 		}
 		return 'El inmueble ha sido actualizado satisfactoriamente';
 	}
@@ -118,22 +118,12 @@ export class Inmueble implements Consultas {
 	deleteDatos(): string {
 		try{
 			let delet: string = 'DELETE FROM Inmueble '
-			let where: string = 'WHERE id_catastro ="' +
-								this.id_catastro +
-								'", breveDescripcion ="' +
-								this.breveDescripcion +
-								'", id_tipoInmueble = ' +
-								this.id_tipoInmueble +
-								', id_estadoInmueble = ' +
-								this.id_estadoInmueble +
-								', id_tipoVivienda = ' +
-								this.id_tipoVivienda +
-								', id_imagen = ' +
-								this.id_imagen + ';';
+			let where: string = 'WHERE id_catastro ="' + this.id_catastro +'";';
+
 			let consulta: string = delet + where;
 			Consulta.getConsulta(consulta);
 		} catch{
-			return 'Ha sido imposible eliminar este inmueble';
+			return 'ERROR Ha sido imposible eliminar este inmueble';
 		}
 		return 'El inmueble ha sido eliminado';
 	}

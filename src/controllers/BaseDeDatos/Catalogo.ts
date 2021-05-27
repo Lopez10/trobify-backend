@@ -84,9 +84,24 @@ export class Catalogo implements Consultas {
 		return 'Los datos se han insertado correctamente en CATALOGO';
 	}
 	updateDatos(): string {
-		throw new Error('Method not implemented.');
+		try {
+			this.deleteDatos();
+			this.insertDatos();
+		} catch {
+			return 'ERROR el catalogo no ha podido actualizarse.';
+		}
+		return 'El catalogo ha sido actualizado.';
 	}
 	deleteDatos(): string {
-		throw new Error('Method not implemented.');
+		try {
+			let delet: string = 'DELETE FROM Catalogo ';
+			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+
+			let consulta = delet + where;
+			Consulta.getConsulta(consulta);
+		} catch {
+			return 'ERROR el catalogo no ha podido ser eliminado.';
+		}
+		return 'El catalogo ha sido eliminado.';
 	}
 }

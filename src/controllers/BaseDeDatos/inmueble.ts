@@ -84,17 +84,17 @@ export class Inmueble implements Consultas {
 		try{
 			let update: string = 'UPDATE Inmueble ';
 			let set: string = 'SET id_catastro ="' +
-			                  'dato1' +
-							  '", breveDescripcion ="' +
-							  'dato1' +
-							  '", id_tipoInmueble = ' +
-							  'dato1' +
-							  ', id_estadoInmueble = ' +
-							  'dato1' +
-							  ', id_tipoVivienda = ' +
-							  'dato1' +
-							  ', id_imagen = '
-							  'dato1 ';
+								this.id_catastro +
+								'", breveDescripcion ="' +
+								this.breveDescripcion +
+								'", id_tipoInmueble = ' +
+								this.id_tipoInmueble +
+								', id_estadoInmueble = ' +
+								this.id_estadoInmueble +
+								', id_tipoVivienda = ' +
+								this.id_tipoVivienda +
+								', id_imagen = ' +
+								this.id_imagen + ';';
 			let where: string = 'WHERE id_catastro ="' +
 								this.id_catastro +
 								'", breveDescripcion ="' +

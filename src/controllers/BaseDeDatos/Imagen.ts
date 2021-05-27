@@ -42,15 +42,30 @@ export class Imagen implements Consultas {
 				Consulta.getConsulta(insert + values);
 			}
 		} catch {
-			return 'ERROR al insertar los datos de IMEGEN';
+			return 'ERROR al insertar los datos de IMAGEN';
 		}
 
 		return 'Los datos se han insertado correctamente en IMAGEN';
 	}
 	updateDatos(): string {
-		throw new Error('Method not implemented.');
+		try{
+			this.deleteDatos();
+			this.insertDatos();
+		} catch{
+			return 'ERROR al actualizar las imagenes';
+		}
+		return 'Las imagenes han sido actualizadas satisfactoriamente';
 	}
 	deleteDatos(): string {
-		throw new Error('Method not implemented.');
+		try{
+			let delet: string = 'DELETE FROM Imagen ';
+			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+			
+			let consulta: string = delet + where;
+			Consulta.getConsulta(consulta);
+		} catch {
+			return 'Las imagenes no han podido elimnarse.';
+		}
+		return 'Las imagenes han sido eliminadas correctamente.';
 	}
 }

@@ -47,10 +47,25 @@ export class Contiene implements Consultas {
 	}
 
 	updateDatos(): string {
-		throw new Error('Method not implemented.');
+		try{
+			this.deleteDatos();
+			this.insertDatos();
+		} catch {
+			return 'ERROR los datos no se han actualizado en CONTIENE';
+		}
+		return 'Los datos se han actualizado correctamente';
 	}
 
 	deleteDatos(): string {
-		throw new Error('Method not implemented.');
+		try {
+			let delet: string = 'DELETE FROM Contiene ';
+			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+
+			let consulta: string = delet + where;
+			Consulta.getConsulta(consulta);
+		} catch {
+			return 'ERROR los datos no se han eliminado';
+		}
+		return 'Los datos se han eliminado correctamente en CONTIENE';
 	}
 }

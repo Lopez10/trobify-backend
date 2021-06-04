@@ -1,9 +1,10 @@
 import { SedeCatastro } from '../../../interface/baseDatos.interface';
+import { DatosCatastro } from '../DatosCatastro';
 
 export class DatosCatastroDecorado implements SedeCatastro {
-	protected wrappee: SedeCatastro;
+	protected wrappee: DatosCatastro;
 
-	constructor(s: SedeCatastro) {
+	constructor(s: DatosCatastro) {
 		this.wrappee = s;
 	}
 

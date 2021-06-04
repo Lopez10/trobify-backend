@@ -53,6 +53,29 @@ export class DatosCatastro implements Consultas {
 		return await Consulta.existeElementoEnTabla('datoscatastro', 'id_catastro', this.id_catastro);
 	}
 
+	setId_catastro(id_catastro: string) {
+		this.id_catastro = id_catastro;
+	}
+	setDireccion(direccion: string) {
+		this.direccion = direccion;
+	}
+	setLocalidad(localidad: string) {
+		this.localidad = localidad;
+	}
+	setCodPostal(codPostal: number) {
+		this.codPostal = codPostal;
+	}
+	setId_provincia(id_provincia: number) {
+		this.id_provincia = id_provincia;
+	}
+	setSuperficie(superficie: number) {
+		this.superficie = superficie;
+	}
+	setCoordenada(latitud: number, longitud: number) {
+		this.coordenada.xLongitud = longitud;
+		this.coordenada.yLatitud = latitud;
+	}
+
 	validarReferenciaCatastral(referenciaCatastral: string): boolean {
 		//Valor por el que se debe multiplicar cada posición de cada subcadena
 		const pesoPosicion: number[] = [13, 15, 12, 5, 4, 17, 9, 21, 3, 7, 1];

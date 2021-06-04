@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { SedeCatastro } from '../../../interface/baseDatos.interface';
 import { DatosCatastro } from '../DatosCatastro';
 import { DatosCatastroDecorado } from './DatosCatastroDecorado';
 
@@ -8,28 +7,21 @@ export class SedeCatastral extends DatosCatastroDecorado {
 	//0230809UH0403S0001LF
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
 
-	private constructor(s: SedeCatastro) {
-		super(s);
-	}
-
-	async getDatos(id_catastro: string, SRS?: number): Promise<DatosCatastro> {
-		const catastro = new DatosCatastro();
-		catastro.id_catastro = id_catastro;
+	async getDatos(id_catastro: string, SRS?: number): Promise<boolean> {
+		//const catastro = new DatosCatastro();
+		this.wrappee.setId_catastro(id_catastro);
 
 		const ubicacionCatastro = await SedeCatastral.consultaCatastroUbicacion(id_catastro);
-		catastro.coordenada = {
-			yLatitud: Number(ubicacionCatastro[1]),
-			xLongitud: Number(ubicacionCatastro[0]),
-		};
-		catastro.localidad = ubicacionCatastro[2];
+		this.wrappee.setCoordenada(Number(ubicacionCatastro[0]), Number(ubicacionCatastro[1]));
+		this.wrappee.setLocalidad(ubicacionCatastro[2]);
 
 		const otrosDatosCatastro = await SedeCatastral.consultaCatastroDatosInmueble(id_catastro);
-		catastro.direccion = otrosDatosCatastro[0];
-		catastro.codPostal = Number(otrosDatosCatastro[1]);
-		catastro.id_provincia = Number(otrosDatosCatastro[2]);
-		catastro.superficie = Number(otrosDatosCatastro[3]);
+		this.wrappee.setDireccion(otrosDatosCatastro[0]);
+		this.wrappee.setCodPostal(Number(otrosDatosCatastro[1]));
+		this.wrappee.setId_provincia(Number(otrosDatosCatastro[2]));
+		this.wrappee.setSuperficie(Number(otrosDatosCatastro[3]));
 
-		return catastro;
+		return true;
 	}
 
 	static async consultaCatastroUbicacion(id_catastro: string, SRS?: number): Promise<string[]> {

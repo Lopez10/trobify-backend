@@ -1,18 +1,18 @@
-import { coordenada, SedeCatastro } from '../../interface/baseDatos.interface';
 import axios from 'axios';
-import { DatosCatastro } from './DatosCatastro';
+import { SedeCatastro } from '../../../interface/baseDatos.interface';
+import { DatosCatastro } from '../DatosCatastro';
+import { DatosCatastroDecorado } from './DatosCatastroDecorado';
 
-export class SedeCatastral implements SedeCatastro {
-	sedeCatastro: SedeCatastro;
-
+export class SedeCatastral extends DatosCatastroDecorado {
 	//7138804YJ2773G0006ET
 	//0230809UH0403S0001LF
 	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
 
-	private constructor() {}
+	private constructor(s: SedeCatastro) {
+		super(s);
+	}
 
 	async getDatos(id_catastro: string, SRS?: number): Promise<DatosCatastro> {
-		/*
 		const catastro = new DatosCatastro();
 		catastro.id_catastro = id_catastro;
 
@@ -30,8 +30,6 @@ export class SedeCatastral implements SedeCatastro {
 		catastro.superficie = Number(otrosDatosCatastro[3]);
 
 		return catastro;
-		*/
-		return;
 	}
 
 	static async consultaCatastroUbicacion(id_catastro: string, SRS?: number): Promise<string[]> {

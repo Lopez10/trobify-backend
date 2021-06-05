@@ -47,11 +47,13 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 		return datos;
 	}
 
-	insertDatos(): string {
+	async insertDatos(): Promise<string> {
 		try {
-			let insert: string = 'INSERT INTO nBano, nCocina, nHab, id_certifEner ';
+			let insert: string = 'INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, nHab, id_certifEner) ';
 			let values: string =
 				'VALUES (' +
+				this.id_catastro +
+				', ' +
 				this.nBano +
 				', ' +
 				this.nCocina +
@@ -60,7 +62,7 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 				', ' +
 				this.nHab +
 				');';
-			Consulta.getConsulta(insert + values);
+			await Consulta.getConsulta(insert + values);
 		} catch {
 			return 'ERROR al insertar los datos de CARACTINTRINSECAS';
 		}
@@ -68,7 +70,7 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 		return 'Los datos se han insertado correctamente en CARACTINTRINSECAS';
 	}
 
-	updateDatos(): string {
+	async updateDatos(): Promise<string> {
 		try {
 			let update: string = 'UPDATE CaractIntrinsecas ';
 			let set: string = 'SET nBano = ' +
@@ -82,27 +84,27 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 			let where: string = ' WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta: string = update + set + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'ERROR las características intrinsecas no han podido actualizarse.';
 		}
 		return 'Las características intrinsecas han sido actualizadas.';
 	}
 
-	deleteDatos(): string {
+	async deleteDatos(): Promise<string> {
 		try{
 			let delet: string = 'DELETE FROM CaractIntrinsecas ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta: string = delet + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.'
 		}
 		return 'Las características intrinsecas se han eliminado correctamente.'
 	}
 
-	setMediadot(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface){
 		this.setMediador(mediator);
 	};
 

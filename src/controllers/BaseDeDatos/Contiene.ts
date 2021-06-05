@@ -34,13 +34,13 @@ export class Contiene extends Componente implements Consultas {
 		return datos;
 	}
 
-	insertDatos(): string {
+	async insertDatos(): Promise<string> {
 		try {
 			for (let i = 0; i < this.id_caractSecundaria.length; i++) {
 				let insert: string = 'INSERT INTO id_catastro, id_caractSecundaria ';
 				let values: string =
 					'VALUES ("' + this.id_catastro + '", ' + this.id_caractSecundaria[i] + ');';
-				Consulta.getConsulta(insert + values);
+				await Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de CONTIENE';
@@ -49,7 +49,7 @@ export class Contiene extends Componente implements Consultas {
 		return 'Los datos se han insertado correctamente en CONTIENE';
 	}
 
-	updateDatos(): string {
+	async updateDatos(): Promise<string> {
 		try{
 			this.deleteDatos();
 			this.insertDatos();
@@ -59,20 +59,20 @@ export class Contiene extends Componente implements Consultas {
 		return 'Los datos se han actualizado correctamente';
 	}
 
-	deleteDatos(): string {
+	async deleteDatos(): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Contiene ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta: string = delet + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'ERROR los datos no se han eliminado';
 		}
 		return 'Los datos se han eliminado correctamente en CONTIENE';
 	}
 
-	setMediadot(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface){
 		this.setMediador(mediator);
 	};
 

@@ -56,7 +56,7 @@ export class Catalogo extends Componente implements Consultas  {
 		return datos;
 	}
 
-	insertDatos(): string {
+	async insertDatos(): Promise<string> {
 		try {
 			for (let i = 0; i < this.id_modalidad.length; i++) {
 				let conversion: number = 0;
@@ -79,7 +79,7 @@ export class Catalogo extends Componente implements Consultas  {
 					', ' +
 					conversion +
 					');';
-				Consulta.getConsulta(insert + values);
+				await Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de CATALOGO';
@@ -88,7 +88,7 @@ export class Catalogo extends Componente implements Consultas  {
 		return 'Los datos se han insertado correctamente en CATALOGO';
 	}
 
-	updateDatos(): string {
+	async updateDatos(): Promise<string> {
 		try {
 			this.deleteDatos();
 			this.insertDatos();
@@ -98,20 +98,20 @@ export class Catalogo extends Componente implements Consultas  {
 		return 'El catalogo ha sido actualizado.';
 	}
 
-	deleteDatos(): string {
+	async deleteDatos(): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Catalogo ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta = delet + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'ERROR el catalogo no ha podido ser eliminado.';
 		}
 		return 'El catalogo ha sido eliminado.';
 	}
 
-	setMediadot(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface){
 		this.setMediador(mediator);
 	};
 

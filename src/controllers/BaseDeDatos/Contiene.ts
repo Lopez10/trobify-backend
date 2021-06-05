@@ -56,7 +56,7 @@ export class Contiene extends Componente implements Consultas {
 	async insertDatos(): Promise<string> {
 		try {
 			for (let i = 0; i < this.id_caractSecundaria.length; i++) {
-				let insert: string = 'INSERT INTO id_catastro, id_caractSecundaria ';
+				let insert: string = 'INSERT INTO Contiene(id_catastro, id_caractSecundaria) ';
 				let values: string =
 					'VALUES ("' + this.id_catastro + '", ' + this.id_caractSecundaria[i] + ');';
 				await Consulta.getConsulta(insert + values);

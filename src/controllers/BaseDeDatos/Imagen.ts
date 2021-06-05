@@ -60,7 +60,7 @@ export class Imagen extends Componente implements Consultas {
 	async insertDatos(): Promise<string> {
 		try {
 			for (let i = 0; i < this.id_imagen.length; i++) {
-				let insert: string = 'INSERT INTO id_imagen, id_catastro, valor ';
+				let insert: string = 'INSERT INTO Imagen(id_imagen, id_catastro, valor) ';
 				let values: string =
 					'VALUES (' + this.id_imagen[i] + ', "' + this.id_catastro + '", "' + this.url[i] + '");';
 				await Consulta.getConsulta(insert + values);

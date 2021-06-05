@@ -8,18 +8,18 @@ export class Catalogo extends Componente implements Consultas {
 	private id_modalidad: number[];
 	private precio: number[];
 	private descuento: number[];
-	private f_insercion: Date;
+	private f_insercion: string;
 	private id_usuario: number;
-	private publicado: boolean[];
+	private publicado: number[];
 
 	constructor(
 		id_catastro?: string,
 		id_modalidad?: number[],
 		precio?: number[],
 		descuento?: number[],
-		f_insercion?: Date,
+		f_insercion?: string,
 		id_usuario?: number,
-		publicado?: boolean[]
+		publicado?: number[]
 	) {
 		super();
 		this.id_catastro = id_catastro;
@@ -53,7 +53,7 @@ export class Catalogo extends Componente implements Consultas {
 	getId_usuario(): number {
 		return this.id_usuario;
 	}
-	getPublicado(): boolean[] {
+	getPublicado(): number[] {
 		return this.publicado;
 	}
 
@@ -93,7 +93,7 @@ export class Catalogo extends Componente implements Consultas {
 				let conversion: number = 0;
 				if (this.publicado[i]) conversion = 1;
 				let insert: string =
-					'INSERT INTO id_catastro, id_modalidad, precio, descuento, f_insercion,id_usuario, publicado ';
+					'INSERT INTO Catalogo(id_catastro, id_modalidad, precio, descuento, f_insercion,id_usuario, publicado) ';
 				let values: string =
 					'VALUES ("' +
 					this.id_catastro +

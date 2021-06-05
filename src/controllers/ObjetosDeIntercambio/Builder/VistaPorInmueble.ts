@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
@@ -8,32 +9,31 @@ import { DatosCatastro } from '../../BaseDeDatos/DatosCatastro';
 import { Imagen } from '../../BaseDeDatos/Imagen';
 
 export class VistaPorInmueble extends IntercambioInmueble {
-	protected objetoDeIntercambio: DatosInmueble[];
+	protected objetoDeIntercambio: DatosInmueble;
 
 	protected constructor(id_catastro: string) {
 		super(id_catastro);
 	}
 
-	async getResult(lista: string[]) {
-		for (let i = 0; i < lista.length; i++) {
+	async getResult(lista: string) {
 			let inmueble: Inmueble = new Inmueble();
-			inmueble = await inmueble.getDatos(lista[i]);
+			inmueble = await inmueble.getDatos(lista);
 
 			let contiene: Contiene = new Contiene();
-			contiene = await contiene.getDatos(lista[i]);
+			contiene = await contiene.getDatos(lista);
 
 			let caractesiticas: CaracteristicasIntrinsecas = new CaracteristicasIntrinsecas();
-			caractesiticas = await caractesiticas.getDatos(lista[i]);
+			caractesiticas = await caractesiticas.getDatos(lista);
 
-			let catastro: DatosCatastro = await DatosCatastro.getDatos(lista[i]);
+			let catastro: DatosCatastro = await DatosCatastro.getDatos(lista);
 
 			let imagen: Imagen = new Imagen();
-			imagen = await imagen.getDatos(lista[i]);
+			imagen = await imagen.getDatos(lista);
 
-			let catalogo: Catalogo = await Catalogo.getDatos(lista[i]);
+			let catalogo: Catalogo = await Catalogo.getDatos(lista);
 
-			this.objetoDeIntercambio.push({
-				id_catastro: lista[i],
+			this.objetoDeIntercambio = ({
+				id_catastro: lista,
 				tipoInmueble: inmueble.getId_tipoInmueble(),
 				estadoInmueble: inmueble.getId_estadoInmueble(),
 				descripcion: inmueble.getBreveDescipcion(),
@@ -59,11 +59,10 @@ export class VistaPorInmueble extends IntercambioInmueble {
 
 				caracteristicas: await contiene.getCaracteristicas(),
 			});
-		}
 	}
 
-	getInmueblesPorCatastroYModalidad(){
-
+	getInmueblesPorCatastroYModalidad(req: Request){
+		return this.getResult(String(req.query.catastro));
 	}
 	//¿Cómo se cogen la información? Aquí es solo rellenarlo con lo que nos pasan.
 }

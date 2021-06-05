@@ -90,6 +90,18 @@ export class Consulta extends BaseDeDatos {
 		let select: string = 'SELECT DISTINCT id_catastro ';
 		let from: string = 'FROM contiene ';
 		let where: string = 'WHERE id_caractSecundaria IN ' + contiene + ';';
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getUsuarioFromMail(mail: string): Promise<string> {
+		let select: string = 'SELECT id_usuario ';
+		let from: string = 'FROM Usuario ';
+		let where: string = 'WHERE mail = "' + mail + '";';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);
@@ -112,6 +124,19 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
+	public static async getCatastroFromUsuario(id: number): Promise<string[]> {
+		let select: string = 'SELECT distinct id_catastro ';
+		let from: string = 'FROM Catalogo ';
+		let where: string = 'WHERE id_usuario = ' + id + ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
 	public static async getCatastroToInmueble(
 		tpoInm: number,
 		stoInm: number,
@@ -124,6 +149,18 @@ export class Consulta extends BaseDeDatos {
 		if (stoInm !== undefined) where += ' AND nHab = ' + stoInm;
 		if (tpoViv !== undefined) where += ' AND id_certifener = ' + tpoViv;
 		where += ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+	public static async getModalidad(id: string): Promise<number[]> {
+		let select: string = 'SELECT id_modalidad ';
+		let from: string = 'FROM Catalogo ';
+		let where: string = 'WHERE id_catastro = "' + id + '";';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);

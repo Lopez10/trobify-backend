@@ -54,7 +54,6 @@ export class VistaListado extends IntercambioInmueble {
 		}
 
 		if (!(req.query.caract === undefined)) {
-			let caract: string[] = String(req.query.caract).split(',');
 			compartimos = await Consulta.getCatastroToContiene('(' + String(req.query.caract) + ')');
 
 			if (compartimos == null) return null;
@@ -74,7 +73,24 @@ export class VistaListado extends IntercambioInmueble {
 		if (!(req.query.preMin === undefined) && !(req.query.preMax === undefined)) {
 			compartimos = await Consulta.getCatastroToCatalogo(
 				Number(req.query.preMin),
-				Number(req.query.preMax)
+				Number(req.query.preMax),
+				String(req.query.aMrgn),
+				Number(req.query.mrgn)
+			);
+
+			if (compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
+
+		if (
+			!(req.query.stdo === undefined) &&
+			!(req.query.tpoInm === undefined) &&
+			!(req.query.tpoViv === undefined)
+		) {
+			compartimos = await Consulta.getCatastroToInmueble(
+				Number(req.query.tpoInm),
+				Number(req.query.stoInm),
+				Number(req.query.tpoViv)
 			);
 
 			if (compartimos == null) return null;

@@ -42,7 +42,7 @@ export class Consulta extends BaseDeDatos {
 		let select: string = 'SELECT inm.id_catastro ';
 		let from: String = 'FROM inmueble inm, datoscatastro dat, catalogo cat ';
 		let where: String =
-			'WHERE inm.id_catastro = dat.id_catastro AND inm.id_catastro = cat.id_catastro';
+			'WHERE inm.id_catastro = dat.id_catastro AND inm.id_catastro = cat.id_catastro AND cat.publicado = 1 ';
 		where += ' AND cat.id_modalidad = ' + idModalidad;
 		where += ' AND dat.id_provincia = ' + idProvincia;
 		where += ' AND inm.id_tipoInmueble = ' + idTipoInmueble;
@@ -59,10 +59,31 @@ export class Consulta extends BaseDeDatos {
 	): Promise<string[]> {
 		let select: string = 'SELECT id_catastro ';
 		let from: string = 'FROM caractintrinsecas ';
-		let where: string = 'WHERE';
-		if (nBano !== undefined) where += ' nBano = ' + nBano;
+		let where: string = 'WHERE 1=1';
+		if (nBano !== undefined) where += ' AND nBano = ' + nBano;
 		if (nHab !== undefined) where += ' AND nHab = ' + nHab;
 		if (id_certifener !== undefined) where += ' AND id_certifener = ' + id_certifener;
+		where += ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getCatastroToInmueble(
+		tpoInm: number,
+		stoInm: number,
+		tpoViv: number
+	): Promise<string[]> {
+		let select: string = 'SELECT id_catastro ';
+		let from: string = 'FROM inmueble ';
+		let where: string = 'WHERE 1=1';
+		if (tpoInm !== undefined) where += ' AND id_tipoInmueble = ' + tpoInm;
+		if (stoInm !== undefined) where += ' AND id_tipoInmueble = ' + stoInm;
+		if (tpoViv !== undefined) where += ' AND id_tipoVivienda= ' + tpoViv;
 		where += ';';
 
 		try {
@@ -98,23 +119,29 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
-	public static async getUsuarioFromMail(mail: string): Promise<string> {
-		let select: string = 'SELECT id_usuario ';
-		let from: string = 'FROM Usuario ';
-		let where: string = 'WHERE mail = "' + mail + '";';
-
-		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
-			return consulta;
-		} catch {
-			return null;
-		}
-	}
-
-	public static async getCatastroToCatalogo(preMin: number, preMax: number): Promise<string[]> {
+	public static async getCatastroToCatalogo(
+		preMin: number,
+		preMax: number,
+		aMrgn?: string,
+		margen?: number
+	): Promise<string[]> {
 		let select: string = 'SELECT id_catastro ';
 		let from: string = 'FROM catalogo ';
-		let where: string = 'WHERE precio BETWEEN ' + preMin + ' AND ' + preMax + ';';
+
+		let min: number = preMin;
+		let max: number = preMax;
+		if (min > max) {
+			let aux: number = min;
+			min = max;
+			max = aux;
+		}
+		if (aMrgn === 'on') {
+			min = min - min * margen;
+			max = max + max * margen;
+		}
+		if (min < 0) min = 0;
+
+		let where: string = 'WHERE precio BETWEEN ' + min + ' AND ' + max + ';';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);
@@ -137,18 +164,10 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
-	public static async getCatastroToInmueble(
-		tpoInm: number,
-		stoInm: number,
-		tpoViv: number
-	): Promise<string[]> {
-		let select: string = 'SELECT id_catastro ';
-		let from: string = 'FROM inmueble ';
-		let where: string = 'WHERE';
-		if (tpoInm !== undefined) where += ' nBano = ' + tpoInm;
-		if (stoInm !== undefined) where += ' AND nHab = ' + stoInm;
-		if (tpoViv !== undefined) where += ' AND id_certifener = ' + tpoViv;
-		where += ';';
+	public static async getModalidad(id: string): Promise<number[]> {
+		let select: string = 'SELECT id_modalidad ';
+		let from: string = 'FROM Catalogo ';
+		let where: string = 'WHERE id_catastro = "' + id + '";';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);
@@ -157,10 +176,11 @@ export class Consulta extends BaseDeDatos {
 			return null;
 		}
 	}
-	public static async getModalidad(id: string): Promise<number[]> {
-		let select: string = 'SELECT id_modalidad ';
-		let from: string = 'FROM Catalogo ';
-		let where: string = 'WHERE id_catastro = "' + id + '";';
+
+	public static async getUsuarioFromMail(mail: string): Promise<string> {
+		let select: string = 'SELECT id_usuario ';
+		let from: string = 'FROM Usuario ';
+		let where: string = 'WHERE mail = "' + mail + '";';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);

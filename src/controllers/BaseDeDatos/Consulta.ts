@@ -61,8 +61,8 @@ export class Consulta extends BaseDeDatos {
 		let from: string = 'FROM caractintrinsecas ';
 		let where: string = 'WHERE';
 		if (nBano !== undefined) where += ' nBano = ' + nBano;
-		if (nHab !== undefined) where += ' nHab = ' + nHab;
-		if (id_certifener !== undefined) where += ' id_certifener = ' + id_certifener;
+		if (nHab !== undefined) where += ' AND nHab = ' + nHab;
+		if (id_certifener !== undefined) where += ' AND id_certifener = ' + id_certifener;
 		where += ';';
 
 		try {
@@ -77,6 +77,53 @@ export class Consulta extends BaseDeDatos {
 		let select: string = 'SELECT id_catastro ';
 		let from: string = 'FROM datoscatastro ';
 		let where: string = 'WHERE superficie BETWEEN ' + supMin + ' AND ' + supMax + ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getCatastroToContiene(contiene: string): Promise<string[]> {
+		let select: string = 'SELECT DISTINCT id_catastro ';
+		let from: string = 'FROM contiene ';
+		let where: string = 'WHERE id_caractSecundaria IN ' + contiene + ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getCatastroToCatalogo(preMin: number, preMax: number): Promise<string[]> {
+		let select: string = 'SELECT id_catastro ';
+		let from: string = 'FROM catalogo ';
+		let where: string = 'WHERE precio BETWEEN ' + preMin + ' AND ' + preMax + ';';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getCatastroToInmueble(
+		tpoInm: number,
+		stoInm: number,
+		tpoViv: number
+	): Promise<string[]> {
+		let select: string = 'SELECT id_catastro ';
+		let from: string = 'FROM inmueble ';
+		let where: string = 'WHERE';
+		if (tpoInm !== undefined) where += ' nBano = ' + tpoInm;
+		if (stoInm !== undefined) where += ' AND nHab = ' + stoInm;
+		if (tpoViv !== undefined) where += ' AND id_certifener = ' + tpoViv;
+		where += ';';
 
 		try {
 			let consulta = await Consulta.getConsulta(select + from + where);

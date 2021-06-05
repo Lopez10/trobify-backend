@@ -26,23 +26,60 @@ export class VistaListado extends IntercambioInmueble {
 			Number(req.query.tpoInm),
 			Number(req.query.prov)
 		);
+		let compartimos: string[];
 
-		let compartimos: string[] = await Consulta.getCatastroToCaracteristicasIntrinsecas(
-			Number(req.query.nBan),
-			Number(req.query.nHab),
-			Number(req.query.clfEn)
-		);
+		if (
+			!(req.query.nBan === undefined) ||
+			!(req.query.nHab === undefined) ||
+			!(req.query.clfEn === undefined)
+		) {
+			compartimos = await Consulta.getCatastroToCaracteristicasIntrinsecas(
+				Number(req.query.nBan),
+				Number(req.query.nHab),
+				Number(req.query.clfEn)
+			);
 
-		if (tenemos == null || compartimos == null) return null;
-		tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+			if (tenemos == null || compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
 
-		compartimos = await Consulta.getCatastroToSuperficie(
-			Number(req.query.supMin),
-			Number(req.query.supMax)
-		);
+		if (!(req.query.supMin === undefined) && !(req.query.supMax === undefined)) {
+			compartimos = await Consulta.getCatastroToSuperficie(
+				Number(req.query.supMin),
+				Number(req.query.supMax)
+			);
 
-		if (compartimos == null) return null;
-		tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+			if (compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
+
+		if (!(req.query.caract === undefined)) {
+			let caract: string[] = String(req.query.caract).split(',');
+			compartimos = await Consulta.getCatastroToContiene('(' + String(req.query.caract) + ')');
+
+			if (compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
+
+		if (!(req.query.preMin === undefined) && !(req.query.preMax === undefined)) {
+			compartimos = await Consulta.getCatastroToCatalogo(
+				Number(req.query.preMin),
+				Number(req.query.preMax)
+			);
+
+			if (compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
+
+		if (!(req.query.preMin === undefined) && !(req.query.preMax === undefined)) {
+			compartimos = await Consulta.getCatastroToCatalogo(
+				Number(req.query.preMin),
+				Number(req.query.preMax)
+			);
+
+			if (compartimos == null) return null;
+			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+		}
 
 		return tenemos;
 	}

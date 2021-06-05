@@ -10,14 +10,32 @@ export class DatosCatastro implements Consultas {
 	private superficie: number;
 	private coordenada: coordenada; //
 
-	private constructor() {}
+	constructor(
+		id_catastro: string,
+		direccion: string,
+		localidad: string,
+		codPostal: number,
+		id_provincia: number,
+		superficie: number,
+		latitud: number,
+		longitud: number
+	) {
+		this.id_catastro = id_catastro;
+		this.direccion = direccion;
+		this.localidad = localidad;
+		this.codPostal = codPostal;
+		this.id_provincia = id_provincia;
+		this.superficie = superficie;
+		this.coordenada.yLatitud = latitud;
+		this.coordenada.xLongitud = longitud;
+	}
 
 	async getDatos(id_catastro: string): Promise<DatosCatastro> {
 		return DatosCatastro.getDatos(id_catastro);
 	}
 
 	static async getDatos(id_catastro: string): Promise<DatosCatastro> {
-		let catastro = new DatosCatastro();
+		let catastro: DatosCatastro;
 
 		let select: string =
 			'direccion, codPostal, localidad, d_provincia, superficie, latitud, longitud';
@@ -90,14 +108,9 @@ export class DatosCatastro implements Consultas {
 				', superficie = ' +
 				this.superficie +
 				', latitud = ' +
-				this.coordenada.yLatitud
-				', superficie = ' +
-				this.coordenada.xLongitud +
-				';';
-			let where: string =
-				'WHERE id_catastro ="' +
-				this.id_catastro +
-				';';
+				this.coordenada.yLatitud;
+			', superficie = ' + this.coordenada.xLongitud + ';';
+			let where: string = 'WHERE id_catastro ="' + this.id_catastro + ';';
 			await Consulta.getConsulta(update + set + where);
 		} catch {
 			return 'ERROR los datos no han podido ser actualizados';

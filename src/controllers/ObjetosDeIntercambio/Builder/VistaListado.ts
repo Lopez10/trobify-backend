@@ -1,5 +1,5 @@
 import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
-import { Esqueleto } from './Esqueleto';
+import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
 import { Contiene } from '../../BaseDeDatos/Contiene';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
@@ -7,11 +7,11 @@ import { DatosCatastro } from '../../BaseDeDatos/DatosCatastro';
 import { Imagen } from '../../BaseDeDatos/Imagen';
 import { Catalogo } from '../../BaseDeDatos/Catalogo';
 
-export class FiltrosEx extends Esqueleto {
+export class FiltrosEx extends IntercambioInmueble {
 	protected inmuebleCompartido: DatosInmueble[];
 
-	protected constructor() {
-		super();
+	protected constructor(id_catastro: string) {
+		super(id_catastro);
 	}
 
 	getInmuebleCompartido(): DatosInmueble[] {
@@ -52,7 +52,7 @@ export class FiltrosEx extends Esqueleto {
 				nBanos: caractesiticas.getNBano(),
 				nCocinas: caractesiticas.getNCocina(),
 				propietario: catalogo.getId_usuario(),
-				publicado: catalogo.getPublicado(),
+				//publicado: catalogo.getPublicado(),
 
 				caracteristicas: await contiene.getCaracteristicas(),
 				imagen: await inmueble.getUrlToIdImagen(),
@@ -60,8 +60,6 @@ export class FiltrosEx extends Esqueleto {
 				precio: catalogo.getPrecio(),
 				descuento: catalogo.getDescuento(),
 			});
-
-			//this.inmuebleCompartido.push(aux);
 		}
 	}
 }

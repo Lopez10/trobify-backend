@@ -23,7 +23,7 @@ export class BaseDeDatos {
 		} else {
 			resultadoQuery = await BaseDeDatos.conn.query(consulta);
 		}
-		return resultadoQuery;
+		return resultadoQuery[0];
 	}
 
 	public static async vaciarDataBase(): Promise<boolean> {

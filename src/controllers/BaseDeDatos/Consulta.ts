@@ -86,6 +86,44 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
+	public static async getUsuarioFromMail(mail: string): Promise<string> {
+		let select: string = 'SELECT id_usuario ';
+		let from: string = 'FROM Usuario ';
+		let where: string = 'WHERE mail = "' + mail + '";';
+
+		try {
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null; 
+		}
+	}
+
+	public static async getCatastroFromUsuario(id: number): Promise<string[]> {
+		let select: string = 'SELECT id_catastro ';
+		let from: string = 'FROM Catalogo ';
+		let where: string = 'WHERE id_usuario = ' + id + ';';
+
+		try{
+			let consulta = await Consulta.getConsulta(select + from + where);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
+	public static async getCatastroFromInmueble(): Promise<String[]>{
+		let select: string = 'SELECT id_catastro ';
+		let from: string = 'FROM Inmueble ';
+		
+		try{
+			let consulta = await Consulta.getConsulta(select + from);
+			return consulta;
+		} catch {
+			return null;
+		}
+	}
+
 	public static getStringify(consulta: string[] | number[], atributo: string): string[] {
 		var resultado: string[] = [''];
 		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {

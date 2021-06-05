@@ -1,6 +1,4 @@
-import { ConexionBD } from '../../ConexionBD';
 import { Consultas } from '../../interface/baseDatos.interface';
-import { BaseDeDatos } from './BaseDeDatos';
 import { Consulta } from './Consulta';
 
 export class Inmueble implements Consultas {
@@ -25,6 +23,44 @@ export class Inmueble implements Consultas {
 		this.id_estadoInmueble = id_estadoInmueble;
 		this.id_tipoVivienda = id_tipoVivienda;
 		this.id_imagen = id_imagen;
+	}
+
+	setId_catastro(id_catastro: string) {
+		this.id_catastro = id_catastro;
+	}
+	setBreveDescipcion(breveDescripcion: string) {
+		this.breveDescripcion = breveDescripcion;
+	}
+	setId_tipoInmueble(id_tipoInmueble: number) {
+		this.id_tipoInmueble = id_tipoInmueble;
+	}
+	setId_estadoInmueble(id_estadoInmueble: number) {
+		this.id_estadoInmueble = id_estadoInmueble;
+	}
+	setId_tipoVivienda(id_tipoVivienda: number) {
+		this.id_tipoVivienda = id_tipoVivienda;
+	}
+	setId_imagen(id_imagen: number) {
+		this.id_imagen = id_imagen;
+	}
+
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getBreveDescipcion(): string {
+		return this.breveDescripcion;
+	}
+	getId_tipoInmueble(): number {
+		return this.id_tipoInmueble;
+	}
+	getId_estadoInmueble(): number {
+		return this.id_estadoInmueble;
+	}
+	getId_tipoVivienda(): number {
+		return this.id_tipoVivienda;
+	}
+	getId_imagen(): number {
+		return this.id_imagen;
 	}
 
 	async existeYaElDato(): Promise<boolean> {
@@ -57,7 +93,8 @@ export class Inmueble implements Consultas {
 
 	insertDatos(): string {
 		try {
-			let insert: string = 'INSERT INTO id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen ';
+			let insert: string =
+				'INSERT INTO id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen ';
 			let values: string =
 				'VALUES ("' +
 				this.id_catastro +
@@ -81,48 +118,51 @@ export class Inmueble implements Consultas {
 	}
 
 	updateDatos(): string {
-		try{
+		try {
 			let update: string = 'UPDATE Inmueble ';
-			let set: string = 'SET id_catastro ="' +
-								this.id_catastro +
-								'", breveDescripcion ="' +
-								this.breveDescripcion +
-								'", id_tipoInmueble = ' +
-								this.id_tipoInmueble +
-								', id_estadoInmueble = ' +
-								this.id_estadoInmueble +
-								', id_tipoVivienda = ' +
-								this.id_tipoVivienda +
-								', id_imagen = ' +
-								this.id_imagen + ';';
-			let where: string = 'WHERE id_catastro ="' +
-								this.id_catastro +
-								'", breveDescripcion ="' +
-								this.breveDescripcion +
-								'", id_tipoInmueble = ' +
-								this.id_tipoInmueble +
-								', id_estadoInmueble = ' +
-								this.id_estadoInmueble +
-								', id_tipoVivienda = ' +
-								this.id_tipoVivienda +
-								', id_imagen = ' +
-								this.id_imagen + ';';
-			let consulta: string = update + set + where;
-			Consulta.getConsulta(consulta);
-		} catch{
+			let set: string =
+				'SET id_catastro ="' +
+				this.id_catastro +
+				'", breveDescripcion ="' +
+				this.breveDescripcion +
+				'", id_tipoInmueble = ' +
+				this.id_tipoInmueble +
+				', id_estadoInmueble = ' +
+				this.id_estadoInmueble +
+				', id_tipoVivienda = ' +
+				this.id_tipoVivienda +
+				', id_imagen = ' +
+				this.id_imagen +
+				';';
+			let where: string =
+				'WHERE id_catastro ="' +
+				this.id_catastro +
+				'", breveDescripcion ="' +
+				this.breveDescripcion +
+				'", id_tipoInmueble = ' +
+				this.id_tipoInmueble +
+				', id_estadoInmueble = ' +
+				this.id_estadoInmueble +
+				', id_tipoVivienda = ' +
+				this.id_tipoVivienda +
+				', id_imagen = ' +
+				this.id_imagen +
+				';';
+			Consulta.getConsulta(update + set + where);
+		} catch {
 			return 'ERROR El inmueble no ha podido ser actualizado';
 		}
 		return 'El inmueble ha sido actualizado satisfactoriamente';
 	}
 
 	deleteDatos(): string {
-		try{
-			let delet: string = 'DELETE FROM Inmueble '
-			let where: string = 'WHERE id_catastro ="' + this.id_catastro +'";';
+		try {
+			let delet: string = 'DELETE FROM Inmueble ';
+			let where: string = 'WHERE id_catastro ="' + this.id_catastro + '";';
 
 			let consulta: string = delet + where;
 			Consulta.getConsulta(consulta);
-		} catch{
+		} catch {
 			return 'ERROR Ha sido imposible eliminar este inmueble';
 		}
 		return 'El inmueble ha sido eliminado';

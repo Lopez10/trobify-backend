@@ -34,7 +34,7 @@ export class Inmueble {
 		throw new Error('Method not implemented.');
 	}
 
-	nodificarInmueble(): string {
+	modificarInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 }

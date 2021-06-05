@@ -9,7 +9,7 @@ export class Inmueble extends Componente implements Consultas {
 	private id_tipoInmueble: number;
 	private id_estadoInmueble: number;
 	private id_tipoVivienda: number;
-	private id_imagen: number | string;
+	private id_imagen: number;
 
 	constructor(
 		id_catastro?: string,

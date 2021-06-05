@@ -68,5 +68,4 @@ export class VistaPorPropietario extends IntercambioInmueble {
 		let definitiva = await Consulta.getCatastroFromUsuario(Number(req.query.propietario));
 		return await this.getResult(definitiva);
 	}
-	//¿Cómo se cogen la información? Aquí es solo rellenarlo con lo que nos pasan.
 }

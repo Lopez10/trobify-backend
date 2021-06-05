@@ -100,7 +100,7 @@ export class Consulta extends BaseDeDatos {
 	}
 
 	public static async getCatastroFromUsuario(id: number): Promise<string[]> {
-		let select: string = 'SELECT id_catastro ';
+		let select: string = 'SELECT distinct id_catastro ';
 		let from: string = 'FROM Catalogo ';
 		let where: string = 'WHERE id_usuario = ' + id + ';';
 
@@ -112,16 +112,18 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
-	public static async getCatastroFromInmueble(): Promise<String[]>{
-		let select: string = 'SELECT id_catastro ';
-		let from: string = 'FROM Inmueble ';
-		
+	public static async getModalidad(id: string): Promise<number[]>{
+		let select: string = 'SELECT id_modalidad ';
+		let from: string = 'FROM Catalogo ';
+		let where: string = 'WHERE id_catastro = "' + id + '";';
+
 		try{
-			let consulta = await Consulta.getConsulta(select + from);
+			let consulta = await Consulta.getConsulta(select + from + where);
 			return consulta;
 		} catch {
-			return null;
+			return null; 
 		}
+
 	}
 
 	public static getStringify(consulta: string[] | number[], atributo: string): string[] {

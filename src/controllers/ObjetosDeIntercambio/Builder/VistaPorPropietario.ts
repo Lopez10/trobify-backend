@@ -1,7 +1,7 @@
 import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 
-export class ModalidadVentaEx extends IntercambioInmueble {
+export class VistaPorPropietario extends IntercambioInmueble {
 	protected objetoDeIntercambio: DatosInmueble;
 
 	protected constructor(id_catastro: string) {

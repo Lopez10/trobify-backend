@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
@@ -6,8 +7,9 @@ import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasInt
 import { DatosCatastro } from '../../BaseDeDatos/DatosCatastro';
 import { Imagen } from '../../BaseDeDatos/Imagen';
 import { Catalogo } from '../../BaseDeDatos/Catalogo';
+import { Consulta } from '../../BaseDeDatos/Consulta';
 
-export class FiltrosEx extends IntercambioInmueble {
+export class VistaListado extends IntercambioInmueble {
 	protected inmuebleCompartido: DatosInmueble[];
 
 	protected constructor(id_catastro: string) {
@@ -16,6 +18,33 @@ export class FiltrosEx extends IntercambioInmueble {
 
 	getInmuebleCompartido(): DatosInmueble[] {
 		return this.inmuebleCompartido;
+	}
+
+	public async getCatalog(req: Request): Promise<string[]> {
+		let tenemos: string[] = await Consulta.getCatastroIdToModProvTpoinm(
+			Number(req.query.opt),
+			Number(req.query.tpoInm),
+			Number(req.query.prov)
+		);
+
+		let compartimos: string[] = await Consulta.getCatastroToCaracteristicasIntrinsecas(
+			Number(req.query.nBan),
+			Number(req.query.nHab),
+			Number(req.query.clfEn)
+		);
+
+		if (tenemos == null || compartimos == null) return null;
+		tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+
+		compartimos = await Consulta.getCatastroToSuperficie(
+			Number(req.query.supMin),
+			Number(req.query.supMax)
+		);
+
+		if (compartimos == null) return null;
+		tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
+
+		return tenemos;
 	}
 
 	async getResult(lista: string[]) {
@@ -40,26 +69,33 @@ export class FiltrosEx extends IntercambioInmueble {
 				id_catastro: lista[i],
 				tipoInmueble: inmueble.getId_tipoInmueble(),
 				estadoInmueble: inmueble.getId_estadoInmueble(),
-				energia: await caractesiticas.getCertifEner(),
-				superficie: catastro.getSuperficie(),
 				descripcion: inmueble.getBreveDescipcion(),
+				tipoVivienda: inmueble.getId_tipoVivienda(),
+				imagen: await inmueble.getUrlToIdImagen(),
+
+				energia: await caractesiticas.getCertifEner(),
+				nHab: caractesiticas.getNHab(),
+				nBanos: caractesiticas.getNBano(),
+				nCocinas: caractesiticas.getNCocina(),
+
+				superficie: catastro.getSuperficie(),
 				direccion: catastro.getDireccionCompleta(),
 				provincia: catastro.getId_provincia(),
 				longitud: catastro.getLongitud(),
 				latitud: catastro.getLatitud(),
-				tipoVivienda: inmueble.getId_tipoVivienda(),
-				nHab: caractesiticas.getNHab(),
-				nBanos: caractesiticas.getNBano(),
-				nCocinas: caractesiticas.getNCocina(),
+
 				propietario: catalogo.getId_usuario(),
 				//publicado: catalogo.getPublicado(),
-
-				caracteristicas: await contiene.getCaracteristicas(),
-				imagen: await inmueble.getUrlToIdImagen(),
 				modalidad: catalogo.getModalidad(),
 				precio: catalogo.getPrecio(),
 				descuento: catalogo.getDescuento(),
+
+				caracteristicas: await contiene.getCaracteristicas(),
 			});
 		}
+	}
+
+	static getInmueblesSegunFiltros() {
+		throw new Error('Method not implemented.');
 	}
 }

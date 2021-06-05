@@ -2,22 +2,26 @@ export type DatosInmueble = {
 	id_catastro: string;
 	tipoInmueble: number;
 	estadoInmueble: number;
-	energia: number | string;
-	superficie: number;
 	descripcion: string;
+	tipoVivienda: number;
+	imagen: string[] | string;
+
+	energia: number | string;
+	nHab: number;
+	nBanos: number;
+	nCocinas: number;
+
+	superficie: number;
 	direccion: string;
 	provincia: number;
 	longitud: number;
 	latitud: number;
-	tipoVivienda: number;
-	nHab: number;
-	nBanos: number;
-	nCocinas: number;
+
 	propietario: number;
 	publicado?: boolean | boolean[];
 
 	caracteristicas: string[] | number[];
-	imagen: string[] | string;
+
 	modalidad: number[] | number;
 	precio: number[] | number;
 	descuento: number[] | number;

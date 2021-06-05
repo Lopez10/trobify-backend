@@ -18,8 +18,8 @@ export interface SedeCatastro {
 }
 
 export interface Consultas extends SedeCatastro {
-	insertDatos(): string;
-	updateDatos(): string;
-	deleteDatos(): string;
+	insertDatos(): Promise<string>;
+	updateDatos(): Promise<string>;
+	deleteDatos(): Promise<string>;
 	existeYaElDato(): Promise<boolean>;
 }

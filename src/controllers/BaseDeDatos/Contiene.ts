@@ -70,7 +70,7 @@ export class Contiene extends Componente implements Consultas {
 
 	async updateDatos(): Promise<string> {
 		try {
-			this.deleteDatos();
+			this.deleteDatos(this.id_catastro);
 			this.insertDatos();
 		} catch {
 			return 'ERROR los datos no se han actualizado en CONTIENE';
@@ -78,10 +78,10 @@ export class Contiene extends Componente implements Consultas {
 		return 'Los datos se han actualizado correctamente';
 	}
 
-	async deleteDatos(): Promise<string> {
+	async deleteDatos(id_catastro: string): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Contiene ';
-			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+			let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 			let consulta: string = delet + where;
 			await Consulta.getConsulta(consulta);

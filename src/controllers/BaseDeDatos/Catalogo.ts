@@ -121,7 +121,7 @@ export class Catalogo extends Componente implements Consultas {
 
 	async updateDatos(): Promise<string> {
 		try {
-			this.deleteDatos();
+			this.deleteDatos(this.id_catastro);
 			this.insertDatos();
 		} catch {
 			return 'ERROR el catalogo no ha podido actualizarse.';
@@ -129,10 +129,10 @@ export class Catalogo extends Componente implements Consultas {
 		return 'El catalogo ha sido actualizado.';
 	}
 
-	async deleteDatos(): Promise<string> {
+	async deleteDatos(id_catastro: string): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Catalogo ';
-			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+			let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 			let consulta = delet + where;
 			await Consulta.getConsulta(consulta);

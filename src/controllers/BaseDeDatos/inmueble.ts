@@ -17,7 +17,7 @@ export class Inmueble extends Componente implements Consultas {
 		id_tipoInmueble?: number,
 		id_estadoInmueble?: number,
 		id_tipoVivienda?: number,
-		id_imagen?: number 
+		id_imagen?: number
 	) {
 		super();
 		this.id_catastro = id_catastro;
@@ -141,10 +141,7 @@ export class Inmueble extends Componente implements Consultas {
 				', id_imagen = ' +
 				this.id_imagen +
 				';';
-			let where: string =
-				'WHERE id_catastro ="' +
-				this.id_catastro +
-				';';
+			let where: string = 'WHERE id_catastro ="' + this.id_catastro + ';';
 			await Consulta.getConsulta(update + set + where);
 		} catch {
 			return 'ERROR El inmueble no ha podido ser actualizado';
@@ -152,10 +149,10 @@ export class Inmueble extends Componente implements Consultas {
 		return 'El inmueble ha sido actualizado satisfactoriamente';
 	}
 
-	async deleteDatos(): Promise<string> {
+	async deleteDatos(id_catastro: string): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Inmueble ';
-			let where: string = 'WHERE id_catastro ="' + this.id_catastro + '";';
+			let where: string = 'WHERE id_catastro ="' + id_catastro + '";';
 
 			let consulta: string = delet + where;
 			await Consulta.getConsulta(consulta);

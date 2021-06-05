@@ -131,10 +131,10 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 		return 'Las características intrinsecas han sido actualizadas.';
 	}
 
-	async deleteDatos(): Promise<string> {
+	async deleteDatos(id_catastro: string): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM CaractIntrinsecas ';
-			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
+			let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 			let consulta: string = delet + where;
 			await Consulta.getConsulta(consulta);

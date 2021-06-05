@@ -94,7 +94,7 @@ export class Inmueble extends Componente implements Consultas {
 		return datos;
 	}
 
-	insertDatos(): string {
+	async insertDatos(): Promise<string> {
 		try {
 			let insert: string =
 				'INSERT INTO id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen ';
@@ -112,7 +112,7 @@ export class Inmueble extends Componente implements Consultas {
 				', ' +
 				this.id_imagen +
 				');';
-			Consulta.getConsulta(insert + values);
+			await Consulta.getConsulta(insert + values);
 		} catch {
 			return 'ERROR al insertar los datos de INMUEBLE';
 		}
@@ -120,7 +120,7 @@ export class Inmueble extends Componente implements Consultas {
 		return 'Los datos se han insertado correctamente en INMUEBLE';
 	}
 
-	updateDatos(): string {
+	async updateDatos(): Promise<string> {
 		try {
 			let update: string = 'UPDATE Inmueble ';
 			let set: string =
@@ -151,27 +151,27 @@ export class Inmueble extends Componente implements Consultas {
 				', id_imagen = ' +
 				this.id_imagen +
 				';';
-			Consulta.getConsulta(update + set + where);
+			await Consulta.getConsulta(update + set + where);
 		} catch {
 			return 'ERROR El inmueble no ha podido ser actualizado';
 		}
 		return 'El inmueble ha sido actualizado satisfactoriamente';
 	}
 
-	deleteDatos(): string {
+	async deleteDatos(): Promise<string> {
 		try {
 			let delet: string = 'DELETE FROM Inmueble ';
 			let where: string = 'WHERE id_catastro ="' + this.id_catastro + '";';
 
 			let consulta: string = delet + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'ERROR Ha sido imposible eliminar este inmueble';
 		}
 		return 'El inmueble ha sido eliminado';
 	}
 
-	setMediadot(mediator: MediadorInterface) {
+	setMediator(mediator: MediadorInterface) {
 		this.setMediador(mediator);
 	}
 

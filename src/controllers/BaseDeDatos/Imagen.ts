@@ -37,13 +37,13 @@ export class Imagen extends Componente implements Consultas {
 		return datos;
 	}
 
-	insertDatos(): string {
+	async insertDatos(): Promise<string> {
 		try {
 			for (let i = 0; i < this.id_imagen.length; i++) {
 				let insert: string = 'INSERT INTO id_imagen, id_catastro, valor ';
 				let values: string =
 					'VALUES (' + this.id_imagen[i] + ', "' + this.id_catastro + '", "' + this.url[i] + '");';
-				Consulta.getConsulta(insert + values);
+				await Consulta.getConsulta(insert + values);
 			}
 		} catch {
 			return 'ERROR al insertar los datos de IMAGEN';
@@ -52,7 +52,7 @@ export class Imagen extends Componente implements Consultas {
 		return 'Los datos se han insertado correctamente en IMAGEN';
 	}
 
-	updateDatos(): string {
+	async updateDatos(): Promise<string> {
 		try{
 			this.deleteDatos();
 			this.insertDatos();
@@ -62,20 +62,20 @@ export class Imagen extends Componente implements Consultas {
 		return 'Las imagenes han sido actualizadas satisfactoriamente';
 	}
 
-	deleteDatos(): string {
+	async deleteDatos(): Promise<string> {
 		try{
 			let delet: string = 'DELETE FROM Imagen ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
 			
 			let consulta: string = delet + where;
-			Consulta.getConsulta(consulta);
+			await Consulta.getConsulta(consulta);
 		} catch {
 			return 'Las imagenes no han podido elimnarse.';
 		}
 		return 'Las imagenes han sido eliminadas correctamente.';
 	}
 
-	setMediadot(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface){
 		this.setMediador(mediator);
 	};
 

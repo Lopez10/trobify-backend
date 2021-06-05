@@ -3,8 +3,9 @@ import { Catalogo } from '../BaseDeDatos/Catalogo';
 import { Contiene } from '../BaseDeDatos/Contiene';
 import { DatosCatastro } from '../BaseDeDatos/DatosCatastro';
 import { Imagen } from '../BaseDeDatos/Imagen';
+import { Inmueble } from '../BaseDeDatos/inmueble';
 
-export class Inmueble {
+export class IntercambioInmueble {
 	private contiene: Contiene;
 	private caracteristicas: CaracteristicasIntrinsecas;
 	private catastro: DatosCatastro;

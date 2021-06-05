@@ -171,11 +171,11 @@ export class Inmueble extends Componente implements Consultas {
 		return 'El inmueble ha sido eliminado';
 	}
 
-	setMediadot(mediator: MediadorInterface){
+	setMediadot(mediator: MediadorInterface) {
 		this.setMediador(mediator);
-	};
+	}
 
-	recibir(msg: string): string{
-		return ("Inmueble ha recibido:" + msg);
+	recibir(msg: string): string {
+		return 'Inmueble ha recibido:' + msg;
 	}
 }

@@ -56,11 +56,13 @@ export class BaseDeDatos {
 		return true;
 	}
 
-	public static async reiniciarDataBase() {
+	public static async reiniciarDataBase(): Promise<boolean> {
 		await BaseDeDatos.vaciarDataBase();
 
 		await BaseDeDatos.crearDataBase();
 
 		await BaseDeDatos.poblarDataBase();
+
+		return true;
 	}
 }

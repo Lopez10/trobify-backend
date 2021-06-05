@@ -1,5 +1,5 @@
-import { MediadorInterface } from '../../interface/Mediador.interface';
-import { Componente } from '../BaseDeDatos/Componente';
+import { MediadorInterface } from '../../../interface/Mediador.interface';
+import { Componente } from './Componente';
 
 export class Mediador implements MediadorInterface {
     private notificador: string;

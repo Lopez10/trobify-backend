@@ -1,8 +1,10 @@
 import { ConexionBD } from '../../ConexionBD';
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
+import { Componente } from './Mediador/Componente';
+import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class CaracteristicasIntrinsecas implements Consultas {
+export class CaracteristicasIntrinsecas extends Componente implements Consultas {
 	private id_catastro: string;
 	private nBano: number;
 	private nCocina: number;
@@ -16,6 +18,7 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		nHab?: number,
 		id_certifEner?: number
 	) {
+		super();
 		this.id_catastro = id_catastro;
 		this.nBano = nBano;
 		this.nCocina = nCocina;
@@ -97,5 +100,13 @@ export class CaracteristicasIntrinsecas implements Consultas {
 			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.'
 		}
 		return 'Las características intrinsecas se han eliminado correctamente.'
+	}
+
+	setMediadot(mediator: MediadorInterface){
+		this.setMediador(mediator);
+	};
+
+	recibir(msg: string): string{
+		return ("CaracteristicasIntrinsecas ha recibido:" + msg);
 	}
 }

@@ -1,12 +1,15 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
+import { Componente } from './Mediador/Componente';
+import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Imagen implements Consultas {
+export class Imagen extends Componente implements Consultas {
 	private id_imagen: number[];
 	private id_catastro: string;
 	private url: string[];
 
 	constructor(id_imagen?: number[], id_catastro?: string, url?: string[]) {
+		super();
 		this.id_imagen = id_imagen;
 		this.id_catastro = id_catastro;
 		this.url = url;
@@ -33,6 +36,7 @@ export class Imagen implements Consultas {
 
 		return datos;
 	}
+
 	insertDatos(): string {
 		try {
 			for (let i = 0; i < this.id_imagen.length; i++) {
@@ -47,6 +51,7 @@ export class Imagen implements Consultas {
 
 		return 'Los datos se han insertado correctamente en IMAGEN';
 	}
+
 	updateDatos(): string {
 		try{
 			this.deleteDatos();
@@ -56,6 +61,7 @@ export class Imagen implements Consultas {
 		}
 		return 'Las imagenes han sido actualizadas satisfactoriamente';
 	}
+
 	deleteDatos(): string {
 		try{
 			let delet: string = 'DELETE FROM Imagen ';
@@ -67,5 +73,13 @@ export class Imagen implements Consultas {
 			return 'Las imagenes no han podido elimnarse.';
 		}
 		return 'Las imagenes han sido eliminadas correctamente.';
+	}
+
+	setMediadot(mediator: MediadorInterface){
+		this.setMediador(mediator);
+	};
+
+	recibir(msg: string): string{
+		return ("Imagen ha recibido:" + msg);
 	}
 }

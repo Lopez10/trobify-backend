@@ -1,4 +1,4 @@
-import { MediadorInterface } from '../../interface/Mediador.interface';
+import { MediadorInterface } from '../../../interface/Mediador.interface';
 
 export class Componente implements MediadorInterface {
     notify(Tabla: Componente, notificador: string) {

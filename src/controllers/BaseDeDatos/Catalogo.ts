@@ -1,8 +1,9 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
-import { Componente } from './Componente';
+import { Componente } from './Mediador/Componente';
+import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Catalogo implements Consultas  {
+export class Catalogo extends Componente implements Consultas  {
 	private id_catastro: string;
 	private id_modalidad: number[];
 	private precio: number[];
@@ -20,6 +21,7 @@ export class Catalogo implements Consultas  {
 		id_usuario?: number,
 		publicado?: boolean[]
 	) {
+		super();
 		this.id_catastro = id_catastro;
 		this.id_modalidad = id_modalidad;
 		this.precio = precio;
@@ -53,6 +55,7 @@ export class Catalogo implements Consultas  {
 
 		return datos;
 	}
+
 	insertDatos(): string {
 		try {
 			for (let i = 0; i < this.id_modalidad.length; i++) {
@@ -84,6 +87,7 @@ export class Catalogo implements Consultas  {
 
 		return 'Los datos se han insertado correctamente en CATALOGO';
 	}
+
 	updateDatos(): string {
 		try {
 			this.deleteDatos();
@@ -93,6 +97,7 @@ export class Catalogo implements Consultas  {
 		}
 		return 'El catalogo ha sido actualizado.';
 	}
+
 	deleteDatos(): string {
 		try {
 			let delet: string = 'DELETE FROM Catalogo ';
@@ -104,5 +109,13 @@ export class Catalogo implements Consultas  {
 			return 'ERROR el catalogo no ha podido ser eliminado.';
 		}
 		return 'El catalogo ha sido eliminado.';
+	}
+
+	setMediadot(mediator: MediadorInterface){
+		this.setMediador(mediator);
+	};
+
+	recibir(msg: string): string{
+		return ("Catalogo ha recibido:" + msg);
 	}
 }

@@ -1,11 +1,14 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
+import { Componente } from './Mediador/Componente';
+import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Contiene implements Consultas {
+export class Contiene extends Componente implements Consultas {
 	private id_catastro: string;
 	private id_caractSecundaria: number[];
 
 	constructor(id_catastro?: string, id_caractSecundaria?: number[]) {
+		super();
 		this.id_catastro = id_catastro;
 		this.id_caractSecundaria = id_caractSecundaria;
 	}
@@ -67,5 +70,13 @@ export class Contiene implements Consultas {
 			return 'ERROR los datos no se han eliminado';
 		}
 		return 'Los datos se han eliminado correctamente en CONTIENE';
+	}
+
+	setMediadot(mediator: MediadorInterface){
+		this.setMediador(mediator);
+	};
+
+	recibir(msg: string): string{
+		return ("Contiene ha recibido:" + msg);
 	}
 }

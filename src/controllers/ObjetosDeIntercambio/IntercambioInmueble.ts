@@ -31,11 +31,11 @@ export class IntercambioInmueble {
 		throw new Error('Method not implemented.');
 	}
 
-	eliminarInmueble(): string {
+	deleteInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 
-	modificarInmueble(): string {
+	updateInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 }

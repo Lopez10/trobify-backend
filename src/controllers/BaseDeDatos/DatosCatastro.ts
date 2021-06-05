@@ -12,13 +12,13 @@ export class DatosCatastro implements Consultas {
 
 	private constructor() {}
 
-	async getDatos(): Promise<DatosCatastro> {
+	async getDatos(id_catastro: string): Promise<DatosCatastro> {
 		let catastro = new DatosCatastro();
 
 		let select: string =
 			'direccion, codPostal, localidad, d_provincia, superficie, latitud, longitud';
 		let from: string = 'datoscatastro';
-		let where: string = 'id_catastro LIKE "' + this.id_catastro + '";';
+		let where: string = 'id_catastro LIKE "' + id_catastro + '";';
 
 		let consulta = await Consulta.getConsulta(
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
@@ -40,13 +40,13 @@ export class DatosCatastro implements Consultas {
 		return catastro;
 	}
 
-	insertDatos(): string {
+	insertDatos(): Promise<string> {
 		throw new Error('Method not implemented.');
 	}
-	updateDatos(): string {
+	updateDatos(): Promise<string> {
 		throw new Error('Method not implemented.');
 	}
-	deleteDatos(): string {
+	deleteDatos(): Promise<string> {
 		throw new Error('Method not implemented.');
 	}
 	async existeYaElDato(): Promise<boolean> {

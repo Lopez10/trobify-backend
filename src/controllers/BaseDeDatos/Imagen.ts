@@ -53,20 +53,20 @@ export class Imagen extends Componente implements Consultas {
 	}
 
 	async updateDatos(): Promise<string> {
-		try{
+		try {
 			this.deleteDatos();
 			this.insertDatos();
-		} catch{
+		} catch {
 			return 'ERROR al actualizar las imagenes';
 		}
 		return 'Las imagenes han sido actualizadas satisfactoriamente';
 	}
 
 	async deleteDatos(): Promise<string> {
-		try{
+		try {
 			let delet: string = 'DELETE FROM Imagen ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
-			
+
 			let consulta: string = delet + where;
 			await Consulta.getConsulta(consulta);
 		} catch {
@@ -75,11 +75,11 @@ export class Imagen extends Componente implements Consultas {
 		return 'Las imagenes han sido eliminadas correctamente.';
 	}
 
-	setMediator(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface) {
 		this.setMediador(mediator);
-	};
+	}
 
-	recibir(msg: string): string{
-		return ("Imagen ha recibido:" + msg);
+	recibir(msg: string): string {
+		return 'Imagen ha recibido:' + msg;
 	}
 }

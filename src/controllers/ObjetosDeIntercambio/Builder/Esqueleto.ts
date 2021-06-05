@@ -21,8 +21,38 @@ export class Esqueleto {
 	setInmueble(id_catastro: string) {
 		this.inmueble.getDatos(id_catastro);
 	}
+	setContiene(id_catastro: string) {
+		this.contiene.getDatos(id_catastro);
+	}
+	setCaracterísticas(id_catastro: string) {
+		this.caracteristicas.getDatos(id_catastro);
+	}
+	setCatastro(id_catastro: string) {
+		this.catastro.getDatos(id_catastro);
+	}
+	setImagen(id_catastro: string) {
+		this.imagen.getDatos(id_catastro);
+	}
+	setCatalogo(id_catastro: string) {
+		this.catalogo.getDatos(id_catastro);
+	}
 
 	getInmueble(): Inmueble {
 		return this.inmueble;
+	}
+	getContiene(): Contiene {
+		return this.contiene;
+	}
+	getCaracteristicas(): CaracteristicasIntrinsecas {
+		return this.caracteristicas;
+	}
+	getCatastro(): DatosCatastro {
+		return this.catastro;
+	}
+	getImagen(): Imagen {
+		return this.imagen;
+	}
+	getCatalogo(): Catalogo {
+		return this.catalogo;
 	}
 }

@@ -3,7 +3,7 @@ import { Consulta } from './Consulta';
 import { Componente } from './Mediador/Componente';
 import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Catalogo extends Componente implements Consultas  {
+export class Catalogo extends Componente implements Consultas {
 	private id_catastro: string;
 	private id_modalidad: number[];
 	private precio: number[];
@@ -30,11 +30,42 @@ export class Catalogo extends Componente implements Consultas  {
 		this.id_usuario = id_usuario;
 		this.publicado = publicado;
 	}
+
+	setId_catastro(id_catastro: string) {}
+	setModalidad(id_modalidad: number[]) {}
+	setPrecio(precio: number[]) {}
+	setDescuento(descuento: number[]) {}
+	setId_usuario(id_usuario: number) {}
+	setPublicado(publicado: boolean[]) {}
+
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getModalidad(): number[] {
+		return this.id_modalidad;
+	}
+	getPrecio(): number[] {
+		return this.precio;
+	}
+	getDescuento(): number[] {
+		return this.descuento;
+	}
+	getId_usuario(): number {
+		return this.id_usuario;
+	}
+	getPublicado(): boolean[] {
+		return this.publicado;
+	}
+
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla('catalogo', 'id_catastro', this.id_catastro);
 	}
 
 	async getDatos(id_catastro: string): Promise<Catalogo> {
+		return Catalogo.getDatos(id_catastro);
+	}
+
+	static async getDatos(id_catastro: string): Promise<Catalogo> {
 		let datos = new Catalogo();
 
 		let select: string =
@@ -111,11 +142,11 @@ export class Catalogo extends Componente implements Consultas  {
 		return 'El catalogo ha sido eliminado.';
 	}
 
-	setMediator(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface) {
 		this.setMediador(mediator);
-	};
+	}
 
-	recibir(msg: string): string{
-		return ("Catalogo ha recibido:" + msg);
+	recibir(msg: string): string {
+		return 'Catalogo ha recibido:' + msg;
 	}
 }

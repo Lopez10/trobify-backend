@@ -1,4 +1,3 @@
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
 import { Catalogo } from '../../BaseDeDatos/Catalogo';
 import { Contiene } from '../../BaseDeDatos/Contiene';
@@ -7,8 +6,6 @@ import { Imagen } from '../../BaseDeDatos/Imagen';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
 
 export class Esqueleto {
-	protected inmuebleCompartido: DatosInmueble;
-
 	protected contiene: Contiene;
 	protected caracteristicas: CaracteristicasIntrinsecas;
 	protected catastro: DatosCatastro;
@@ -16,7 +13,14 @@ export class Esqueleto {
 	protected catalogo: Catalogo;
 	protected inmueble: Inmueble;
 
-	protected constructor() {}
+	protected constructor(id_catastro: string) {
+		this.setInmueble(id_catastro);
+		this.setContiene(id_catastro);
+		this.setCaracterísticas(id_catastro);
+		this.setCatastro(id_catastro);
+		this.setImagen(id_catastro);
+		this.setCatalogo(id_catastro);
+	}
 
 	setInmueble(id_catastro: string) {
 		this.inmueble.getDatos(id_catastro);

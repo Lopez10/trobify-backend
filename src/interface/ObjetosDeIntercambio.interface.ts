@@ -2,7 +2,7 @@ export type DatosInmueble = {
 	id_catastro: string;
 	tipoInmueble: number;
 	estadoInmueble: number;
-	energia: number;
+	energia: number | string;
 	superficie: number;
 	descripcion: string;
 	direccion: string;
@@ -14,7 +14,7 @@ export type DatosInmueble = {
 	nBanos: number;
 	nCocinas: number;
 	propietario: number;
-	publicado: boolean;
+	publicado?: boolean | boolean[];
 
 	caracteristicas: string[] | number[];
 	imagen: string[] | string;

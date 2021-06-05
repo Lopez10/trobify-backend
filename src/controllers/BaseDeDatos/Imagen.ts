@@ -15,6 +15,26 @@ export class Imagen extends Componente implements Consultas {
 		this.url = url;
 	}
 
+	setId_imagen(id: number[]) {
+		this.id_imagen = id;
+	}
+	setId_catastro(id: string) {
+		this.id_catastro = id;
+	}
+	setUrl(url: string[]) {
+		this.url = url;
+	}
+
+	getId_imagen(): number[] {
+		return this.id_imagen;
+	}
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getUrl(): string[] {
+		return this.url;
+	}
+
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla('imagen', 'id_catastro', this.id_catastro);
 	}

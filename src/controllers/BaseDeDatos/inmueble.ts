@@ -9,7 +9,7 @@ export class Inmueble extends Componente implements Consultas {
 	private id_tipoInmueble: number;
 	private id_estadoInmueble: number;
 	private id_tipoVivienda: number;
-	private id_imagen: number;
+	private id_imagen: number | string;
 
 	constructor(
 		id_catastro?: string,
@@ -17,7 +17,7 @@ export class Inmueble extends Componente implements Consultas {
 		id_tipoInmueble?: number,
 		id_estadoInmueble?: number,
 		id_tipoVivienda?: number,
-		id_imagen?: number
+		id_imagen?: number | string
 	) {
 		super();
 		this.id_catastro = id_catastro;
@@ -62,10 +62,14 @@ export class Inmueble extends Componente implements Consultas {
 	getId_tipoVivienda(): number {
 		return this.id_tipoVivienda;
 	}
-	getId_imagen(): number {
+	getId_imagen(): number | string {
 		return this.id_imagen;
 	}
-
+	async getUrlToIdImagen(): Promise<string> {
+		return await Consulta.getConsulta(
+			'SELECT valor FROM imagen WHERE id_imagen=' + this.getId_imagen()
+		);
+	}
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla(
 			'caractintrinsecas',

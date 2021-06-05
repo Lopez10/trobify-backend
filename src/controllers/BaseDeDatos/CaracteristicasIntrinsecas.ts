@@ -25,6 +25,44 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 		this.nHab = nHab;
 		this.id_certifEner = id_certifEner;
 	}
+
+	setId_catastro(id_catastro: string) {
+		this.id_catastro = id_catastro;
+	}
+	setNBano(nbano: number) {
+		this.nBano = this.nBano;
+	}
+	setNCocina(nCocina: number) {
+		this.nCocina = nCocina;
+	}
+	setNHab(nHab: number) {
+		this.nHab = nHab;
+	}
+	setId_certifener(id_certifEner: number) {
+		this.id_certifEner = id_certifEner;
+	}
+
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getNBano(): number {
+		return this.nBano;
+	}
+	getNCocina(): number {
+		return this.nCocina;
+	}
+	getNHab(): number {
+		return this.nHab;
+	}
+	getId_certifener(): number {
+		return this.id_certifEner;
+	}
+	async getCertifEner(): Promise<string> {
+		return await Consulta.getConsulta(
+			'SELECT cerifener FROM certificacionenergetica WHERE id_certifEner=' + this.id_certifEner
+		);
+	}
+
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla('catalogo', 'id_catastro', this.id_catastro);
 	}
@@ -49,7 +87,8 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 
 	async insertDatos(): Promise<string> {
 		try {
-			let insert: string = 'INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, nHab, id_certifEner) ';
+			let insert: string =
+				'INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, nHab, id_certifEner) ';
 			let values: string =
 				'VALUES (' +
 				this.id_catastro +
@@ -73,14 +112,15 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 	async updateDatos(): Promise<string> {
 		try {
 			let update: string = 'UPDATE CaractIntrinsecas ';
-			let set: string = 'SET nBano = ' +
-							   this.nBano +
-							   ', nCocina = ' +
-							   this.nCocina +
-							   ', id_certifEner = ' + 
-							   this.id_certifEner + 
-							   ', nHab = ' +
-							   this. nHab;
+			let set: string =
+				'SET nBano = ' +
+				this.nBano +
+				', nCocina = ' +
+				this.nCocina +
+				', id_certifEner = ' +
+				this.id_certifEner +
+				', nHab = ' +
+				this.nHab;
 			let where: string = ' WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta: string = update + set + where;
@@ -92,23 +132,23 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 	}
 
 	async deleteDatos(): Promise<string> {
-		try{
+		try {
 			let delet: string = 'DELETE FROM CaractIntrinsecas ';
 			let where: string = 'WHERE id_catastro = "' + this.id_catastro + '";';
 
 			let consulta: string = delet + where;
 			await Consulta.getConsulta(consulta);
 		} catch {
-			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.'
+			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.';
 		}
-		return 'Las características intrinsecas se han eliminado correctamente.'
+		return 'Las características intrinsecas se han eliminado correctamente.';
 	}
 
-	setMediator(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface) {
 		this.setMediador(mediator);
-	};
+	}
 
-	recibir(msg: string): string{
-		return ("CaracteristicasIntrinsecas ha recibido:" + msg);
+	recibir(msg: string): string {
+		return 'CaracteristicasIntrinsecas ha recibido:' + msg;
 	}
 }

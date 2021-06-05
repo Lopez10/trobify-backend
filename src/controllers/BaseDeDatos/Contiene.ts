@@ -13,6 +13,25 @@ export class Contiene extends Componente implements Consultas {
 		this.id_caractSecundaria = id_caractSecundaria;
 	}
 
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getId_Caracteristicas(): number[] {
+		return this.id_caractSecundaria;
+	}
+	async getCaracteristicas(): Promise<string[]> {
+		let caracteristicas: string[];
+		for (let i = 0; i < this.id_caractSecundaria.length; i++) {
+			caracteristicas.push(
+				await Consulta.getConsulta(
+					'SELECT caracteristica FROM caractsecurdarias WHERE id_caractSecundaria=' +
+						this.id_caractSecundaria[i]
+				)
+			);
+		}
+		return caracteristicas;
+	}
+
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla('contiene', 'id_catastro', this.id_catastro);
 	}
@@ -50,7 +69,7 @@ export class Contiene extends Componente implements Consultas {
 	}
 
 	async updateDatos(): Promise<string> {
-		try{
+		try {
 			this.deleteDatos();
 			this.insertDatos();
 		} catch {
@@ -72,11 +91,11 @@ export class Contiene extends Componente implements Consultas {
 		return 'Los datos se han eliminado correctamente en CONTIENE';
 	}
 
-	setMediator(mediator: MediadorInterface){
+	setMediator(mediator: MediadorInterface) {
 		this.setMediador(mediator);
-	};
+	}
 
-	recibir(msg: string): string{
-		return ("Contiene ha recibido:" + msg);
+	recibir(msg: string): string {
+		return 'Contiene ha recibido:' + msg;
 	}
 }

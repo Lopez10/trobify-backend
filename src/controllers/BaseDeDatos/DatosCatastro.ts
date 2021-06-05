@@ -13,6 +13,10 @@ export class DatosCatastro implements Consultas {
 	private constructor() {}
 
 	async getDatos(id_catastro: string): Promise<DatosCatastro> {
+		return DatosCatastro.getDatos(id_catastro);
+	}
+
+	static async getDatos(id_catastro: string): Promise<DatosCatastro> {
 		let catastro = new DatosCatastro();
 
 		let select: string =
@@ -29,7 +33,7 @@ export class DatosCatastro implements Consultas {
 			xLongitud: consulta[0][0].longitud,
 		};
 
-		catastro.id_catastro = this.id_catastro;
+		catastro.id_catastro = id_catastro;
 		catastro.direccion = consulta[0][0].direccion;
 		catastro.localidad = consulta[0][0].localidad;
 		catastro.codPostal = consulta[0][0].codPostal;
@@ -74,6 +78,34 @@ export class DatosCatastro implements Consultas {
 	setCoordenada(latitud: number, longitud: number) {
 		this.coordenada.xLongitud = longitud;
 		this.coordenada.yLatitud = latitud;
+	}
+
+	getId_catastro(): string {
+		return this.id_catastro;
+	}
+	getDireccion(): string {
+		return this.direccion;
+	}
+	getLocalidad(): string {
+		return this.localidad;
+	}
+	getCodPostal(): number {
+		return this.codPostal;
+	}
+	getDireccionCompleta(): string {
+		return this.getDireccion() + ' (' + this.getCodPostal() + ' ' + this.getLocalidad() + ')';
+	}
+	getId_provincia(): number {
+		return this.id_provincia;
+	}
+	getSuperficie(): number {
+		return this.superficie;
+	}
+	getLatitud(): number {
+		return this.coordenada.yLatitud;
+	}
+	getLongitud(): number {
+		return this.coordenada.xLongitud;
 	}
 
 	validarReferenciaCatastral(referenciaCatastral: string): boolean {

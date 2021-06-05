@@ -44,15 +44,80 @@ export class DatosCatastro implements Consultas {
 		return catastro;
 	}
 
-	insertDatos(): Promise<string> {
-		throw new Error('Method not implemented.');
+	async insertDatos(): Promise<string> {
+		try {
+			let insert: string =
+				'INSERT INTO DatosCatastro(id_catastro, direccion, codPostal, localidad, id_provincia, superficie, latitud, longitud) ';
+			let values: string =
+				'VALUES ("' +
+				this.id_catastro +
+				'", "' +
+				this.direccion +
+				'", "' +
+				this.codPostal +
+				'", "' +
+				this.localidad +
+				'", ' +
+				this.id_provincia +
+				', ' +
+				this.superficie +
+				', ' +
+				this.coordenada.yLatitud +
+				', ' +
+				this.coordenada.xLongitud +
+				');';
+			await Consulta.getConsulta(insert + values);
+		} catch {
+			return 'ERROR al insertar los datos';
+		}
+		return 'Los datos se han insertado correctamente';
 	}
-	updateDatos(): Promise<string> {
-		throw new Error('Method not implemented.');
+
+	async updateDatos(): Promise<string> {
+		try {
+			let update: string = 'UPDATE DatosCatastro ';
+			let set: string =
+				'SET id_catastro ="' +
+				this.id_catastro +
+				'", direccion ="' +
+				this.direccion +
+				'", codPostal = "' +
+				this.codPostal +
+				'", localidad = "' +
+				this.localidad +
+				'", id_provincia = ' +
+				this.id_provincia +
+				', superficie = ' +
+				this.superficie +
+				', latitud = ' +
+				this.coordenada.yLatitud
+				', superficie = ' +
+				this.coordenada.xLongitud +
+				';';
+			let where: string =
+				'WHERE id_catastro ="' +
+				this.id_catastro +
+				';';
+			await Consulta.getConsulta(update + set + where);
+		} catch {
+			return 'ERROR los datos no han podido ser actualizados';
+		}
+		return 'los datos han sido actualizados satisfactoriamente';
 	}
-	deleteDatos(): Promise<string> {
-		throw new Error('Method not implemented.');
+
+	async deleteDatos(): Promise<string> {
+		try {
+			let delet: string = 'DELETE FROM DatosCatastro ';
+			let where: string = 'WHERE id_catastro ="' + this.id_catastro + '";';
+
+			let consulta: string = delet + where;
+			await Consulta.getConsulta(consulta);
+		} catch {
+			return 'ERROR Ha sido imposible eliminar estos datos';
+		}
+		return 'Los datos han sido eliminados';
 	}
+
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla('datoscatastro', 'id_catastro', this.id_catastro);
 	}

@@ -17,7 +17,7 @@ export class Inmueble extends Componente implements Consultas {
 		id_tipoInmueble?: number,
 		id_estadoInmueble?: number,
 		id_tipoVivienda?: number,
-		id_imagen?: number | string
+		id_imagen?: number 
 	) {
 		super();
 		this.id_catastro = id_catastro;
@@ -101,7 +101,7 @@ export class Inmueble extends Componente implements Consultas {
 	async insertDatos(): Promise<string> {
 		try {
 			let insert: string =
-				'INSERT INTO id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen ';
+				'INSERT INTO Inmueble(id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen) ';
 			let values: string =
 				'VALUES ("' +
 				this.id_catastro +
@@ -144,16 +144,6 @@ export class Inmueble extends Componente implements Consultas {
 			let where: string =
 				'WHERE id_catastro ="' +
 				this.id_catastro +
-				'", breveDescripcion ="' +
-				this.breveDescripcion +
-				'", id_tipoInmueble = ' +
-				this.id_tipoInmueble +
-				', id_estadoInmueble = ' +
-				this.id_estadoInmueble +
-				', id_tipoVivienda = ' +
-				this.id_tipoVivienda +
-				', id_imagen = ' +
-				this.id_imagen +
 				';';
 			await Consulta.getConsulta(update + set + where);
 		} catch {

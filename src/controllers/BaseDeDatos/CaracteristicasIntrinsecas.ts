@@ -97,6 +97,5 @@ export class CaracteristicasIntrinsecas implements Consultas {
 			return 'ERROR las caracteríscticas intrinsecas no han podido eliminarse.'
 		}
 		return 'Las características intrinsecas se han eliminado correctamente.'
-		throw new Error('Method not implemented.');
 	}
 }

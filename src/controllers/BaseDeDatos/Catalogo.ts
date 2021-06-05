@@ -1,7 +1,8 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
+import { Componente } from './Componente';
 
-export class Catalogo implements Consultas {
+export class Catalogo implements Consultas  {
 	private id_catastro: string;
 	private id_modalidad: number[];
 	private precio: number[];

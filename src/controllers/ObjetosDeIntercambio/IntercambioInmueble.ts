@@ -72,15 +72,15 @@ export class IntercambioInmueble {
 		throw new Error('Method not implemented.');
 	}
 
-	postRegistrarNuevoInmueble(): string {
+	static postRegistrarNuevoInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 
-	deleteInmueble(): string {
+	static deleteInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 
-	updateInmueble(): string {
+	static updateInmueble(): string {
 		throw new Error('Method not implemented.');
 	}
 }

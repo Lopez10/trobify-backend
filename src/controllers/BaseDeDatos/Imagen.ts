@@ -1,6 +1,5 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
-import { MediadorInterface } from '../../interface/Mediador.interface';
 
 export class Imagen implements Consultas {
 	private id_imagen: number[];
@@ -51,10 +50,9 @@ export class Imagen implements Consultas {
 
 	async insertDatos(): Promise<string> {
 		try {
-			for (let i = 0; i < this.id_imagen.length; i++) {
-				let insert: string = 'INSERT INTO Imagen(id_imagen, id_catastro, valor) ';
-				let values: string =
-					'VALUES (' + this.id_imagen[i] + ', "' + this.id_catastro + '", "' + this.url[i] + '");';
+			for (let i = 0; i < this.url.length; i++) {
+				let insert: string = 'INSERT INTO Imagen(id_catastro, valor) ';
+				let values: string = 'VALUES ("' + this.id_catastro + '", "' + this.url[i] + '");';
 				await Consulta.getConsulta(insert + values);
 			}
 		} catch {

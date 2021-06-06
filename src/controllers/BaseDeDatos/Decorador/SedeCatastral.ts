@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DatosCatastro } from '../DatosCatastro';
+import { coordenada } from '../../../interface/baseDatos.interface';
 import { DatosCatastroDecorado } from './DatosCatastroDecorado';
 
 export class SedeCatastral extends DatosCatastroDecorado {
@@ -12,7 +12,7 @@ export class SedeCatastral extends DatosCatastroDecorado {
 		this.wrappee.setId_catastro(id_catastro);
 
 		const ubicacionCatastro = await SedeCatastral.consultaCatastroUbicacion(id_catastro);
-		this.wrappee.setCoordenada(Number(ubicacionCatastro[0]), Number(ubicacionCatastro[1]));
+		this.wrappee.setCoordenada(Number(ubicacionCatastro[1]), Number(ubicacionCatastro[0]));
 		this.wrappee.setLocalidad(ubicacionCatastro[2]);
 
 		const otrosDatosCatastro = await SedeCatastral.consultaCatastroDatosInmueble(id_catastro);

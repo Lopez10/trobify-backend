@@ -84,24 +84,25 @@ export class Catalogo implements Consultas {
 	}
 
 	async insertDatos(): Promise<string> {
+		let insert: string =
+			'INSERT INTO Catalogo(id_catastro, id_modalidad, precio, descuento, f_insercion, id_usuario, publicado) ';
 		try {
 			for (let i = 0; i < this.id_modalidad.length; i++) {
 				let conversion: number = 0;
 				if (this.publicado[i]) conversion = 1;
-				let insert: string =
-					'INSERT INTO Catalogo(id_catastro, id_modalidad, precio, descuento, f_insercion,id_usuario, publicado) ';
+
 				let values: string =
 					'VALUES ("' +
 					this.id_catastro +
 					'", ' +
-					this.id_modalidad +
+					this.id_modalidad[i] +
 					', ' +
-					this.precio +
+					this.precio[i] +
 					', ' +
-					this.descuento +
-					', ' +
+					this.descuento[i] +
+					', "' +
 					this.f_insercion +
-					', ' +
+					'", ' +
 					this.id_usuario +
 					', ' +
 					conversion +

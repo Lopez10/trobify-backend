@@ -91,11 +91,11 @@ export class CaracteristicasIntrinsecas implements Consultas {
 	async insertDatos(): Promise<string> {
 		try {
 			let insert: string =
-				'INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, nHab, id_certifEner) ';
+				'INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, id_certifEner, nHab) ';
 			let values: string =
-				'VALUES (' +
+				'VALUES ("' +
 				this.id_catastro +
-				', ' +
+				'", ' +
 				this.nBano +
 				', ' +
 				this.nCocina +

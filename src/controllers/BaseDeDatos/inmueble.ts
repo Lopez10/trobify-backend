@@ -103,13 +103,13 @@ export class Inmueble implements Consultas {
 	async insertDatos(): Promise<string> {
 		try {
 			let insert: string =
-				'INSERT INTO Inmueble(id_catastro, breveDescripcion, id_tipoInmueble, id_tipoVivienda, id_imagen) ';
+				'INSERT INTO Inmueble(id_catastro, breveDescripcion, id_tipoInmueble, id_estadoInmueble, id_tipoVivienda, id_imagen) ';
 			let values: string =
 				'VALUES ("' +
 				this.id_catastro +
-				'", ' +
+				'", "' +
 				this.breveDescripcion +
-				', ' +
+				'", ' +
 				this.id_tipoInmueble +
 				', ' +
 				this.id_estadoInmueble +

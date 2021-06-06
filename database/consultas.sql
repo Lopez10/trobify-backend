@@ -19,27 +19,19 @@ SELECT * FROM RolUsuario;
 SELECT * FROM DatosCatastro;
 SELECT * FROM Provincias;
 
-SELECT distinct id_catastro 
-FROM contiene
-WHERE id_caractSecundaria IN (1,5,6,7);
-
-SELECT inm.id_catastro 
-FROM inmueble inm, datoscatastro dat, catalogo cat 
-WHERE inm.id_catastro = dat.id_catastro 
-	AND inm.id_catastro = cat.id_catastro 
-    AND cat.publicado = 1  
-    AND cat.id_modalidad = 1 
-    AND dat.id_provincia = 46 
-    AND inm.id_tipoInmueble = 3;
-    
-    SELECT id_catastro FROM caractintrinsecas WHERE 1=1 AND nHab = 3;
-    
-    
-    
-SELECT breveDescripcion, id_tipoInmueble, id_estadoInmueble, id_tipoVivienda, id_imagen FROM inmueble WHERE id_catastro = "5699408YJ2659H0025QQ";
-SELECT id_caractSecundaria FROM Contiene WHERE id_catastro = "5699408YJ2659H0025QQ";
-SELECT nBano, nCocina, nHab, id_certifEner FROM caractintrinsecas WHERE id_catastro = "5699408YJ2659H0025QQ";
-SELECT direccion, codPostal, localidad, id_provincia, superficie, latitud, longitud FROM datoscatastro WHERE id_catastro LIKE "5699408YJ2659H0025QQ";
 
 
-SELECT valor FROM imagen WHERE id_imagen In (SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "5139410YJ2753G0019EU");
+INSERT INTO Imagen(id_catastro, valor) VALUES ("0230809UH0403S0001LF", "data:image/png;base64");
+INSERT INTO Imagen(id_catastro, valor) VALUES ("0230809UH0403S0001LF", "iVBORw0KGgoAAAANSUhEUgAAApMA…ECIhJP0CAAAECBAgQIJAFHsktBKLkeVPsAAAAAElFTkSuQmCC");
+INSERT INTO Imagen(id_catastro, valor) VALUES ("0230809UH0403S0001LF", "data:image/png;base64");
+INSERT INTO Imagen(id_catastro, valor) VALUES ("0230809UH0403S0001LF", "iVBORw0KGgoAAAANSUhEUgAABrcA…AAQIECBAgQIAAgcoQ+H8uwQzqRwxg0QAAAABJRU5ErkJggg==");
+
+INSERT INTO Inmueble(id_catastro, breveDescripcion, id_tipoInmueble, id_estadoInmueble, id_tipoVivienda, id_imagen) VALUES ("0230809UH0403S0001LF", "Pues aquí estamos pegandonos ostias con esto", 3, 1, 1, 1);
+INSERT INTO DatosCatastro(id_catastro, direccion, codPostal, localidad, id_provincia, superficie, latitud, longitud) VALUES ("0230809UH0403S0001LF", "CL DOS DE MAYO 22", "14200", "PEÑARROYA-PUEBLONUEVO", 14, 239, -5.2861881176833, 38.3110188651098);
+
+INSERT INTO CaractIntrinsecas (id_catastro, nBano, nCocina, id_certifEner, nHab) VALUES ("0230809UH0403S0001LF", 0, 1, 1, 0);
+INSERT INTO Contiene(id_catastro, id_caractSecundaria) VALUES ("0230809UH0403S0001LF", 1);
+
+INSERT INTO Catalogo(id_catastro, id_modalidad, precio, descuento, f_insercion, id_usuario, publicado) VALUES ("0230809UH0403S0001LF", 1, 100000, 0, "2021-5-0", 1, 1);
+
+

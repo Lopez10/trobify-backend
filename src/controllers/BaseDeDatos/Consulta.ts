@@ -21,6 +21,19 @@ export class Consulta extends BaseDeDatos {
 		return contar;
 	}
 
+	public static async siguienteId(tabla: string, atributo: string): Promise<number> {
+		let select: string = 'MAX(' + atributo + ') as cuenta';
+
+		const consulta = await Consulta.getConsulta('SELECT ' + select + ' FROM ' + tabla);
+
+		var contar: number = 0;
+		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
+			contar = item.cuenta;
+		});
+
+		return contar + 1;
+	}
+
 	public static async existeElementoEnTabla(
 		tabla: string,
 		atributo: string,

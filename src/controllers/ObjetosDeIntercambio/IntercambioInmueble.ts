@@ -66,15 +66,15 @@ export class IntercambioInmueble {
 		throw new Error('Method not implemented.');
 	}
 
-	static getInmueblesPorMailDePropietario(req: Request, res: Response): Promise<Response> {
+	static async getInmueblesPorMailDePropietario(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 
-	static getInmueblesPorCatastroYModalidad(req: Request, res: Response): Promise<Response> {
+	static async getInmueblesPorCatastroYModalidad(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 
-	static postRegistrarNuevoInmueble(): string {
+	static async postRegistrarNuevoInmueble(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 

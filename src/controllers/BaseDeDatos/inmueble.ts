@@ -67,7 +67,9 @@ export class Inmueble extends Componente implements Consultas {
 	}
 	async getUrlToIdImagen(): Promise<string> {
 		return await Consulta.getConsulta(
-			'SELECT valor FROM imagen WHERE id_imagen=' + this.getId_imagen()
+			'SELECT valor FROM imagen WHERE id_imagen IN (SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' +
+				this.id_catastro +
+				'");'
 		);
 	}
 	async existeYaElDato(): Promise<boolean> {

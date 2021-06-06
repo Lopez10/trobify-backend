@@ -59,7 +59,9 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 	}
 	async getCertifEner(): Promise<string> {
 		return await Consulta.getConsulta(
-			'SELECT cerifener FROM certificacionenergetica WHERE id_certifEner=' + this.id_certifEner
+			'SELECT certifEner FROM certificacionenergetica WHERE id_certifEner = (SELECT id_certifEner FROM CaractIntrinsecas WHERE id_catastro = "' +
+				this.id_catastro +
+				'");'
 		);
 	}
 
@@ -74,7 +76,7 @@ export class CaracteristicasIntrinsecas extends Componente implements Consultas 
 		let from: string = 'FROM caractintrinsecas ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
-		let consulta = Consulta.getConsulta(select + from + where);
+		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
 		datos.nBano = consulta[0].nBanos;

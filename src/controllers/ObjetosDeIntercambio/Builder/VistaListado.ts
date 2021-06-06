@@ -12,7 +12,7 @@ import { Consulta } from '../../BaseDeDatos/Consulta';
 export class VistaListado extends IntercambioInmueble {
 	protected inmuebleCompartido: DatosInmueble[];
 
-	protected constructor(id_catastro: string) {
+	constructor(id_catastro?: string) {
 		super(id_catastro);
 	}
 
@@ -20,12 +20,14 @@ export class VistaListado extends IntercambioInmueble {
 		return this.inmuebleCompartido;
 	}
 
-	public async getCatalog(req: Request): Promise<string[]> {
+	public static async getCatalog(req: Request): Promise<string[]> {
+		const arr: string[] = [];
 		let tenemos: string[] = await Consulta.getCatastroIdToModProvTpoinm(
 			Number(req.query.opt),
 			Number(req.query.tpoInm),
 			Number(req.query.prov)
 		);
+
 		let compartimos: string[];
 
 		if (
@@ -39,7 +41,7 @@ export class VistaListado extends IntercambioInmueble {
 				Number(req.query.clfEn)
 			);
 
-			if (tenemos == null || compartimos == null) return null;
+			if (tenemos == null || compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
@@ -49,14 +51,14 @@ export class VistaListado extends IntercambioInmueble {
 				Number(req.query.supMax)
 			);
 
-			if (compartimos == null) return null;
+			if (compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
 		if (!(req.query.caract === undefined)) {
 			compartimos = await Consulta.getCatastroToContiene('(' + String(req.query.caract) + ')');
 
-			if (compartimos == null) return null;
+			if (compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
@@ -66,7 +68,7 @@ export class VistaListado extends IntercambioInmueble {
 				Number(req.query.preMax)
 			);
 
-			if (compartimos == null) return null;
+			if (compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
@@ -78,7 +80,7 @@ export class VistaListado extends IntercambioInmueble {
 				Number(req.query.mrgn)
 			);
 
-			if (compartimos == null) return null;
+			if (compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
@@ -93,14 +95,15 @@ export class VistaListado extends IntercambioInmueble {
 				Number(req.query.tpoViv)
 			);
 
-			if (compartimos == null) return null;
+			if (compartimos == null) return arr;
 			tenemos = Consulta.interseccionDeDosArray(tenemos, compartimos);
 		}
 
 		return tenemos;
 	}
 
-	async getResult(lista: string[]) {
+	static async getResult(lista: string[]): Promise<DatosInmueble[]> {
+		let aux: DatosInmueble[] = [];
 		for (let i = 0; i < lista.length; i++) {
 			let inmueble: Inmueble = new Inmueble();
 			inmueble = await inmueble.getDatos(lista[i]);
@@ -118,7 +121,7 @@ export class VistaListado extends IntercambioInmueble {
 
 			let catalogo: Catalogo = await Catalogo.getDatos(lista[i]);
 
-			this.inmuebleCompartido.push({
+			let inmuebleAux: DatosInmueble = {
 				id_catastro: lista[i],
 				tipoInmueble: inmueble.getId_tipoInmueble(),
 				estadoInmueble: inmueble.getId_estadoInmueble(),
@@ -144,11 +147,19 @@ export class VistaListado extends IntercambioInmueble {
 				descuento: catalogo.getDescuento(),
 
 				caracteristicas: await contiene.getCaracteristicas(),
-			});
+			};
+
+			aux.push(inmuebleAux);
 		}
+
+		return aux;
 	}
 
-	static getInmueblesSegunFiltros() {
-		throw new Error('Method not implemented.');
+	async getInmueblesSegunFiltros(req: Request, res: Response): Promise<Response> {
+		let catastros: string[] = await VistaListado.getCatalog(req);
+
+		const catalogo = await VistaListado.getResult(catastros);
+
+		return res.json(catalogo);
 	}
 }

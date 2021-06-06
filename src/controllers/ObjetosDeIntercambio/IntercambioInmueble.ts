@@ -13,13 +13,15 @@ export class IntercambioInmueble {
 	protected catalogo: Catalogo;
 	protected inmueble: Inmueble;
 
-	protected constructor(id_catastro: string) {
-		this.setInmueble(id_catastro);
-		this.setContiene(id_catastro);
-		this.setCaracterísticas(id_catastro);
-		this.setCatastro(id_catastro);
-		this.setImagen(id_catastro);
-		this.setCatalogo(id_catastro);
+	protected constructor(id_catastro?: string) {
+		if (id_catastro !== undefined) {
+			this.setInmueble(id_catastro);
+			this.setContiene(id_catastro);
+			this.setCaracterísticas(id_catastro);
+			this.setCatastro(id_catastro);
+			this.setImagen(id_catastro);
+			this.setCatalogo(id_catastro);
+		}
 	}
 
 	setInmueble(id_catastro: string) {
@@ -60,15 +62,15 @@ export class IntercambioInmueble {
 		return this.catalogo;
 	}
 
-	static getInmueblesSegunFiltros() {
+	static async getInmueblesSegunFiltros(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 
-	static getInmueblesPorMailDePropietario() {
+	static getInmueblesPorMailDePropietario(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 
-	static getInmueblesPorCatastroYModalidad() {
+	static getInmueblesPorCatastroYModalidad(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 

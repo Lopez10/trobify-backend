@@ -20,13 +20,18 @@ export class Contiene extends Componente implements Consultas {
 		return this.id_caractSecundaria;
 	}
 	async getCaracteristicas(): Promise<string[]> {
-		let caracteristicas: string[];
+		let caracteristicas: string[] = [];
+
 		for (let i = 0; i < this.id_caractSecundaria.length; i++) {
 			caracteristicas.push(
-				await Consulta.getConsulta(
-					'SELECT caracteristica FROM caractsecurdarias WHERE id_caractSecundaria=' +
-						this.id_caractSecundaria[i]
-				)
+				Consulta.getStringify(
+					await Consulta.getConsulta(
+						'SELECT caracteristica FROM CaractSecundarias WHERE id_caractSecundaria=' +
+							this.id_caractSecundaria[i] +
+							';'
+					),
+					'caracteristica'
+				).toString()
 			);
 		}
 		return caracteristicas;
@@ -46,9 +51,7 @@ export class Contiene extends Componente implements Consultas {
 		let consulta = await Consulta.getConsulta(select + from + where);
 
 		datos.id_catastro = id_catastro;
-
-		// habrá que extraer un array
-		datos.id_caractSecundaria = consulta[0].id_caractSecundaria;
+		datos.id_caractSecundaria = Consulta.getStringify(consulta, 'id_caractSecundaria');
 
 		return datos;
 	}

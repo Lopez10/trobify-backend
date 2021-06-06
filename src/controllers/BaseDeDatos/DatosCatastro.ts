@@ -26,8 +26,10 @@ export class DatosCatastro implements Consultas {
 		this.codPostal = codPostal;
 		this.id_provincia = id_provincia;
 		this.superficie = superficie;
-		this.coordenada.yLatitud = latitud;
-		this.coordenada.xLongitud = longitud;
+		this.coordenada = {
+			yLatitud: latitud,
+			xLongitud: longitud,
+		};
 	}
 
 	async getDatos(id_catastro: string): Promise<DatosCatastro> {
@@ -35,10 +37,8 @@ export class DatosCatastro implements Consultas {
 	}
 
 	static async getDatos(id_catastro: string): Promise<DatosCatastro> {
-		let catastro: DatosCatastro;
-
 		let select: string =
-			'direccion, codPostal, localidad, d_provincia, superficie, latitud, longitud';
+			'direccion, codPostal, localidad, id_provincia, superficie, latitud, longitud';
 		let from: string = 'datoscatastro';
 		let where: string = 'id_catastro LIKE "' + id_catastro + '";';
 
@@ -46,18 +46,16 @@ export class DatosCatastro implements Consultas {
 			'SELECT ' + select + ' FROM ' + from + ' WHERE ' + where
 		);
 
-		let coordenadas: coordenada = {
-			yLatitud: consulta[0][0].latitud,
-			xLongitud: consulta[0][0].longitud,
-		};
-
-		catastro.id_catastro = id_catastro;
-		catastro.direccion = consulta[0][0].direccion;
-		catastro.localidad = consulta[0][0].localidad;
-		catastro.codPostal = consulta[0][0].codPostal;
-		catastro.id_provincia = consulta[0][0].id_provincia;
-		catastro.superficie = consulta[0][0].superficie;
-		catastro.coordenada = coordenadas;
+		let catastro: DatosCatastro = new DatosCatastro(
+			id_catastro,
+			consulta[0][0].direccion,
+			consulta[0][0].localidad,
+			consulta[0][0].codPostal,
+			consulta[0][0].id_provincia,
+			consulta[0][0].superficie,
+			consulta[0][0].latitud,
+			consulta[0][0].longitud
+		);
 
 		return catastro;
 	}

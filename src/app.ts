@@ -3,6 +3,9 @@ import morgan from 'morgan';
 
 // Routes
 import IndexRoutes from './routes/index.routes';
+
+import ConsultasInmueblesRoutes from './routes/ConsultasInmuebles.routes';
+
 import CatalogRoutes from './routes/catalog.routes';
 import InmuebleRoutes from './routes/inmueble.routes';
 import UsuariosRoutes from './routes/usuarios.routes';
@@ -33,11 +36,17 @@ export class App {
 
 	routes() {
 		this.app.use(IndexRoutes);
-		this.app.use('/catalogo', CatalogRoutes);
+
+		this.app.use('/catalogo', ConsultasInmueblesRoutes);
+
+		//this.app.use('/catalogo', CatalogRoutes);
+
+		/*
 		this.app.use('/inmueble', InmuebleRoutes);
 		this.app.use('/usuarios', UsuariosRoutes);
 		this.app.use('/registro', RegistroRoutes);
 		this.app.use('/login', LoginRoutes);
+		*/
 	}
 
 	static() {

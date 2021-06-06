@@ -1,4 +1,6 @@
 import { Pool } from 'mysql2/promise';
+import Connection from 'mysql2/typings/mysql/lib/Connection';
+import { createPool } from 'mysql2/promise';
 import { ConexionBD } from '../../ConexionBD';
 
 export class BaseDeDatos {
@@ -7,9 +9,17 @@ export class BaseDeDatos {
 	protected constructor() {}
 
 	public static async getConexion(): Promise<Pool> {
-		if (BaseDeDatos.conn == null) {
-			BaseDeDatos.conn = await ConexionBD.getConexion();
+		if (BaseDeDatos.conn === undefined) {
+			BaseDeDatos.conn = await createPool({
+				host: 'localhost',
+				user: 'root',
+				password: 'rootroot',
+				database: 'Trobify',
+				port: 3306,
+				connectionLimit: 100,
+			});
 		}
+
 		return BaseDeDatos.conn;
 	}
 
@@ -18,12 +28,9 @@ export class BaseDeDatos {
 
 		let resultadoQuery: any;
 
-		if (mas) {
-			resultadoQuery = await BaseDeDatos.conn.query(consulta, mas);
-		} else {
-			resultadoQuery = await BaseDeDatos.conn.query(consulta);
-		}
-		return resultadoQuery[0];
+		resultadoQuery = (await BaseDeDatos.getConexion()).query(consulta);
+
+		return resultadoQuery;
 	}
 
 	public static async vaciarDataBase(): Promise<boolean> {

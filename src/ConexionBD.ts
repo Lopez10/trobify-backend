@@ -1,11 +1,11 @@
-import { createPool, Pool } from 'mysql2/promise';
+import { createPool } from 'mysql2/promise';
 
 export class ConexionBD {
-	private static conexion: Pool;
+	private static conexion: any;
 	private constructor() {}
 
-	public static async getConexion(): Promise<Pool> {
-		if (ConexionBD.conexion == null) {
+	public static async getConexion(): Promise<any> {
+		if (ConexionBD.conexion === undefined) {
 			ConexionBD.conexion = await createPool({
 				host: 'localhost',
 				user: 'root',

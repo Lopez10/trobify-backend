@@ -60,13 +60,16 @@ export class Consulta extends BaseDeDatos {
 		let select: string = 'SELECT id_catastro ';
 		let from: string = 'FROM caractintrinsecas ';
 		let where: string = 'WHERE 1=1';
-		if (nBano !== undefined) where += ' AND nBano = ' + nBano;
-		if (nHab !== undefined) where += ' AND nHab = ' + nHab;
-		if (id_certifener !== undefined) where += ' AND id_certifener = ' + id_certifener;
+		if (!isNaN(nBano)) where += ' AND nBano = ' + nBano;
+		if (!isNaN(nHab)) where += ' AND nHab = ' + nHab;
+		if (!isNaN(id_certifener)) where += ' AND id_certifener = ' + id_certifener;
 		where += ';';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -81,13 +84,16 @@ export class Consulta extends BaseDeDatos {
 		let select: string = 'SELECT id_catastro ';
 		let from: string = 'FROM inmueble ';
 		let where: string = 'WHERE 1=1';
-		if (tpoInm !== undefined) where += ' AND id_tipoInmueble = ' + tpoInm;
-		if (stoInm !== undefined) where += ' AND id_tipoInmueble = ' + stoInm;
-		if (tpoViv !== undefined) where += ' AND id_tipoVivienda= ' + tpoViv;
+		if (!isNaN(tpoInm)) where += ' AND id_tipoInmueble = ' + tpoInm;
+		if (!isNaN(stoInm)) where += ' AND id_tipoInmueble = ' + stoInm;
+		if (!isNaN(tpoViv)) where += ' AND id_tipoVivienda= ' + tpoViv;
 		where += ';';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -100,7 +106,10 @@ export class Consulta extends BaseDeDatos {
 		let where: string = 'WHERE superficie BETWEEN ' + supMin + ' AND ' + supMax + ';';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -112,7 +121,10 @@ export class Consulta extends BaseDeDatos {
 		let from: string = 'FROM contiene ';
 		let where: string = 'WHERE id_caractSecundaria IN ' + contiene + ';';
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -144,7 +156,10 @@ export class Consulta extends BaseDeDatos {
 		let where: string = 'WHERE precio BETWEEN ' + min + ' AND ' + max + ';';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -157,7 +172,10 @@ export class Consulta extends BaseDeDatos {
 		let where: string = 'WHERE id_usuario = ' + id + ';';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
+			let consulta = Consulta.getStringify(
+				await Consulta.getConsulta(select + from + where),
+				'id_catastro'
+			);
 			return consulta;
 		} catch {
 			return null;
@@ -190,8 +208,8 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
-	public static getStringify(consulta: string[] | number[], atributo: string): string[] {
-		var resultado: string[] = [''];
+	public static getStringify(consulta: string[] | number[], atributo: string): any[] {
+		var resultado: any[] = [''];
 		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 			resultado.push(item[atributo]);
 		});
@@ -201,8 +219,7 @@ export class Consulta extends BaseDeDatos {
 	}
 
 	public static interseccionDeDosArray(lista: string[], lista2: string[]) {
-		let definitiva: string[];
-
+		let definitiva: string[] = [];
 		if (lista.length != 0 && lista2.length != 0) {
 			let k: number = 0;
 			for (let i = 0; i < lista.length; i++) {

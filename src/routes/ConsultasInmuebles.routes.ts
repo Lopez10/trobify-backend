@@ -1,19 +1,18 @@
 import { Router } from 'express';
-import { BaseDeDatos } from '../controllers/BaseDeDatos/BaseDeDatos';
-import { Construccion } from '../controllers/Catalogo/Construccion';
 import { VistaListado } from '../controllers/ObjetosDeIntercambio/Builder/VistaListado';
+import { VistaPorInmueble } from '../controllers/ObjetosDeIntercambio/Builder/VistaPorInmueble';
+import { VistaPorPropietario } from '../controllers/ObjetosDeIntercambio/Builder/VistaPorPropietario';
 
 const router = Router();
 
-let inmueblesFiltrados = new VistaListado();
+const inmueblesFiltrados1 = new VistaListado();
+const inmueblesFiltrados2 = new VistaPorPropietario();
+const inmueblesFiltrados3 = new VistaPorInmueble();
 
-//let construccionCatalogo = new Construccion();
-
-router.route('/').get(inmueblesFiltrados.getInmueblesSegunFiltros);
-//router.route('/:mailPropietario').get(construccionCatalogo.getInmueblesPropietario);
-
-//let prueba = new Inmueble('0230809UH0403S0001LF');
-//let prueba = BaseDeDatos.getConexion;
-//router.route('/').get(BaseDeDatos.reiniciarDataBase);
+router.route('/').get(inmueblesFiltrados1.getInmueblesSegunFiltros);
+router.route('/:mailPropietario').get(inmueblesFiltrados2.getInmueblesPorMailDePropietario);
+router
+	.route('/:id_catastro/:modalidadId')
+	.get(inmueblesFiltrados3.getInmueblesPorCatastroYModalidad);
 
 export default router;

@@ -38,19 +38,13 @@ export class Imagen implements Consultas {
 	}
 
 	async getDatos(id_catastro: string): Promise<Imagen> {
-		let datos = new Imagen();
-
 		let select: string = 'SELECT id_imagen, valor ';
 		let from: string = 'FROM imagen ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 		let consulta = await Consulta.getConsulta(select + from + where);
 
-		datos.id_catastro = id_catastro;
-
-		// habrá que extraer un array
-		datos.id_imagen = consulta[0].id_imagen;
-		datos.url = consulta[0].valor;
+		let datos = new Imagen(consulta[0][0].id_imagen, id_catastro, consulta[0][0].valor);
 
 		return datos;
 	}

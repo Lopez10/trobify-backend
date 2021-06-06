@@ -64,8 +64,6 @@ export class Catalogo implements Consultas {
 	}
 
 	static async getDatos(id_catastro: string): Promise<Catalogo> {
-		let datos = new Catalogo();
-
 		let select: string =
 			'SELECT id_modalidad, precio, descuento, f_insercion, id_usuario, publicado ';
 		let from: string = 'FROM catalogo ';
@@ -73,15 +71,15 @@ export class Catalogo implements Consultas {
 
 		let consulta = await Consulta.getConsulta(select + from + where);
 
-		datos.id_catastro = id_catastro;
-		datos.f_insercion = consulta[0].f_insercion;
-		datos.id_usuario = consulta[0].id_usuario;
-		// habrá que extraer un array
-		datos.id_modalidad = consulta[0].id_modalidad;
-		datos.precio = consulta[0].precio;
-		datos.descuento = consulta[0].descuento;
-		datos.publicado = consulta[0].publicado;
-
+		let datos = new Catalogo(
+			id_catastro,
+			consulta[0][0].id_modalidad,
+			consulta[0][0].precio,
+			consulta[0][0].descuento,
+			consulta[0][0].f_insercion,
+			consulta[0][0].id_usuario,
+			consulta[0][0].publicado
+		);
 		return datos;
 	}
 

@@ -38,6 +38,7 @@ export class App {
 		this.app.use(IndexRoutes);
 
 		this.app.use('/catalogo', ConsultasInmueblesRoutes);
+		this.app.use('/inmueble', ConsultasInmueblesRoutes);
 
 		//this.app.use('/catalogo', CatalogRoutes);
 

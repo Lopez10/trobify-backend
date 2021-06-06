@@ -64,11 +64,14 @@ export class Inmueble implements Consultas {
 		return this.id_imagen;
 	}
 	async getUrlToIdImagen(): Promise<string> {
-		return await Consulta.getConsulta(
-			'SELECT valor FROM imagen WHERE id_imagen IN (SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' +
-				this.id_catastro +
-				'");'
-		);
+		return Consulta.getStringify(
+			await Consulta.getConsulta(
+				'SELECT valor FROM imagen WHERE id_imagen IN (SELECT MIN(id_imagen) as minimo FROM Imagen WHERE id_catastro = "' +
+					this.id_catastro +
+					'");'
+			),
+			'valor'
+		).toString();
 	}
 	async existeYaElDato(): Promise<boolean> {
 		return await Consulta.existeElementoEnTabla(
@@ -79,8 +82,6 @@ export class Inmueble implements Consultas {
 	}
 
 	async getDatos(id_catastro: string): Promise<Inmueble> {
-		let datos = new Inmueble();
-
 		let select: string =
 			'SELECT breveDescripcion, id_tipoInmueble, id_estadoInmueble, id_tipoVivienda, id_imagen ';
 		let from: string = 'FROM inmueble ';
@@ -88,13 +89,14 @@ export class Inmueble implements Consultas {
 
 		let consulta = await Consulta.getConsulta(select + from + where);
 
-		datos.id_catastro = id_catastro;
-		datos.breveDescripcion = consulta[0].breveDescripcion;
-		datos.id_tipoInmueble = consulta[0].id_tipoInmueble;
-		datos.id_estadoInmueble = consulta[0].id_estadoInmueble;
-		datos.id_tipoVivienda = consulta[0].id_tipoVivienda;
-		datos.id_imagen = consulta[0].id_imagen;
-
+		let datos = new Inmueble(
+			id_catastro,
+			consulta[0][0].breveDescripcion,
+			consulta[0][0].id_tipoInmueble,
+			consulta[0][0].id_estadoInmueble,
+			consulta[0][0].id_tipoVivienda,
+			consulta[0][0].id_imagen
+		);
 		return datos;
 	}
 

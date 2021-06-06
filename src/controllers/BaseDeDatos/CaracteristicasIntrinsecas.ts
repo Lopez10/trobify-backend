@@ -56,11 +56,14 @@ export class CaracteristicasIntrinsecas implements Consultas {
 		return this.id_certifEner;
 	}
 	async getCertifEner(): Promise<string> {
-		return await Consulta.getConsulta(
-			'SELECT certifEner FROM certificacionenergetica WHERE id_certifEner = (SELECT id_certifEner FROM CaractIntrinsecas WHERE id_catastro = "' +
-				this.id_catastro +
-				'");'
-		);
+		return Consulta.getStringify(
+			await Consulta.getConsulta(
+				'SELECT certifEner FROM certificacionenergetica WHERE id_certifEner = (SELECT id_certifEner FROM CaractIntrinsecas WHERE id_catastro = "' +
+					this.id_catastro +
+					'");'
+			),
+			'certifEner'
+		).toString();
 	}
 
 	async existeYaElDato(): Promise<boolean> {
@@ -68,19 +71,19 @@ export class CaracteristicasIntrinsecas implements Consultas {
 	}
 
 	async getDatos(id_catastro: string): Promise<CaracteristicasIntrinsecas> {
-		let datos = new CaracteristicasIntrinsecas();
-
 		let select: string = 'SELECT nBano, nCocina, nHab, id_certifEner ';
 		let from: string = 'FROM caractintrinsecas ';
 		let where: string = 'WHERE id_catastro = "' + id_catastro + '";';
 
 		let consulta = await Consulta.getConsulta(select + from + where);
 
-		datos.id_catastro = id_catastro;
-		datos.nBano = consulta[0].nBanos;
-		datos.nCocina = consulta[0].nCocina;
-		datos.nHab = consulta[0].nHab;
-		datos.id_certifEner = consulta[0].id_certifEner;
+		let datos = new CaracteristicasIntrinsecas(
+			id_catastro,
+			consulta[0][0].nBanos,
+			consulta[0][0].nCocina,
+			consulta[0][0].nHab,
+			consulta[0][0].id_certifEner
+		);
 
 		return datos;
 	}

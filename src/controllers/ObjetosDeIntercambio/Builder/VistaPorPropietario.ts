@@ -1,7 +1,7 @@
 import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
 import { Consulta } from '../../BaseDeDatos/Consulta';
 import { IntercambioInmueble } from '../IntercambioInmueble';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
 import { Catalogo } from '../../BaseDeDatos/Catalogo';
@@ -12,11 +12,15 @@ import { Imagen } from '../../BaseDeDatos/Imagen';
 export class VistaPorPropietario extends IntercambioInmueble {
 	protected objetoDeIntercambio: DatosInmueble[];
 
-	protected constructor(id_catastro: string) {
+	constructor(id_catastro?: string) {
 		super(id_catastro);
 	}
 
-	async getResult(lista: string[]) {
+	static async getResult(lista: string[]): Promise<DatosInmueble[]> {
+		console.log(lista);
+
+		let aux: DatosInmueble[] = [];
+
 		for (let i = 0; i < lista.length; i++) {
 			let inmueble: Inmueble = new Inmueble();
 			inmueble = await inmueble.getDatos(lista[i]);
@@ -34,7 +38,7 @@ export class VistaPorPropietario extends IntercambioInmueble {
 
 			let catalogo: Catalogo = await Catalogo.getDatos(lista[i]);
 
-			this.objetoDeIntercambio.push({
+			let inmuebleAux: DatosInmueble = {
 				id_catastro: lista[i],
 				tipoInmueble: inmueble.getId_tipoInmueble(),
 				estadoInmueble: inmueble.getId_estadoInmueble(),
@@ -60,12 +64,23 @@ export class VistaPorPropietario extends IntercambioInmueble {
 				descuento: catalogo.getDescuento(),
 
 				caracteristicas: await contiene.getCaracteristicas(),
-			});
+			};
+
+			aux.push(inmuebleAux);
 		}
+		return aux;
 	}
 
-	async getInmueblesPorMailDePropietario(req: Request) {
-		let definitiva = await Consulta.getCatastroFromUsuario(Number(req.query.propietario));
-		return await this.getResult(definitiva);
+	async getInmueblesPorMailDePropietario(req: Request, res: Response): Promise<Response> {
+		let id_usuario: number = Number(
+			await Consulta.getUsuarioFromMail(String(req.params.mailPropietario))
+		);
+		if (id_usuario == 0) return res.json([]);
+
+		let definitiva: string[] = await Consulta.getCatastroFromUsuario(id_usuario);
+
+		const catastros: DatosInmueble[] = await VistaPorPropietario.getResult(definitiva);
+
+		return res.json(catastros);
 	}
 }

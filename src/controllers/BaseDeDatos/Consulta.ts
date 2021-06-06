@@ -195,20 +195,19 @@ export class Consulta extends BaseDeDatos {
 		}
 	}
 
-	public static async getUsuarioFromMail(mail: string): Promise<string> {
+	public static async getUsuarioFromMail(mail: string): Promise<number> {
 		let select: string = 'SELECT id_usuario ';
 		let from: string = 'FROM Usuario ';
 		let where: string = 'WHERE mail = "' + mail + '";';
 
 		try {
-			let consulta = await Consulta.getConsulta(select + from + where);
-			return consulta;
+			return Consulta.getStringify(await Consulta.getConsulta(select + from + where), 'id_usuario');
 		} catch {
 			return null;
 		}
 	}
 
-	public static getStringify(consulta: string[] | number[], atributo: string): any[] {
+	public static getStringify(consulta: string[] | number[], atributo: string): any[] | any {
 		var resultado: any[] = [''];
 		JSON.parse(JSON.stringify(consulta[0])).forEach((item) => {
 			resultado.push(item[atributo]);

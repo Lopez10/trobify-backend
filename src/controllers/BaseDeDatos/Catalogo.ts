@@ -1,9 +1,8 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
-import { Componente } from './Mediador/Componente';
 import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Catalogo extends Componente implements Consultas {
+export class Catalogo implements Consultas {
 	private id_catastro: string;
 	private id_modalidad: number[];
 	private precio: number[];
@@ -21,7 +20,6 @@ export class Catalogo extends Componente implements Consultas {
 		id_usuario?: number,
 		publicado?: number[]
 	) {
-		super();
 		this.id_catastro = id_catastro;
 		this.id_modalidad = id_modalidad;
 		this.precio = precio;
@@ -140,13 +138,5 @@ export class Catalogo extends Componente implements Consultas {
 			return 'ERROR el catalogo no ha podido ser eliminado.';
 		}
 		return 'El catalogo ha sido eliminado.';
-	}
-
-	setMediator(mediator: MediadorInterface) {
-		this.setMediador(mediator);
-	}
-
-	recibir(msg: string): string {
-		return 'Catalogo ha recibido:' + msg;
 	}
 }

@@ -1,15 +1,13 @@
 import { Consultas } from '../../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
-import { Componente } from './Mediador/Componente';
 import { MediadorInterface } from '../../interface/Mediador.interface';
 
-export class Imagen extends Componente implements Consultas {
+export class Imagen implements Consultas {
 	private id_imagen: number[];
 	private id_catastro: string;
 	private url: string[];
 
 	constructor(id_imagen?: number[], id_catastro?: string, url?: string[]) {
-		super();
 		this.id_imagen = id_imagen;
 		this.id_catastro = id_catastro;
 		this.url = url;
@@ -93,13 +91,5 @@ export class Imagen extends Componente implements Consultas {
 			return 'Las imagenes no han podido elimnarse.';
 		}
 		return 'Las imagenes han sido eliminadas correctamente.';
-	}
-
-	setMediator(mediator: MediadorInterface) {
-		this.setMediador(mediator);
-	}
-
-	recibir(msg: string): string {
-		return 'Imagen ha recibido:' + msg;
 	}
 }

@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
 import { Contiene } from '../../BaseDeDatos/Contiene';
@@ -7,6 +7,9 @@ import { Inmueble } from '../../BaseDeDatos/inmueble';
 import { Catalogo } from '../../BaseDeDatos/Catalogo';
 import { DatosCatastro } from '../../BaseDeDatos/DatosCatastro';
 import { IntercambioInmueble } from '../IntercambioInmueble';
+import { RegistrarInmueble } from './RegistrarInmueble';
+import { SedeCatastral } from '../../BaseDeDatos/Decorador/SedeCatastral';
+import { Consulta } from '../../BaseDeDatos/Consulta';
 
 export class EditarInmueble extends IntercambioInmueble {
 	protected objetoDeIntercambio: DatosInmueble;
@@ -15,65 +18,71 @@ export class EditarInmueble extends IntercambioInmueble {
 		super(id_catastro);
 	}
 
-	static numberFromString(lista: string[]) {
-		let pic2: number[];
-		for (let i = 0; i < lista.length; i++) {
-			pic2[i] = parseInt(lista[i]);
-		}
-		return pic2;
-	}
-
-	async updateInmueble(req: Request) {
-		let pic: string[] = String(req.query.imagen).split(',');
-		let url: string[] = String(req.query.url).split(',');
-		let caractSec: string[] = String(req.query.caracteristica).split(',');
-		let modal: string[] = String(req.query.modalidad).split(',');
-		let precio: string[] = String(req.query.precio).split(',');
-		let descuento: string[] = String(req.query.descuento).split(',');
-		let publicado: string[] = String(req.query.publicado).split(',');
+	async updateInmueble(req: Request, res: Response): Promise<Response> {
+		let urlImagen: string[] = String(req.body.imagen).split(',');
+		let caractSec: string[] = String(req.body.id_caractSecundaria).split(',');
+		let modalidad: string[] = String(req.body.id_modalidad).split(',');
+		let precio: string[] = String(req.body.precio).split(',');
+		let descuento: string[] = String(req.body.descuento).split(',');
+		let publicado: string[] = String(req.body.publicado).split(',');
 
 		const fecha: Date = new Date();
 		const hoy: string = '' + fecha.getFullYear() + '-' + fecha.getMonth() + '-' + fecha.getDay();
 
+		const nuevaIdImagen: number = Number(await Consulta.siguienteId('imagen', 'id_imagen'));
+
 		let casa: Inmueble = new Inmueble(
-			String(req.query.catastro),
-			String(req.query.descripcion),
-			Number(req.query.tipoInmueble),
-			Number(req.query.estadoInmueble),
-			Number(req.query.tipoVivienda),
-			Number(req.query.imagen)
+			String(req.body.id_catastro),
+			String(req.body.breveDescripcion),
+			Number(req.body.id_tipoInmueble),
+			Number(req.body.id_estadoInmueble),
+			Number(req.body.id_tipoVivienda),
+			nuevaIdImagen
 		);
-		let imagen = new Imagen(EditarInmueble.numberFromString(pic), String(req.query.catastro), url);
+
+		let imagen = new Imagen(
+			null,
+			//RegistrarInmueble.numberFromString(id_imagen),
+			String(req.body.id_catastro),
+			urlImagen
+		);
+
 		let contain = new Contiene(
-			String(req.query.catastro),
-			EditarInmueble.numberFromString(caractSec)
+			String(req.body.id_catastro),
+			RegistrarInmueble.numberFromString(caractSec)
 		);
+
 		let catalo = new Catalogo(
-			String(req.query.catastro),
-			EditarInmueble.numberFromString(modal),
-			EditarInmueble.numberFromString(precio),
-			EditarInmueble.numberFromString(descuento),
+			String(req.body.id_catastro),
+			RegistrarInmueble.numberFromString(modalidad),
+			RegistrarInmueble.numberFromString(precio),
+			RegistrarInmueble.numberFromString(descuento),
 			hoy,
-			Number(req.query.propietario),
-			EditarInmueble.numberFromString(publicado)
+			Number(req.body.id_usuario),
+			RegistrarInmueble.numberFromString(publicado)
 		);
+
 		let caractInt = new CaracteristicasIntrinsecas(
-			String(req.query.catastro),
-			Number(req.query.nBano),
-			Number(req.query.nCocina),
-			Number(req.query.nHab),
-			Number(req.query.id_certifEner)
+			String(req.body.id_catastro),
+			Number(req.body.nBano),
+			Number(req.body.nCocina),
+			Number(req.body.nHab),
+			Number(req.body.id_certifEner)
 		);
-		let datos = new DatosCatastro(
-			String(req.query.catastro),
-			String(req.query.direccion),
-			String(req.query.localidad),
-			Number(req.query.codPostal),
-			Number(req.query.provincia),
-			Number(req.query.superficie),
-			Number(req.query.latitud),
-			Number(req.query.longitud)
+
+		let datos: DatosCatastro = new DatosCatastro(
+			String(req.body.id_catastro),
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
 		);
+
+		let aux = new SedeCatastral(datos);
+		await aux.getDatos(datos.getId_catastro());
 
 		await imagen.updateDatos();
 		await casa.updateDatos();
@@ -81,5 +90,6 @@ export class EditarInmueble extends IntercambioInmueble {
 		await caractInt.updateDatos();
 		await contain.updateDatos();
 		await catalo.updateDatos();
+		return res.json('Los datos se han actualizado correctamente');
 	}
 }

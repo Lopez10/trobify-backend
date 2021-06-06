@@ -17,17 +17,7 @@ export class RegistrarInmueble extends IntercambioInmueble {
 		super(id_catastro);
 	}
 
-	static numberFromString(lista: string[]) {
-		let stringToNumber: number[] = [];
-		for (let i = 0; i < lista.length; i++) {
-			stringToNumber.push(parseInt(lista[i]));
-		}
-		return stringToNumber;
-	}
-
 	async postRegistrarNuevoInmueble(req: Request, res: Response): Promise<Response> {
-		console.log(req.body);
-		//let id_imagen: string[] = String(req.body.imagen).split(',');
 		let urlImagen: string[] = String(req.body.imagen).split(',');
 		let caractSec: string[] = String(req.body.id_caractSecundaria).split(',');
 		let modalidad: string[] = String(req.body.id_modalidad).split(',');
@@ -101,6 +91,6 @@ export class RegistrarInmueble extends IntercambioInmueble {
 		await contain.insertDatos();
 		await catalo.insertDatos();
 
-		return res.json('Los datos se han actualizado correctamente');
+		return res.json('Los datos se han introducido correctamente');
 	}
 }

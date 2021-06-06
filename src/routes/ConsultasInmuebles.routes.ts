@@ -22,7 +22,7 @@ const crud1: RegistrarInmueble = new RegistrarInmueble();
 const crud2: EditarInmueble = new EditarInmueble();
 const crud3: EliminarInmueble = new EliminarInmueble();
 router.route('/').post(crud1.postRegistrarNuevoInmueble);
-router.route('/').delete(EliminarInmueble.deleteInmueble);
 router.route('/').put(crud2.updateInmueble);
+router.route('/').delete(crud3.deleteInmueble);
 
 export default router;

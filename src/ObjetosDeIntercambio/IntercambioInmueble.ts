@@ -24,6 +24,14 @@ export class IntercambioInmueble {
 		}
 	}
 
+	static numberFromString(lista: string[]) {
+		let stringToNumber: number[] = [];
+		for (let i = 0; i < lista.length; i++) {
+			stringToNumber.push(parseInt(lista[i]));
+		}
+		return stringToNumber;
+	}
+
 	setInmueble(id_catastro: string) {
 		this.inmueble.getDatos(id_catastro);
 	}
@@ -78,7 +86,7 @@ export class IntercambioInmueble {
 		throw new Error('Method not implemented.');
 	}
 
-	static deleteInmueble(): string {
+	static deleteInmueble(req: Request, res: Response): Promise<Response> {
 		throw new Error('Method not implemented.');
 	}
 

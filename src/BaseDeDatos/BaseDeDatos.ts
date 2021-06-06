@@ -1,7 +1,5 @@
 import { Pool } from 'mysql2/promise';
-import Connection from 'mysql2/typings/mysql/lib/Connection';
 import { createPool } from 'mysql2/promise';
-import { ConexionBD } from '../../ConexionBD';
 
 export class BaseDeDatos {
 	protected static conn: Pool;

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { coordenada } from '../../../interface/baseDatos.interface';
 import { DatosCatastroDecorado } from './DatosCatastroDecorado';
 
 export class SedeCatastral extends DatosCatastroDecorado {

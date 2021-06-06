@@ -1,4 +1,4 @@
-import { coordenada, SedeCatastro } from '../../../interface/baseDatos.interface';
+import { coordenada, SedeCatastro } from '../../interface/baseDatos.interface';
 import { DatosCatastro } from '../DatosCatastro';
 
 export class DatosCatastroDecorado implements SedeCatastro {

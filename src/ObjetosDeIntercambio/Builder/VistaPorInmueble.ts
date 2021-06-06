@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
+import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
@@ -7,7 +7,6 @@ import { Catalogo } from '../../BaseDeDatos/Catalogo';
 import { Contiene } from '../../BaseDeDatos/Contiene';
 import { DatosCatastro } from '../../BaseDeDatos/DatosCatastro';
 import { Imagen } from '../../BaseDeDatos/Imagen';
-import { VistaPorPropietario } from './VistaPorPropietario';
 import { Consulta } from '../../BaseDeDatos/Consulta';
 
 export class VistaPorInmueble extends IntercambioInmueble {

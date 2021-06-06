@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
+import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Inmueble } from '../../BaseDeDatos/inmueble';
 import { Contiene } from '../../BaseDeDatos/Contiene';

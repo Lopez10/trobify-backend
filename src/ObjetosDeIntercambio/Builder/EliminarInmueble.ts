@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
+import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
 import { Contiene } from '../../BaseDeDatos/Contiene';
 import { Imagen } from '../../BaseDeDatos/Imagen';
@@ -14,9 +14,8 @@ export class EliminarInmueble extends IntercambioInmueble {
 	constructor(id_catastro?: string) {
 		super(id_catastro);
 	}
-	
-	async postRegistrarNuevoInmueble(req: Request) {
 
+	async postRegistrarNuevoInmueble(req: Request) {
 		let casa: Inmueble;
 		let imagen: Imagen;
 		let contain: Contiene;

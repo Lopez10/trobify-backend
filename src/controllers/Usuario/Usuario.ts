@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UsuariosInterface } from '../../interface/usuarios.interface';
-import { Consulta } from '../BaseDeDatos/Consulta';
+import { Consulta } from '../../BaseDeDatos/Consulta';
 
 export class Usuario {
 	/*

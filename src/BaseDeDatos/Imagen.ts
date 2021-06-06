@@ -1,4 +1,4 @@
-import { Consultas } from '../../interface/baseDatos.interface';
+import { Consultas } from '../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
 
 export class Imagen implements Consultas {

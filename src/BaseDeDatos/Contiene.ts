@@ -1,6 +1,5 @@
-import { Consultas } from '../../interface/baseDatos.interface';
+import { Consultas } from '../interface/baseDatos.interface';
 import { Consulta } from './Consulta';
-import { MediadorInterface } from '../../interface/Mediador.interface';
 
 export class Contiene implements Consultas {
 	private id_catastro: string;

@@ -1,4 +1,4 @@
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
+import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { Consulta } from '../../BaseDeDatos/Consulta';
 import { IntercambioInmueble } from '../IntercambioInmueble';
 import { Request, Response } from 'express';

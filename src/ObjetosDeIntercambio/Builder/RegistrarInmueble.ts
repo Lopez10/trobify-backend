@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { DatosInmueble } from '../../../interface/ObjetosDeIntercambio.interface';
+import { DatosInmueble } from '../../interface/ObjetosDeIntercambio.interface';
 import { CaracteristicasIntrinsecas } from '../../BaseDeDatos/CaracteristicasIntrinsecas';
 import { Contiene } from '../../BaseDeDatos/Contiene';
 import { Imagen } from '../../BaseDeDatos/Imagen';

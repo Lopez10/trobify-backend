@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { EditarInmueble } from '../controllers/ObjetosDeIntercambio/Builder/EditarInmueble';
-import { EliminarInmueble } from '../controllers/ObjetosDeIntercambio/Builder/EliminarInmueble';
-import { RegistrarInmueble } from '../controllers/ObjetosDeIntercambio/Builder/RegistrarInmueble';
-import { VistaListado } from '../controllers/ObjetosDeIntercambio/Builder/VistaListado';
-import { VistaPorInmueble } from '../controllers/ObjetosDeIntercambio/Builder/VistaPorInmueble';
-import { VistaPorPropietario } from '../controllers/ObjetosDeIntercambio/Builder/VistaPorPropietario';
+import { EditarInmueble } from '../ObjetosDeIntercambio/Builder/EditarInmueble';
+import { EliminarInmueble } from '../ObjetosDeIntercambio/Builder/EliminarInmueble';
+import { RegistrarInmueble } from '../ObjetosDeIntercambio/Builder/RegistrarInmueble';
+import { VistaListado } from '../ObjetosDeIntercambio/Builder/VistaListado';
+import { VistaPorInmueble } from '../ObjetosDeIntercambio/Builder/VistaPorInmueble';
+import { VistaPorPropietario } from '../ObjetosDeIntercambio/Builder/VistaPorPropietario';
 
 const router = Router();
 

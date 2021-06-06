@@ -19,8 +19,10 @@ router
 	.get(inmueblesFiltrados3.getInmueblesPorCatastroYModalidad);
 
 const crud1: RegistrarInmueble = new RegistrarInmueble();
+const crud2: EditarInmueble = new EditarInmueble();
+const crud3: EliminarInmueble = new EliminarInmueble();
 router.route('/').post(crud1.postRegistrarNuevoInmueble);
 router.route('/').delete(EliminarInmueble.deleteInmueble);
-router.route('/').put(EditarInmueble.updateInmueble);
+router.route('/').put(crud2.updateInmueble);
 
 export default router;

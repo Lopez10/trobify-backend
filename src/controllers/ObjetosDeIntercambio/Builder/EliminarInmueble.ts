@@ -11,6 +11,10 @@ import { IntercambioInmueble } from '../IntercambioInmueble';
 export class EliminarInmueble extends IntercambioInmueble {
 	protected objetoDeIntercambio: DatosInmueble;
 
+	constructor(id_catastro?: string) {
+		super(id_catastro);
+	}
+	
 	async postRegistrarNuevoInmueble(req: Request) {
 
 		let casa: Inmueble;

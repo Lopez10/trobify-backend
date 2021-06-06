@@ -38,12 +38,9 @@ export class App {
 		this.app.use('/catalogo', ConsultasInmueblesRoutes);
 		this.app.use('/inmueble', ConsultasInmueblesRoutes);
 
-		/*
-
 		this.app.use('/usuarios', UsuariosRoutes);
 		this.app.use('/registro', RegistroRoutes);
 		this.app.use('/login', LoginRoutes);
-		*/
 	}
 
 	static() {

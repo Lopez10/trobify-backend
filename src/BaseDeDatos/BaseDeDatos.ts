@@ -21,7 +21,7 @@ export class BaseDeDatos {
 		return BaseDeDatos.conn;
 	}
 
-	public static async getConsulta(consulta: string, mas?: string[]): Promise<any> {
+	public static async getConsulta(consulta: string): Promise<any> {
 		console.log(consulta);
 
 		let resultadoQuery: any;

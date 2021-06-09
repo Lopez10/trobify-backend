@@ -3,13 +3,6 @@ import { UsuariosInterface } from '../../interface/usuarios.interface';
 import { Consulta } from '../../BaseDeDatos/Consulta';
 
 export class Usuario {
-	/*
-	static BD: ConexionBD;
-	constructor() {
-		Usuario.BD = ConexionBD.getInstance();
-	}
-	*/
-
 	async getUsuariosLog(req: Request, res: Response) {
 		const mail: string = req.body.mail;
 		const contrasena: string = req.body.password;

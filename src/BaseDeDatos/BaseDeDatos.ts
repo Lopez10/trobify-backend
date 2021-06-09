@@ -22,8 +22,6 @@ export class BaseDeDatos {
 	}
 
 	public static async getConsulta(consulta: string): Promise<any> {
-		console.log(consulta);
-
 		let resultadoQuery: any;
 
 		resultadoQuery = (await BaseDeDatos.getConexion()).query(consulta);
@@ -43,7 +41,6 @@ export class BaseDeDatos {
 	public static async crearDataBase(): Promise<boolean> {
 		var fs = require('fs');
 		var source = fs.readFileSync('../../database/Trobify.sql', 'utf8');
-		console.log;
 		await BaseDeDatos.conn.query(source, function (err) {
 			if (err) return false;
 		});
@@ -53,8 +50,6 @@ export class BaseDeDatos {
 	public static async poblarDataBase(): Promise<boolean> {
 		var fs = require('fs');
 		var source = await fs.readFileSync('../../database/PoblarBD.sql', 'utf8');
-
-		console.log(source);
 		await BaseDeDatos.conn.query(source, function (err) {
 			if (err) return false;
 		});

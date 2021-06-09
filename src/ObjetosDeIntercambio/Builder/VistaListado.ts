@@ -141,7 +141,6 @@ export class VistaListado extends IntercambioInmueble {
 				latitud: catastro.getLatitud(),
 
 				propietario: catalogo.getId_usuario(),
-				//publicado: catalogo.getPublicado(),
 				modalidad: catalogo.getModalidad(),
 				precio: catalogo.getPrecio(),
 				descuento: catalogo.getDescuento(),

@@ -40,12 +40,7 @@ export class EditarInmueble extends IntercambioInmueble {
 			nuevaIdImagen
 		);
 
-		let imagen = new Imagen(
-			null,
-			//RegistrarInmueble.numberFromString(id_imagen),
-			String(req.body.id_catastro),
-			urlImagen
-		);
+		let imagen = new Imagen(null, String(req.body.id_catastro), urlImagen);
 
 		let contain = new Contiene(
 			String(req.body.id_catastro),

@@ -17,8 +17,6 @@ export class VistaPorPropietario extends IntercambioInmueble {
 	}
 
 	static async getResult(lista: string[]): Promise<DatosInmueble[]> {
-		console.log(lista);
-
 		let aux: DatosInmueble[] = [];
 
 		for (let i = 0; i < lista.length; i++) {
@@ -58,7 +56,6 @@ export class VistaPorPropietario extends IntercambioInmueble {
 				latitud: catastro.getLatitud(),
 
 				propietario: catalogo.getId_usuario(),
-				//publicado: catalogo.getPublicado(),
 				modalidad: catalogo.getModalidad(),
 				precio: catalogo.getPrecio(),
 				descuento: catalogo.getDescuento(),

@@ -2,12 +2,7 @@ import axios from 'axios';
 import { DatosCatastroDecorado } from './DatosCatastroDecorado';
 
 export class SedeCatastral extends DatosCatastroDecorado {
-	//7138804YJ2773G0006ET
-	//0230809UH0403S0001LF
-	//https://ovc.catastro.meh.es/ovcservweb/ovcswlocalizacionrc/ovccoordenadas.asmx?op=Consulta_CPMRC
-
 	async getDatos(id_catastro: string, SRS?: number): Promise<boolean> {
-		//const catastro = new DatosCatastro();
 		this.wrappee.setId_catastro(id_catastro);
 
 		const ubicacionCatastro = await SedeCatastral.consultaCatastroUbicacion(id_catastro);

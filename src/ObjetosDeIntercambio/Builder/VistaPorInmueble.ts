@@ -74,5 +74,4 @@ export class VistaPorInmueble extends IntercambioInmueble {
 
 		return res.json(inmueble);
 	}
-	//¿Cómo se cogen la información? Aquí es solo rellenarlo con lo que nos pasan.
 }

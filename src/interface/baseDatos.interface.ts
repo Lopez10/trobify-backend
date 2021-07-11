@@ -8,11 +8,6 @@ export interface TipoCatastro {
 	coordenada: coordenada;
 }
 
-export type coordenada = {
-	yLatitud: number;
-	xLongitud: number;
-};
-
 export interface SedeCatastro {
 	getDatos(id_catastro: string): Promise<any>;
 }
@@ -23,3 +18,8 @@ export interface Consultas extends SedeCatastro {
 	deleteDatos(id_catastro: string): Promise<string>;
 	existeYaElDato(): Promise<boolean>;
 }
+
+export type coordenada = {
+	yLatitud: number;
+	xLongitud: number;
+};
